@@ -1,21 +1,23 @@
 # bepp-project
+
 Projet de l'UE **Conduite de Projet**
-##Membres d'équipes :
-Adrien Bounader
-Mohamed Amine El Khadiri
-Dimitri Prestat
-Mathieu Perez
 
-##Backlog
+## Membres d'équipes :
+* Adrien Bounader
+* Mohamed Amine El Khadiri
+* Dimitri Prestat
+* Mathieu Perez
 
-###Rôles
-**Visiteur** : Personne sur l'application
-**Utilisateur** : Personne inscrite sur l'application
-**Détenteur de projet** : (Scrum Master ??), Un Développeur / Product Owner / Observateur qui a initialisé le projet sur l'application.
-**Développeur** : Personne qui participe au développement du projet
-**Product Owner** : Client du projet en développement
-**Observateur** : Personne ne participant pas mais regardant le déroulement du projet
-**Membre de projet **: Fusion de Développeur / Product Owner / Observateur
+## Backlog
+
+### Rôles
+* **Visiteur** : Personne sur l'application
+* **Utilisateur** : Personne inscrite sur l'application
+* **Détenteur de projet** : (Scrum Master ??), Un Développeur / Product Owner / Observateur qui a initialisé le projet sur l'application.
+* **Développeur** : Personne qui participe au développement du projet
+* **Product Owner** : Client du projet en développement
+* **Observateur** : Personne ne participant pas mais regardant le déroulement du projet
+* **Membre de projet**: Fusion de Développeur / Product Owner / Observateur
 
 | User Story | Difficulté | Priorité | Fait |
 |---|---|---|---|
