@@ -25,7 +25,6 @@ Projet de l'UE **Conduite de Projet**
 | En tant que **détenteur de projet**, je souhaite pouvoir gérer les détails du projet(nom client et eamail, description du projet, domaines/lieux, moyens/matériels, date deb et deadline, budget, motifs du projet) afin de clarifier le projet pour tout les membres| 2 | 1 | X
 | En tant que **développeur**, je souhaite pouvoir ajouter une tâche(Intitulé – Difficulté - Affectation) afin dela lier à une US(affectation ne doit pas obligatoirement être renseignée à ce moment)| 2 | 1 | X   
 | En tant que **développeur**, je souhaite pouvoir modifier/supprimer une tâche afin d'avoir un développement agile | 2 | 1 | X   
-
 | En tant que **développeur**, je souhaite pouvoir avertir l’équipe des problèmes rencontrés (dans une tâches en cours) afin d’avoir de l’aide, changement de tâche| 2 | 1 | X
 | En tant que **développeur**, je souhaite pendant et à la fin d’un sprint, décrire les problèmes rencontrés et les solutions apportées afin d’avoir un suivi des problèmes| 2 | 1 | X
 | En tant que **membre de projet**, je souhaite avoir accès à une liste des tâches non réalisées dans les temps et le retard que cela engendre afin d’avoir un planning| 2 | 1 | X
