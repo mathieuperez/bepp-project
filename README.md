@@ -20,7 +20,7 @@ Projet de l'UE **Conduite de Projet**
 ### Backlog
 
 | ID | User Story | Difficulté | Priorité | Fait |
-|---|---|---|---|
+|---|---|---|---| --- |
 | 1 | En tant que **visiteur**, je souhaite pouvoir créer un compte afin de me connecter.| 2 |  | X 
 | 2 | En tant qu'**utilisateur**, je souhaite pouvoir créer un projet (Nom projet, Nom client, email, description du projet, domaines/lieux, moyens/matériels, date début et deadLine, bugdet, motifs du projets (...) ) afin de créer le backlog lié au projet. | 1 |  | X 
 | 3 | En tant qu'**utilisateur**, je souhaite pouvoir accéder à la liste de mes projets.| 1 |  | X 
