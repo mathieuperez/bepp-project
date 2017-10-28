@@ -39,19 +39,20 @@ Projet de l'UE **Conduite de Projet**
 | 16 | En tant que **développeur**, je souhaite associer des tâches à un sprint existant.| 1 |  | X
 | 17 | En tant que **développeur**, je souhaite m'affecter un ensemble de tâches sur un sprint afin de planifier mon Sprint| 2 |  | X
 | 18 | En tant que **développeur**, je souhaite pouvoir changer l'état de mes tâches dans le kanban (et préciser la durée passé sur cette tache) | 1 |  | X
-| 19 | En tant que **développeur**, je souhaite à la fin d'un sprint pouvoir effectuer des modifications sur le backlog ***(et/ou tâches)***.| 2 |  | X
-| 20 | En tant que **développeur**, je souhaite pendant un sprint associer un build à un sprint| 1 |  | X
-| 21 | En tant que **développeur**, je souhaite pendant un sprint associer des tests à une US et les relier aux tâches correspondantes | 1 |  | X
-| 22 | En tant que **développeur**, je souhaite pendant un sprint associer une doc à une US [Spécification tâche ?] | 1 |  | X
-| 23 | En tant que **développeur**, je souhaite pouvoir avertir l'équipe des problèmes rencontrés (dans une tâche en cours) afin d'avoir de l'aide, changer de tâche.| 3 |  | X
-| 24 | En tant que **développeur**, je souhaite pendant un sprint, décrire les problèmes rencontrés et les solutions apportées afin d'avoir un suivi des problèmes.| 2 |  | X
-| 25 | En tant que **membre de projet**, je souhaite visualiser la page du projet afin de visualiser l'ensemble des composants du projet ***[Segmenter en plusieurs US ?]***.| 3 |  | X
-| 26 | En tant que **membre de projet**, je souhaite accéder à la liste des membres du projet | 1 |  | X
-| 27 | En tant que **membre de projet**, je souhaite à la fin d'un sprint, accéder aux statistiques du sprint (Calculer la vitesse, le retard/avancement par tâche et le retard/avancement global par membre et pour l'équipe entière) ***[Segmenter en plusieurs US ?]{une seule US ->plusieurs taches}***.| 5 |  | X
-| 28 | En tant que **membre de projet**, je souhaite accéder aux résultats des tests de chaque US par build.| 2 |  | X
-| 29 | En tant que **membre de projet**, je souhaite visualiser le kanban afin d'avoir le suivi des tâches et de voir le RAF| 2 |  | X
-| 30 | En tant que **Product Owner**, je souhaite accéder aux builds des sprints.| 2 |  | X
-| 31 | En tant que **Product Owner**, je souhaite ajouter un cahier des charges pour le lier au projet.| 2 |  | X
+| 19 | En tant que **développeur**, je souhaite m'affecter à une tâche suspendu suite à une absence (TruckFactor) d'un collaborateur afin d'éviter le blocage des autres tâches | 2 |  | X
+| 20 | En tant que **développeur**, je souhaite à la fin d'un sprint pouvoir effectuer des modifications sur le backlog ***(et/ou tâches)***.| 2 |  | X
+| 21 | En tant que **développeur**, je souhaite pendant un sprint associer un build à un sprint| 1 |  | X
+| 22 | En tant que **développeur**, je souhaite pendant un sprint associer des tests à une US et les relier aux tâches correspondantes | 1 |  | X
+| 23 | En tant que **développeur**, je souhaite pendant un sprint associer une doc à une US [Spécification tâche ?] | 1 |  | X
+| 24 | En tant que **développeur**, je souhaite pouvoir avertir l'équipe des problèmes rencontrés (dans une tâche en cours) afin d'avoir de l'aide, changer de tâche.| 3 |  | X
+| 25 | En tant que **développeur**, je souhaite pendant un sprint, décrire les problèmes rencontrés et les solutions apportées afin d'avoir un suivi des problèmes.| 2 |  | X
+| 26 | En tant que **membre de projet**, je souhaite visualiser la page du projet afin de visualiser l'ensemble des composants du projet ***[Segmenter en plusieurs US ?]***.| 3 |  | X
+| 27 | En tant que **membre de projet**, je souhaite accéder à la liste des membres du projet | 1 |  | X
+| 28 | En tant que **membre de projet**, je souhaite à la fin d'un sprint, accéder aux statistiques du sprint (Calculer la vitesse, le retard/avancement par tâche et le retard/avancement global par membre et pour l'équipe entière) ***[Segmenter en plusieurs US ?]{une seule US ->plusieurs taches}***.| 5 |  | X
+| 29 | En tant que **membre de projet**, je souhaite accéder aux résultats des tests de chaque US par build.| 2 |  | X
+| 30 | En tant que **membre de projet**, je souhaite visualiser le kanban afin d'avoir le suivi des tâches et de voir le RAF| 2 |  | X
+| 31 | En tant que **Product Owner**, je souhaite accéder aux builds des sprints.| 2 |  | X
+| 32 | En tant que **Product Owner**, je souhaite ajouter un cahier des charges pour le lier au projet.| 2 |  | X
 
 ## Technologies
 
