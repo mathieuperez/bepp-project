@@ -26,7 +26,7 @@ Projet de l'UE **Conduite de Projet**
 | 3 | En tant qu'**utilisateur**, je souhaite pouvoir accéder à la liste de mes projets.| 1 |  | X 
 | 4 | En tant que **développeur**, je souhaite pouvoir inviter des utilisateurs en leur affectant un rôle (Product Owner / Developpeur / Observateur) afin d'avoir une équipe.| 2 |  | X
 | 5 | En tant que **développeur**, je souhaite créer un backlog afin d'y ajouter des US.| 2 | | X
-| 6 | En tant que **développeur**, je souhaite ajouter une User Story (Description, Priorité, Difficulté (Suite de Fibonacci)).| 1 |  | X   
+| 6 | En tant que **développeur**, je souhaite ajouter une User Story (Description, Difficulté (Suite de Fibonacci)).| 1 |  | X   
 | 7 | En tant que **développeur**, je souhaite pouvoir modifier / supprimer une US| 1 |  | X
 | 8 | En tant que **développeur**, je souhaite pouvoir créer un sprint (Date début, durée) afin d'accéder à l'onglet lié au sprint.| 1 |  | X
 | 9 | En tant que **développeur**, je souhaite associer une ou plusieurs US à un sprint.| 1 |  | X
@@ -47,9 +47,11 @@ Projet de l'UE **Conduite de Projet**
 | 24 | En tant que **membre de projet**, je souhaite visualiser la liste des tâches dans un sprint.| 2 |  | X
 | 25 | En tant que **membre de projet**, je souhaite visualiser la vue d'ensemble d'un sprint avec l'assignation des tâches et l'état des tâches et les dates de début/fin.| 2 |  | X
 | 26 | En tant que **membre de projet**, je souhaite visualiser les statistiques d'un sprint (date des tâches réalisées, nombre de tâches réalisées / nombre de tâches non réalisées).| 5 |  | X
-| 27 | En tant que **Product Owner**, je souhaite accéder aux builds des sprints.| 2 |  | X
+| 27 | En tant que **membre de projet**, je souhaite accéder aux builds des sprints.| 2 |  | X
+| 28 | En tant que **Product Owner**, je souhaite pouvoir saisir et modifier les priorités des US.| 1 |  | X
 
 ## Technologies
+
 
 
 
