@@ -1,5 +1,8 @@
 var express = require('express');
 var bodyParser = require("body-parser");
+var mongoClient = require('mongodb').MongoClient;
+//TODO : When ready, Init urlMongo with the proper url.
+var urlMongo = "";
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,9 +34,21 @@ projectTest.users[0].login = "dp33";
 projectTest.users[0].password = "GL";
 var projectTestJSON = JSON.stringify(projectTest);
 
+//We can test the POST with CURL commands like (localhost example) :
+//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/post/
+//curl --data rl --data "name=Humus&description=TreslongueDescription" http://localhost:8080/api/project/post/
+
+
+mongoClient.connect(urlMongo)
+    .then(function (db) {
+        console.log("Salut");
+    })
+    .catch(function(err) {
+        console.log("Pas salut");
+    });
+
 //2 Possibilities : From Project add a User or from User add a Projet
 //Here from Project add User
-
 //Add a User Service
 //Suppose :
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
@@ -45,7 +60,7 @@ app.post('/api/user/post', function(req, res) {
     user.login = req.body.login;
     user.password = req.body.password;
     console.log(user);
-    //Insersion dans la BD
+    //Insertion dans la BD
 });
 
 //Add a Project Service
@@ -57,7 +72,7 @@ app.post('/api/project/post', function(req, res) {
     project.name = req.body.name;
     project.surname = req.body.description;
     console.log(project);
-    //Insersion dans la BD
+    //Insertion dans la BD
 });
 
 //Authentification Service
@@ -67,7 +82,7 @@ app.get('/api/user/get/', function(req, res) {
     var login = req.params.login;
     var password = req.params.password;
     //Check if there is the login / password in the DB.
-    
+
 });
 
 //Get a User Service
