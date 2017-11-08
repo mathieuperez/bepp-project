@@ -1,7 +1,34 @@
 var express = require('express');
-
+var bodyParser = require("body-parser");
 var app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+//Add a User Service
+//Suppose :
+// POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
+// POST : url?name=foo&surname=bar&login=user&password=pwd
+app.post('/api/user/post', function(req, res) {
+    var user = new Object();
+    user.name = req.body.name;
+    user.surname = req.body.surname;
+    user.login = req.body.login;
+    user.password = req.body.password;
+    console.log(user);
+    //Insersion dans la BD
+});
+
+//Add a Project Service
+//Suppose :
+// POST : {"name":"foo", "description":"bar"}
+// POST : url?name=foo&description=bar
+app.post('/api/project/post', function(req, res) {
+    var project = new Object();
+    project.name = req.body.name;
+    project.surname = req.body.description;
+    console.log(project);
+    //Insersion dans la BD
+});
 
 //Get a User Service
 //From the Login
