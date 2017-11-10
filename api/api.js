@@ -4,8 +4,10 @@ var mongoClient = require('mongodb').MongoClient;
 var urlMongo = "mongodb://localhost/bepp_BD";
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('localhost:27017/nodetest1');	//our database is nodetest1
+/*
 var routes = require('./routes/index');
 var users = require('./routes/users');
+*/
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,8 +20,10 @@ app.use(function(req,res,next){
 });
 
 //This 2 directives are telling Express what route files to use. Normally it's advocated to set up separate route files for different parts of an app. For example, the users route file might contain routes for adding users, deleting them, updating them, and so forth, while a new route file called "locations" might handle adding, editing, deleting and displaying location data (in an app for which that was required). For now, to keep things simple, I am going to do everything in the index router. That means we can completely ignore the /users line(it's only here as a reminder for later on)
+/*
 app.use('/', routes);
 app.use('/users', users);
+*/
 
 var userTest = new Object();
 userTest.id = 1;
@@ -49,8 +53,13 @@ var projectTestJSON = JSON.stringify(projectTest);
 
 //We can test the POST with CURL commands like (localhost example) :
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/post/
+//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/get/
 //curl --data rl --data "name=Humus&description=TreslongueDescription" http://localhost:8080/api/project/post/
 
+//mongodb --dbpath nodes_modules/data/
+//
+//
+/*
 mongoClient.connect(urlMongo)
     .then(function (db) {
         console.log("Salut");
@@ -59,7 +68,7 @@ mongoClient.connect(urlMongo)
     .catch(function(err) {
         console.log("Pas salut");
     });
-
+*/
 
 
 //2 Possibilities : From Project add a User or from User add a Projet
@@ -69,7 +78,6 @@ mongoClient.connect(urlMongo)
 //Suppose :
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
-function serviceAddUserToProject(db) {
     app.post('/api/user/post', function(req, res) {
         var user = new Object();
         user.name = req.body.name;
@@ -81,19 +89,14 @@ function serviceAddUserToProject(db) {
         //Insertion dans la BD
 	// Set our internal DB variable
     	var db = req.db;
-    	// Get our form values. These rely on the "name" attributes
-   	var userName = req.body.username;
-    	var userSurname = req.body.usersurname;
-    	var userLogin = req.body.userlogin;
-    	var userPassword = req.body.userpassword;
     	// Set our collection
     	var collection = db.get('userCollection');
  	// Submit to the DB
     	collection.insert({
-        	"name" : userName,
-        	"surname" : userSurname,
-        	"login" : userLogin,
-        	"password" : userPassword
+        	"name" : user.name,
+        	"surname" : user.surname,
+        	"login" : user.login,
+        	"password" : user.password
     	}, function (err, doc) {
         	if (err) {
             	// If it failed, return error
@@ -105,7 +108,6 @@ function serviceAddUserToProject(db) {
         	}
     	});
     });
-}
 //Add a Project Service
 //Suppose :
 // POST : {"name":"foo", "description":"bar"}
@@ -141,21 +143,25 @@ app.post('/api/project/post', function(req, res) {
 
 //Authentification Service
 //Check Login Password
-app.get('/api/user/get/', function(req, res) {
+app.get('/api/user/get/:login/:password', function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	var userLogin = req.params.login;
 	var userPassword = req.params.password;
 	//Check if there is the login / password in the DB.
 	// Set our internal DB variable
 	var db = req.db;
+
 	// Find in a collection
   	var query = { login: userLogin, password: userPassword};
-	db.collection("userCollection").find(query).toArray(function(err, result) {
-		if (err) throw err;
-		//Utilisateur deja existant
-		if(result!=null)
-			res.send("User already existing");
-  	});
+
+	db.collection("userCollection").find(query, {}, function(e, docs) {		
+		if (docs.length != 0) {
+			console.log("Il y a bien un utilisateur " + userLogin + " avec le mdp " + userPassword);
+		}
+		else {
+			console.log("Il n'y a pas d'utilisateur " + userLogin + " avec le mdp " + userPassword);
+		}
+	});
 });
 
 //Get a User Service
