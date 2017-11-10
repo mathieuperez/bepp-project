@@ -4,6 +4,11 @@ var mongoClient = require('mongodb').MongoClient;
 var urlMongo = "mongodb://localhost/bepp_BD";
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('localhost:27017/nodetest1');	//our database is nodetest1
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
+
+
 /*
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -154,7 +159,7 @@ app.get('/api/user/get/:login/:password', function(req, res) {
 	// Find in a collection
   	var query = { login: userLogin, password: userPassword};
 
-	db.collection("userCollection").find(query, {}, function(e, docs) {		
+	db.collection("userCollection").find(query, {}, function(e, docs) {
 		if (docs.length != 0) {
 			console.log("Il y a bien un utilisateur " + userLogin + " avec le mdp " + userPassword);
 		}
@@ -200,9 +205,37 @@ app.post('/api/project/post/adduser', function(req, res) {
     //Insersion dans la BD
 });
 
-app.use(function(req, res, next){
-  res.setHeader('Content-Type', 'text/plain');
-  res.status(404).send('Page introuvable !');
+////// Attach application /////
+
+// Catch all other routes and return an application file
+app.get(['/', '/:requested'], function(req, res, next) {
+    var requestedFileName = req.params.requested ? req.params.requested : 'index.html';
+
+    var requestedPath = path.join(__dirname, '../web-app/dist', requestedFileName);
+
+    // if redirected file exists, then redirect it else go to next catch
+    if (fs.existsSync(requestedPath)) {
+        res.sendFile(requestedPath);
+    }
+    else {
+        next();
+	}
 });
 
-app.listen(8080);
+///// else page introuvable
+app.use(function(req, res, next){
+    res.setHeader('Content-Type', 'text/plain');
+    res.status(404).send('Page introuvable !');
+});
+
+// Get port from environment and store in Express.
+const port = process.env.PORT || '8080';
+app.set('port', port);
+
+// Create HTTP server.
+const server = http.createServer(app);
+
+// Listen on provided port, on all network interfaces.
+server.listen(port, function(){
+	console.log("API running on localhost:" + port);
+});
