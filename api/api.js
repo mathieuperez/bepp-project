@@ -56,19 +56,15 @@ var projectTestJSON = JSON.stringify(projectTest);
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/get/
 //curl --data rl --data "name=Humus&description=TreslongueDescription" http://localhost:8080/api/project/post/
 
+
+//Test procedures :
+//npm i
+//for installing dependencies
+//in a terminal
 //mongodb --dbpath nodes_modules/data/
-//
-//
-/*
-mongoClient.connect(urlMongo)
-    .then(function (db) {
-        console.log("Salut");
-        serviceAddUserToProject(db);
-    })
-    .catch(function(err) {
-        console.log("Pas salut");
-    });
-*/
+// in an other terminal
+//node api.js
+//You can now access http://localhost:8080/api/* !
 
 
 //2 Possibilities : From Project add a User or from User add a Projet
@@ -78,7 +74,7 @@ mongoClient.connect(urlMongo)
 //Suppose :
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
-    app.post('/api/user/post', function(req, res) {
+    app.post('/api/users', function(req, res) {
         var user = new Object();
         user.name = req.body.name;
         user.surname = req.body.surname;
@@ -112,7 +108,7 @@ mongoClient.connect(urlMongo)
 //Suppose :
 // POST : {"name":"foo", "description":"bar"}
 // POST : url?name=foo&description=bar
-app.post('/api/project/post', function(req, res) {
+app.post('/api/projects', function(req, res) {
 	var project = new Object();
 	project.name = req.body.name;
 	project.surname = req.body.description;
@@ -143,7 +139,7 @@ app.post('/api/project/post', function(req, res) {
 
 //Authentification Service
 //Check Login Password
-app.get('/api/user/get/:login/:password', function(req, res) {
+app.get('/api/users/:login/:password', function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	var userLogin = req.params.login;
 	var userPassword = req.params.password;
@@ -166,7 +162,7 @@ app.get('/api/user/get/:login/:password', function(req, res) {
 
 //Get a User Service
 //From the Login
-app.get('/api/user/get/:login', function(req, res) {
+app.get('/api/users/:login', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     var login = req.params.login;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
@@ -178,7 +174,7 @@ app.get('/api/user/get/:login', function(req, res) {
 
 //Get a Project Service
 //From the Project Name
-app.get('/api/project/get/:name', function(req, res) {
+app.get('/api/projects/:name', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     var name = req.params.name;
     //Remplacer projectTestJSON par une requête MangoDB qui sélectionne un project selon son name
@@ -192,7 +188,7 @@ app.get('/api/project/get/:name', function(req, res) {
 //Suppose :
 // POST : {"name":"foo", "login":"bar"}
 // POST : url?name=foo&login=bar
-app.post('/api/project/post/adduser', function(req, res) {
+app.post('/api/projects/adduser', function(req, res) {
     var project = new Object();
     project.name = req.body.name;
     project.surname = req.body.description;
