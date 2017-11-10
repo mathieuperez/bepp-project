@@ -27,7 +27,7 @@ Projet de l'UE **Conduite de Projet**
 
 | ID_Tache | Description | Affectation | Durée Estimée (jh) | US Associés | Etat |
 | --- | --- | --- | --- | --- | --- |
-| T1_P | Créer l'interface HTML/CSS de connection | Amine | 1/2 | 1 | A Faire 
+| T1_P | Créer l'interface HTML/CSS de connexion | Amine | 1/2 | 1 | A Faire 
 | T2_P | Créer l'interface HTML/CSS de création d'un compte avec les champs username, password, email | Amine | 1/2 | 1 | A Faire 
 | T3_P | Créer l'interface HTML/CSS du panel des projets : liste des projets | Amine | 1/2 | 1 | A Faire 
 | T4_P | Créer l'interface HTML/CSS d'un projet (nom et desciption du projet, liste des membres) | Amine | 1/2 | 1 | A Faire 
@@ -43,6 +43,10 @@ Projet de l'UE **Conduite de Projet**
 | T14_TEST | Redaction des tests : E2E(Protractor) <sup>[3](#myfootnote3)</sup>|  | 1/2 | | A Faire 
 | T15_TEST | Effectuer les tests : E2E(Protractor)|  | 1/2 | | A Faire 
 | T16_TEST | Mise en place de "Travis" |  | 1/2 | | A Faire 
+| T17_PM | Faire le lien entre l'interface de la tâche T1_P et les services de l'api | Adrien | 1/2 | | A Faire
+| T18_PM | Faire le lien entre l'interface de la tâche T2_P et les services de l'api | Adrien | 1/2 | | A Faire
+| T19_PM | Faire le lien entre l'interface de la tâche T3_P et les services de l'api |  | 1/2 | | A Faire
+| T20_PM | Faire le lien entre l'interface de la tâche T4_P et les services de l'api |  | 1/2 | | A Faire
 
 ### Dépendances
 
@@ -64,8 +68,13 @@ Projet de l'UE **Conduite de Projet**
 | T14_TEST |  |  |  |  |  |  |  |  |  |  |  |  | X |  | | |
 | T15_TEST |  |  |  |  |  |  |  |  |  |  |  |  |  | X | | |
 | T16_TEST |  |  |  |  |  |  |  |  |  |  |  |  |  |  | | |
+| T17_PM| X |  |  |  |  |  |  | X | X |  |  |  |  |  | | |
+| T18_PM|  | X |  |  |  |  |  | X | X |  |  |  |  |  | | |
+| T19_PM|  |  | X |  |  |  |  | X | X |  |  |  |  |  | | |
+| T20_PM|  |  |  | X |  |  |  | X | X |  |  |  |  |  | | |
 
 ### Redaction des Tests Unitaires
+
 | ID_Tache | Affectation | Durée Estimée (jh) | Resultat de TU | Etat | 
 | --- | --- | --- | --- | --- |
 | T5_B   |  | 1/2 | | A Faire 
@@ -74,6 +83,10 @@ Projet de l'UE **Conduite de Projet**
 | T8_PM  |  | 1/2 | | A Faire
 | T9_M   |  | 1/2 | | A Faire 
 | T10_M  |  | 1/2 | | A Faire 
+| T17_PM|  |1/2| | A Faire
+| T18_PM|  |1/2| | A Faire
+| T19_PM|  |1/2| | A Faire
+| T20_PM|  |1/2| | A Faire
 
 <a name="myfootnote1">1</a>: ouvrir un terminal et lancer la commande "mongod --dbpath bepp-project/api/node_modules/data/"
 <a name="myfootnote2">2</a>: https://docs.angularjs.org/guide/e2e-testing
