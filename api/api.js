@@ -52,10 +52,9 @@ projectTest.users[0].password = "GL";
 var projectTestJSON = JSON.stringify(projectTest);
 
 //We can test the POST with CURL commands like (localhost example) :
-//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/post/
-//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/get/
-//curl --data rl --data "name=Humus&description=TreslongueDescription" http://localhost:8080/api/project/post/
-
+//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
+//curl --data rl --data "name=Humus&description=TreslongueDescription" http://localhost:8080/api/projects/
+//curl -X PUT http://localhost:8080/api/projects/Humus/users/mperez
 
 //Test procedures :
 //npm i
@@ -111,20 +110,18 @@ var projectTestJSON = JSON.stringify(projectTest);
 app.post('/api/projects', function(req, res) {
 	var project = new Object();
 	project.name = req.body.name;
-	project.surname = req.body.description;
-	console.log(project);
+	project.description = req.body.description;
+
 	//Insertion dans la BD
 	// Set our internal DB variable
 	var db = req.db;
-	// Get our form values. These rely on the "name" attributes
-	var projectName = req.body.projectname;
-	var projectDescription = req.body.projectdescription;
+
 	// Set our collection
 	var collection = db.get('projectCollection');
 	// Submit to the DB
 	collection.insert({
-		"name" : projectName,
-		"description" : projectDescription
+		"name" : project.name,
+		"description" : project.description
 	}, function (err, doc) {
 		if (err) {
 	    	// If it failed, return error
@@ -150,7 +147,7 @@ app.get('/api/users/:login/:password', function(req, res) {
 	// Find in a collection
   	var query = { login: userLogin, password: userPassword};
 
-	db.collection("userCollection").find(query, {}, function(e, docs) {		
+	db.collection("userCollection").find(query, {}, function(e, docs) {
 		if (docs.length != 0) {
 			console.log("Il y a bien un utilisateur " + userLogin + " avec le mdp " + userPassword);
 		}
@@ -164,23 +161,44 @@ app.get('/api/users/:login/:password', function(req, res) {
 //From the Login
 app.get('/api/users/:login', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var login = req.params.login;
+    var userLogin = req.params.login;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
+    var db = req.db;
 
+    // Find in a collection
+    var query = { login: userLogin};
 
-
-    res.send(userTestJSON);
+    db.collection("userCollection").find(query, {}, function(e, docs) {
+        if (docs.length != 0) {
+            res.send(docs);
+        }
+        else {
+            res.status(404);
+            res.send({ error: 404});
+        }
+    });
 });
 
 //Get a Project Service
 //From the Project Name
 app.get('/api/projects/:name', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var name = req.params.name;
-    //Remplacer projectTestJSON par une requête MangoDB qui sélectionne un project selon son name
+    var projectName = req.params.name;
+    //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
+    var db = req.db;
 
+    // Find in a collection
+    var query = { name: projectName};
 
-    res.send(projectTestJSON);
+    db.collection("projectCollection").find(query, {}, function(e, docs) {
+        if (docs.length != 0) {
+            res.send(docs);
+        }
+        else {
+            res.status(404);
+            res.send({ error: 404});
+        }
+    });
 });
 
 //Add a Project Service
@@ -188,12 +206,71 @@ app.get('/api/projects/:name', function(req, res) {
 //Suppose :
 // POST : {"name":"foo", "login":"bar"}
 // POST : url?name=foo&login=bar
-app.post('/api/projects/adduser', function(req, res) {
-    var project = new Object();
-    project.name = req.body.name;
-    project.surname = req.body.description;
-    console.log(project);
-    //Insersion dans la BD
+app.put('/api/projects/:name/users/:login', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var projectName = req.params.name;
+    var userLogin = req.params.login;
+    //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
+    var db = req.db;
+
+    var projectQuery = {name : projectName};
+    var userQuery = {login : userLogin};
+
+
+    //Steps :
+	//Check if there is the project
+	//Check if there is the user
+	//Add the user (without its projects list) to the project
+	//Add the project (without its users list) to the user
+	//Done
+
+
+
+    db.collection("projectCollection").find(projectQuery, {}, function(e, docsProject) {
+        if (docsProject.length != 0) {
+
+            db.collection("userCollection").find(userQuery, {}, function(e, docsUser) {
+                if (docsUser.length != 0) {
+
+                	if (docsProject[0].users  == undefined)
+                		docsProject[0].users = [];
+
+                	var user = docsUser[0];
+                	if (user.projects != undefined)
+                		delete user['projects'];
+                	docsProject[0].users.push(user);
+
+
+                	db.collection("projectCollection").update(projectQuery, docsProject[0], function(err, res) {
+                		if (err) throw err;
+
+                        if (docsUser[0].projects  == undefined)
+                            docsUser[0].projects = [];
+
+                        var project = docsProject[0];
+                        if (project.users != undefined)
+                        delete project['users'];
+                        docsUser[0].projects.push(project);
+
+                        db.collection("userCollection").update(userQuery, docsUser[0], function(err, res) {
+                            if (err) throw err;
+
+                            console.log("document updated");
+                        })
+					})
+                }
+                else {
+                    res.status(404);
+                    res.send({ error: 404});
+                }
+            });
+        }
+        else {
+            res.status(404);
+            res.send({ error: 404});
+        }
+    });
+
 });
 
 app.use(function(req, res, next){
