@@ -17,7 +17,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 if you save one file in `src/`, program will recompile automatically.
 * For production build: Use the `ng build -prod`.
 
-## Lien Présentation / métier
+## Lien Présentation / métier T8_PM
 
 Tous les services hormis POST `/tokens` devrait être appelés avec un token d'authentification (dans le headers / Authorization de la requête pour oauth), pour permettre la sécurisation de l'application.
 
@@ -41,7 +41,10 @@ Tous les services hormis POST `/tokens` devrait être appelés avec un token d'a
 | Données nécessaires | Requested api services  |
 | --- | --- |
 | Listes des membres d'un projet (email, prénom, nom, rôle dans le projet) | déjà récupérés dans GET `/users/:id` ou GET `/users/:id/projects`, sinon GET `/users/:iduser/projects/:idproject/members` |
+| Ajouter / supprimer un utilisateur à un projet | POST/DELETE `/projects/:idproject/members/:idUtilisateur` (avec le role en paramètre pour le POST) |
 | Précisions d'un projet (date début, date fin, nom, description) | Récupérées avec le projet |
+
+## Lien Présentation / métier (pour la suite)
 
 * `/dashboard/backlog`  
 
@@ -58,6 +61,7 @@ Tous les services hormis POST `/tokens` devrait être appelés avec un token d'a
 | Liste des US (backlog): id, desc, difficulté, priorité, done | déjà récupérés avec le projet |
 | Ajouter/supprimer un US à un sprint | POST / DELETE `/projects/:idproject/sprints/:idsprint/user-stories` avec en paramètre l'id de l'us à ajouter / supprimer |
 | Ajouter/supprimer une tâche à un sprint | POST / DELETE `/projects/:idproject/sprints/:idsprint/tasks` avec en paramètre l'id de la tâche à ajouter / supprimer |
+
 
 ## More options
 ### Running unit tests
