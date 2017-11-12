@@ -1,0 +1,74 @@
+<br>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h1 align="center">Projet 1</h1>
+        <p align="center">Description</p>
+        <p align="center">Date de debut : xx/xx/xxxx --- Date de fin : xx/xx/xxxx</p>
+    </div>
+</div>
+
+<br>
+<div class="panel panel-default">
+    <table class="table">
+        <tr>
+            <th>Firstname</th>
+            <th>Rôle</th>
+        </tr>
+        <tr>
+            <td>Med Amine</td>
+            <td>Developpeur</td>
+        </tr>
+    </table>
+</div>
+
+<div class="row">
+
+    <div class="col-md-9">
+        <div [hidden]="!showAddMember" class="panel panel-default">
+
+            <table class="table">
+                <tr>
+
+                    <td>
+                        <div class="btn-group">
+                            <select class="form-control" name="Developpeur">
+                                <option selected disabled hidden>Membre</option>
+                                <option>Mathieu</option>
+                                <option>Adrien</option>
+                            </select>
+                        </div>
+                    </td>
+
+                    <td>
+
+                    <td>
+                        <div class="btn-group">
+
+                            <select class="form-control">
+                                <option selected disabled hidden>Rôle</option>
+                                <option>Product Owner</option>
+                                <option>Développeur</option>
+
+                            </select>
+                        </div>
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel-body" [hidden]="showAddMember">
+            <button class="btn-add btn btn-primary pull-right" (click)="toggleAddMember()">Nouveau membre</button>
+        </div>
+
+        <div class="panel-body" [hidden]="!showAddMember">
+            <button class="btn-add btn btn-success pull-right" (click)="AddMember()">Ajouter</button>
+        </div>
+
+    </div>
+
+</div>
+
