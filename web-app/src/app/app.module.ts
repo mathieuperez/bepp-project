@@ -15,10 +15,9 @@ import {SprintsContainerComponent} from './dashboard/main-container/project-cont
 import {SprintComponent} from './dashboard/main-container/project-container/sprints-container/sprint/sprint.component';
 import {DropdownDirective} from "./directives/dropdown.directive";
 import { SignupComponent } from './signup/signup.component';
-
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NewProjectComponent } from './dashboard/main-container/new-project/new-project.component';
 import { ProjectContainerComponent } from './dashboard/main-container/project-container/project-container.component';
+
 
 @NgModule({
   declarations: [
@@ -36,14 +35,15 @@ import { ProjectContainerComponent } from './dashboard/main-container/project-co
     DropdownDirective,
     SignupComponent,
     NewProjectComponent,
-    ProjectContainerComponent,
+    ProjectContainerComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
 }
