@@ -12,6 +12,7 @@
     "express": "^4.16.2"
   },
   "dependencies": {
+    "jsonwebtoken": "^8.1.0",
     "mongodb": "^2.2.33",
     "monk": "^6.0.5"
   }

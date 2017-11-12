@@ -1,9 +1,8 @@
 var express = require('express');
 var bodyParser = require("body-parser");
-var mongoClient = require('mongodb').MongoClient;
-var urlMongo = "mongodb://localhost/bepp_BD";
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('localhost:27017/nodetest1');	//our database is nodetest1
+var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 /*
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -68,6 +67,11 @@ var projectTestJSON = JSON.stringify(projectTest);
 
 //2 Possibilities : From Project add a User or from User add a Projet
 //Here from Project add User
+
+
+//Temporally, in the future, set the config in a json file.
+
+app.set('superSecret', "12345"); // secret variable
 
 //Add a User Service
 //Suppose :
@@ -150,9 +154,19 @@ app.get('/api/users/:login/:password', function(req, res) {
 	db.collection("userCollection").find(query, {}, function(e, docs) {
 		if (docs.length != 0) {
 			console.log("Il y a bien un utilisateur " + userLogin + " avec le mdp " + userPassword);
+			console.log(docs);
+            var token = jwt.sign(docs[0], app.get('superSecret'));
+
+            // return the information including token as JSON
+            res.json({
+                success: true,
+                message: 'Authentification succeded!',
+                token: token
+            });
 		}
 		else {
-			console.log("Il n'y a pas d'utilisateur " + userLogin + " avec le mdp " + userPassword);
+            console.log("Il n'y a pas d'utilisateur " + userLogin + " avec le mdp " + userPassword);
+            res.json({ success: false, message: 'Authentication failed. Wrong login/password.' });
 		}
 	});
 });
