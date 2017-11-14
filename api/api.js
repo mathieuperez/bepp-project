@@ -22,37 +22,6 @@ app.use(function(req,res,next){
     next();
 });
 
-//This 2 directives are telling Express what route files to use. Normally it's advocated to set up separate route files for different parts of an app. For example, the users route file might contain routes for adding users, deleting them, updating them, and so forth, while a new route file called "locations" might handle adding, editing, deleting and displaying location data (in an app for which that was required). For now, to keep things simple, I am going to do everything in the index router. That means we can completely ignore the /users line(it's only here as a reminder for later on)
-/*
-app.use('/', routes);
-app.use('/users', users);
-*/
-
-var userTest = new Object();
-userTest.id = 1;
-userTest.name = "Prestat";
-userTest.surname = "Dimitri";
-userTest.login = "dp33";
-userTest.password = "GL";
-userTest.projects = [];
-userTest.projects[0] = new Object();
-userTest.projects[0].id = 1;
-userTest.projects[0].name = "bepp";
-userTest.projects[0].description = "Ceci est un projet de gestion de projet.";
-var userTestJSON = JSON.stringify(userTest);
-
-var projectTest = new Object();
-projectTest.id = 1;
-projectTest.name = "bepp";
-projectTest.description = "Ceci est un projet de gestion de projet.";
-projectTest.users = [];
-projectTest.users[0] = new Object();
-projectTest.users[0].id = 1;
-projectTest.users[0].name = "Prestat";
-projectTest.users[0].surname = "Dimitri";
-projectTest.users[0].login = "dp33";
-projectTest.users[0].password = "GL";
-var projectTestJSON = JSON.stringify(projectTest);
 
 //We can test the POST with CURL commands like (localhost example) :
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
@@ -67,11 +36,6 @@ var projectTestJSON = JSON.stringify(projectTest);
 // in an other terminal
 //node api.js
 //You can now access http://localhost:8080/api/* !
-
-
-//2 Possibilities : From Project add a User or from User add a Projet
-//Here from Project add User
-
 
 //Temporally, in the future, set the config in a json file.
 
@@ -190,6 +154,8 @@ app.get('/api/users/:login/:password', function(req, res) {
 	// Find in a collection
   	var query = { login: userLogin, password: userPassword};
 
+
+
 	db.collection("userCollection").find(query, {}, function(e, docs) {
 		if (docs.length != 0) {
 			console.log("Il y a bien un utilisateur " + userLogin + " avec le mdp " + userPassword);
@@ -202,6 +168,17 @@ app.get('/api/users/:login/:password', function(req, res) {
                 message: 'Authentification succeded!',
                 token: token
             });
+
+            var query = {login: userLogin};
+            db.collection('userCollection').update(query, { $set: {token: token}}, {upsert: true}, function (err, doc) {
+                if (err) {
+                    // If it failed, return error
+                    //res.send("There was a problem with the database while adding the token.");
+                }
+                else{
+                    //res.redirect("projectlist");
+                }});
+
 		}
 		else {
             console.log("Il n'y a pas d'utilisateur " + userLogin + " avec le mdp " + userPassword);
@@ -292,6 +269,16 @@ app.put('/api/projects/:name/users/:login', function(req, res) {
                 	if (user.projects != undefined)
                 		delete user['projects'];
                 	docsProject[0].users.push(user);
+
+
+                    collection.update(query, updateUser, {upsert: true}, function (err, doc) {
+                        if (err) {
+                            // If it failed, return error
+                            res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
+                        }
+                        else{
+                            //res.redirect("projectlist");
+                        }});
 
 
                 	db.collection("projectCollection").update(projectQuery, docsProject[0], function(err, res) {
