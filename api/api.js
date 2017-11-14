@@ -1,13 +1,11 @@
 var express = require('express');
 var bodyParser = require("body-parser");
-var mongoClient = require('mongodb').MongoClient;
-var urlMongo = "mongodb://localhost/bepp_BD";
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('localhost:27017/nodetest1');	//our database is nodetest1
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
-
+var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var http = require('http');
+var path = require('path');
+var fs = require('fs');
 
 /*
 var routes = require('./routes/index');
@@ -57,33 +55,33 @@ projectTest.users[0].password = "GL";
 var projectTestJSON = JSON.stringify(projectTest);
 
 //We can test the POST with CURL commands like (localhost example) :
-//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/post/
-//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/user/get/
-//curl --data rl --data "name=Humus&description=TreslongueDescription" http://localhost:8080/api/project/post/
+//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
+//curl --data rl --data "name=Humus&description=TreslongueDescription" http://localhost:8080/api/projects/
+//curl -X PUT http://localhost:8080/api/projects/Humus/users/mperez
 
+//Test procedures :
+//npm i
+//for installing dependencies
+//in a terminal
 //mongodb --dbpath nodes_modules/data/
-//
-//
-/*
-mongoClient.connect(urlMongo)
-    .then(function (db) {
-        console.log("Salut");
-        serviceAddUserToProject(db);
-    })
-    .catch(function(err) {
-        console.log("Pas salut");
-    });
-*/
+// in an other terminal
+//node api.js
+//You can now access http://localhost:8080/api/* !
 
 
 //2 Possibilities : From Project add a User or from User add a Projet
 //Here from Project add User
 
+
+//Temporally, in the future, set the config in a json file.
+
+app.set('superSecret', "12345"); // secret variable
+
 //Add a User Service
 //Suppose :
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
-    app.post('/api/user/post', function(req, res) {
+    app.post('/api/users', function(req, res) {
         var user = new Object();
         user.name = req.body.name;
         user.surname = req.body.surname;
@@ -117,23 +115,21 @@ mongoClient.connect(urlMongo)
 //Suppose :
 // POST : {"name":"foo", "description":"bar"}
 // POST : url?name=foo&description=bar
-app.post('/api/project/post', function(req, res) {
+app.post('/api/projects', function(req, res) {
 	var project = new Object();
 	project.name = req.body.name;
-	project.surname = req.body.description;
-	console.log(project);
+	project.description = req.body.description;
+
 	//Insertion dans la BD
 	// Set our internal DB variable
 	var db = req.db;
-	// Get our form values. These rely on the "name" attributes
-	var projectName = req.body.projectname;
-	var projectDescription = req.body.projectdescription;
+
 	// Set our collection
 	var collection = db.get('projectCollection');
 	// Submit to the DB
 	collection.insert({
-		"name" : projectName,
-		"description" : projectDescription
+		"name" : project.name,
+		"description" : project.description
 	}, function (err, doc) {
 		if (err) {
 	    	// If it failed, return error
@@ -148,7 +144,7 @@ app.post('/api/project/post', function(req, res) {
 
 //Authentification Service
 //Check Login Password
-app.get('/api/user/get/:login/:password', function(req, res) {
+app.get('/api/users/:login/:password', function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	var userLogin = req.params.login;
 	var userPassword = req.params.password;
@@ -162,34 +158,65 @@ app.get('/api/user/get/:login/:password', function(req, res) {
 	db.collection("userCollection").find(query, {}, function(e, docs) {
 		if (docs.length != 0) {
 			console.log("Il y a bien un utilisateur " + userLogin + " avec le mdp " + userPassword);
+			console.log(docs);
+            var token = jwt.sign(docs[0], app.get('superSecret'));
+
+            // return the information including token as JSON
+            res.json({
+                success: true,
+                message: 'Authentification succeded!',
+                token: token
+            });
 		}
 		else {
-			console.log("Il n'y a pas d'utilisateur " + userLogin + " avec le mdp " + userPassword);
+            console.log("Il n'y a pas d'utilisateur " + userLogin + " avec le mdp " + userPassword);
+            res.json({ success: false, message: 'Authentication failed. Wrong login/password.' });
 		}
 	});
 });
 
 //Get a User Service
 //From the Login
-app.get('/api/user/get/:login', function(req, res) {
+app.get('/api/users/:login', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var login = req.params.login;
+    var userLogin = req.params.login;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
+    var db = req.db;
 
+    // Find in a collection
+    var query = { login: userLogin};
 
-
-    res.send(userTestJSON);
+    db.collection("userCollection").find(query, {}, function(e, docs) {
+        if (docs.length != 0) {
+            res.send(docs);
+        }
+        else {
+            res.status(404);
+            res.send({ error: 404});
+        }
+    });
 });
 
 //Get a Project Service
 //From the Project Name
-app.get('/api/project/get/:name', function(req, res) {
+app.get('/api/projects/:name', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var name = req.params.name;
-    //Remplacer projectTestJSON par une requête MangoDB qui sélectionne un project selon son name
+    var projectName = req.params.name;
+    //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
+    var db = req.db;
 
+    // Find in a collection
+    var query = { name: projectName};
 
-    res.send(projectTestJSON);
+    db.collection("projectCollection").find(query, {}, function(e, docs) {
+        if (docs.length != 0) {
+            res.send(docs);
+        }
+        else {
+            res.status(404);
+            res.send({ error: 404});
+        }
+    });
 });
 
 //Add a Project Service
@@ -197,12 +224,71 @@ app.get('/api/project/get/:name', function(req, res) {
 //Suppose :
 // POST : {"name":"foo", "login":"bar"}
 // POST : url?name=foo&login=bar
-app.post('/api/project/post/adduser', function(req, res) {
-    var project = new Object();
-    project.name = req.body.name;
-    project.surname = req.body.description;
-    console.log(project);
-    //Insersion dans la BD
+app.put('/api/projects/:name/users/:login', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var projectName = req.params.name;
+    var userLogin = req.params.login;
+    //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
+    var db = req.db;
+
+    var projectQuery = {name : projectName};
+    var userQuery = {login : userLogin};
+
+
+    //Steps :
+	//Check if there is the project
+	//Check if there is the user
+	//Add the user (without its projects list) to the project
+	//Add the project (without its users list) to the user
+	//Done
+
+
+
+    db.collection("projectCollection").find(projectQuery, {}, function(e, docsProject) {
+        if (docsProject.length != 0) {
+
+            db.collection("userCollection").find(userQuery, {}, function(e, docsUser) {
+                if (docsUser.length != 0) {
+
+                	if (docsProject[0].users  == undefined)
+                		docsProject[0].users = [];
+
+                	var user = docsUser[0];
+                	if (user.projects != undefined)
+                		delete user['projects'];
+                	docsProject[0].users.push(user);
+
+
+                	db.collection("projectCollection").update(projectQuery, docsProject[0], function(err, res) {
+                		if (err) throw err;
+
+                        if (docsUser[0].projects  == undefined)
+                            docsUser[0].projects = [];
+
+                        var project = docsProject[0];
+                        if (project.users != undefined)
+                        delete project['users'];
+                        docsUser[0].projects.push(project);
+
+                        db.collection("userCollection").update(userQuery, docsUser[0], function(err, res) {
+                            if (err) throw err;
+
+                            console.log("document updated");
+                        })
+					})
+                }
+                else {
+                    res.status(404);
+                    res.send({ error: 404});
+                }
+            });
+        }
+        else {
+            res.status(404);
+            res.send({ error: 404});
+        }
+    });
+
 });
 
 ////// Attach application /////
@@ -229,11 +315,11 @@ app.use(function(req, res, next){
 });
 
 // Get port from environment and store in Express.
-const port = process.env.PORT || '8080';
+var port = process.env.PORT || '8080';
 app.set('port', port);
 
 // Create HTTP server.
-const server = http.createServer(app);
+var server = http.createServer(app);
 
 // Listen on provided port, on all network interfaces.
 server.listen(port, function(){
