@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+
+            <div class="jumbotron">
+
+                <h2>Creation d'un nouveau projet</h2>
+
+                <form (submit)="signup()">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Nom du projet</span>
+                            <input type="text" class="form-control" placeholder="Nom du projet">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon5">Date de début</span>
+                            <input type="text" class="form-control" placeholder="JJ/MM/AAAA">
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="btn-group">
+                                <span class="input-group-addon" id="basic-addon8">Nombre de sprints</span>
+                                <select class="form-control" name="Developpeur">
+                                    <option selected disabled hidden>Nombre de sprints</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="btn-group">
+                                <span class="input-group-addon" id="basic-addon7">Durée des sprints</span>
+                                <select class="form-control" name="Developpeur">
+                                    <option selected disabled hidden>Durée en semaine</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon3">Description</span>
+                            <textarea type="text" class="form-control" placeholder="Description du projet"></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-success btn-lg pull-right" type="submit">Créer projet</button>
+                    </div>
+
+                </form>
+
+                <br>
+            </div>
+        </div>
+    </div>
+</div>

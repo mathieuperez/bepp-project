@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Router} from "@angular/router";
+
 
 @Component({
   selector: 'app-projects-bar',
@@ -8,9 +10,14 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class ProjectsBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router:Router) { }
+
 
   ngOnInit() {
+
   }
 
+  newProject() {
+      this.router.navigate(['dashboard/newproject']);
+  }
 }

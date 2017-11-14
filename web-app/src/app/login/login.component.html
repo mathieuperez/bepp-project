@@ -1,28 +1,35 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
 
-      <div class="jumbotron">
-        <h2>Login</h2>
-        <form (submit)="login()">
-          <div class="form-group">
+            <div class="jumbotron">
+                <h2>Login</h2>
+                <form (submit)="login()">
+                    <div class="form-group">
 
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon1">Username</span>
-              <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Username</span>
+                            <input type="text" class="form-control" placeholder="Username"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2">password</span>
+                            <input type="password" class="form-control" placeholder="Password"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-lg pull-right" id="login" type="submit">Login</button>
+                        <button class="btn btn-primary btn-lg" (click)="toSignup()">Première connexion ?</button>
+                    </div>
+                </form>
+                <br>
+                <div class="row pull-right">
+                    <a type="text">Mot de passe oublié ?</a>
+                </div>
             </div>
-          </div>
-          <div class="form-group">
-
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon2">password</span>
-              <input type="password" class="form-control" placeholder="*********" aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <button class="btn btn-primary btn-lg pull-right" type="submit">Login</button>
-          <br>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>

@@ -41,8 +41,3 @@ Projet de l'UE **Conduite de Projet**
 | 22 | En tant qu'**Utilisateur**, je souhaite accéder aux builds des sprints.| 2 | 4 | X
 | 23 | En tant que **Product Owner**, je souhaite pouvoir saisir et modifier les priorités des US.| 1 | 2 | X
 
-## Technologies
-
-
-
-
