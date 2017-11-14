@@ -90,11 +90,12 @@ app.set('superSecret', "12345"); // secret variable
         console.log(user);
 
         //Insertion dans la BD
-	// Set our internal DB variable
+        //Compléter le service REST qui insère un utilisateur dans la BD(création d'un compte utilisateur US1)
+        // Set our internal DB variable
     	var db = req.db;
     	// Set our collection
     	var collection = db.get('userCollection');
- 	// Submit to the DB
+        // Submit to the DB
     	collection.insert({
         	"name" : user.name,
         	"surname" : user.surname,
@@ -113,33 +114,63 @@ app.set('superSecret', "12345"); // secret variable
     });
 //Add a Project Service
 //Suppose :
-// POST : {"name":"foo", "description":"bar"}
+// POST : {"name":"foo", "description":"bar", "login":"toto"}
 // POST : url?name=foo&description=bar
 app.post('/api/projects', function(req, res) {
 	var project = new Object();
 	project.name = req.body.name;
 	project.description = req.body.description;
+    user.login = req.body.login;
 
 	//Insertion dans la BD
-	// Set our internal DB variable
+	//Compléter le service REST qui créé un projet et le lie à l'utilisateur connecté(Création d'un projet US2)
+    // Set our internal DB variable
 	var db = req.db;
 
-	// Set our collection
-	var collection = db.get('projectCollection');
-	// Submit to the DB
-	collection.insert({
-		"name" : project.name,
-		"description" : project.description
-	}, function (err, doc) {
-		if (err) {
-	    	// If it failed, return error
-	    	res.send("There was a problem adding the information to the database.");
-		}
-		else {
-	    	// And forward to success page
-	    	res.redirect("projectlist");
-		}
-	});
+    //Créer le projet
+    // Set our collection
+    var collection = db.get('projectCollection');
+    // Submit to the DB
+    collection.insert({
+        "name" : project.name,
+        "description" : project.description
+    }, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem with the database while creating the project.");
+        }
+    });
+
+    //Lier le projet à l'utilisateur connecté
+    //Ajouter le projet à la liste des projets de l'utilisateur
+    // Set our collection   
+    var collection = db.get('userCollection');
+    // Submit to the DB
+    var query = {login: user.login};
+    var updateUser={$addToSet: {projects: project.name}};
+    collection.update(query, updateUser, {upsert: true}, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
+        }
+        else{
+            res.redirect("projectlist");
+        });
+
+    //Ajouter l'utilisateur à la liste des utilisateurs du projet
+    // Set our collection   
+    var collection = db.get('projectCollection');
+    // Submit to the DB
+    var query = {name: project.name};
+    var updateProject={$addToSet: {users: user.login}};
+    collection.update(query, updateProject, {upsert: true}, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem with the database while creating the project: adding the user to the project's user list.");
+        }
+        else{
+            res.redirect("projectlist");
+        });
 });
 
 //Authentification Service
@@ -148,8 +179,9 @@ app.get('/api/users/:login/:password', function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	var userLogin = req.params.login;
 	var userPassword = req.params.password;
-	//Check if there is the login / password in the DB.
-	// Set our internal DB variable
+
+    //Compléter le service REST qui vérifie que la BD contient bien le login et le password d'un utilisateur(connexion d'un utilisateur US1)
+    // Set our internal DB variable
 	var db = req.db;
 
 	// Find in a collection
@@ -202,7 +234,7 @@ app.get('/api/users/:login', function(req, res) {
 app.get('/api/projects/:name', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     var projectName = req.params.name;
-    //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
+    //Remplacer userTestJSON par une requête MangoDB qui sélectionne un projet selon son nom
     var db = req.db;
 
     // Find in a collection
