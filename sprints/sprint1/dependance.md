@@ -18,6 +18,11 @@
 | T14_TEST|  |  |  |  |  |  |  |  |  |  |  |  | X| | | |
 | T15_TEST|  |  |  |  |  |  |  |  |  |  |  |  |  |X| | |
 | T16_TEST|  |  |  |  |  |  |  |  |  |  |  |  |  | | | |
+| T17_PM  | X|  |  |  |  |  |  | X| X|  |  |  |  | | | |
+| T18_PM  |  | X|  |  |  |  |  | X| X|  |  |  |  | | | |
+| T19_PM  |  |  | X|  |  |  |  | X| X|  |  |  |  | | | |
+| T20_PM  |  |  |  | X|  |  |  | X| X|  |  |  |  | | | |
+
 
 ### Redaction des Tests Unitaires
 | ID_Tache | Affectation | Durée Estimée (heure homme) | Resultat de TU | Etat | 
@@ -28,3 +33,7 @@
 | T8_PM |  | 1 | | :x:
 | T9_M  |  | 1 | | :x:
 | T10_M |  | 1 | | :x:
+| T17_PM|  |1/2| | :x:
+| T18_PM|  |1/2| | :x:
+| T19_PM|  |1/2| | :x:
+| T20_PM|  |1/2| | :x:
