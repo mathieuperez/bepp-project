@@ -8,10 +8,15 @@ import {SprintsContainerComponent} from './components/dashboard/main-container/p
 import {SignupComponent} from "./components/signup/signup.component";
 import {NewProjectComponent} from "./components/dashboard/main-container/new-project/new-project.component";
 import {ProjectContainerComponent} from "./components/dashboard/main-container/project-container/project-container.component";
-import {AuthGuard} from "./guards/auth.guard";
+import {AuthGuard} from "./guards/auth/auth.guard";
+import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
 
 const routes: Routes = [
-    { path: 'login', component: LoginComponent },
+    {
+        path: 'login',
+        component: LoginComponent,
+        canActivate: [UnAuthGuard]
+    },
     {
         path: 'dashboard',
         component: DashboardComponent,
@@ -31,7 +36,8 @@ const routes: Routes = [
 
     {
         path: 'signup',
-        component: SignupComponent
+        component: SignupComponent,
+        canActivate: [UnAuthGuard]
     },
 
     // Default

@@ -17,9 +17,10 @@ import {DropdownDirective} from "./components/directives/dropdown.directive";
 import { SignupComponent } from './components/signup/signup.component';
 import { NewProjectComponent } from './components/dashboard/main-container/new-project/new-project.component';
 import { ProjectContainerComponent } from './components/dashboard/main-container/project-container/project-container.component';
-import {AuthGuard} from './guards/auth.guard';
+import {AuthGuard} from './guards/auth/auth.guard';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import {HttpClientModule} from "@angular/common/http";
         HttpClientModule
     ],
     providers: [
-        AuthGuard
+        AuthGuard,
+        UnAuthGuard
     ],
     bootstrap: [AppComponent]
 })

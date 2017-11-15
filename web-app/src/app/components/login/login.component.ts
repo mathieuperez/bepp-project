@@ -15,11 +15,25 @@ import {AppConstants} from "../../app-constants";
 })
 export class LoginComponent implements OnInit {
 
+    /**
+     * FormGroup for the login form.
+     */
     private loginForm: FormGroup;
 
+    /**
+     * If true, show loading spinner on the login submit button.
+     */
     private loginLoading: boolean;
 
+    /**
+     * True if the form has been submitted at least one.
+     */
     private loginSubmitted: boolean;
+
+    /**
+     * If true error for run again the login.
+     */
+    private loginError: boolean;
 
     /**
      * LoginComponent constructor.
@@ -35,6 +49,7 @@ export class LoginComponent implements OnInit {
     public ngOnInit(): void {
         this.loginLoading = false;
         this.loginSubmitted = false;
+        this.loginError = false;
         this.loginForm = new FormGroup({
             login: new FormControl('', [ Validators.required ]),
             password: new FormControl('', [ Validators.required ])
@@ -43,7 +58,6 @@ export class LoginComponent implements OnInit {
         console.log (this.loginForm);
     }
 
-    //this.router.navigate(['/dashboard']);
     /**
      * Submit the login form.
      */
@@ -59,18 +73,22 @@ export class LoginComponent implements OnInit {
                 this.loginLoading = false;
                 localStorage.setItem(AppConstants.ACCESS_COOKIE_NAME, response['token']);
                 this.router.navigate(['/dashboard']);
-            }, (response) => {
+            }, () => {
                 this.loginLoading = false;
-                console.log ("ERROR")
-                console.log (response)
+                this.loginError = true;
             });
         }
     }
 
+    /**
+     * Getter for the login FormControl.
+     * @return {AbstractControl}
+     */
     public get login (): AbstractControl { return this.loginForm.get('login'); }
-    public get password (): AbstractControl { return this.loginForm.get('password'); }
 
-    toSignup() {
-        this.router.navigate(['/signup']);
-    }
+    /**
+     * Getter for the password FormControl.
+     * @return {AbstractControl}
+     */
+    public get password (): AbstractControl { return this.loginForm.get('password'); }
 }

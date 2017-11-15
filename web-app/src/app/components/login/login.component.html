@@ -3,6 +3,10 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="jumbotron">
                 <h2 class="page-title text-center">Login</h2>
+                <div *ngIf="loginError"
+                     class="alert alert-danger" role="alert">
+                    Vos identifiants ne correspondent pas, veuillez réessayer.
+                </div>
                 <form [formGroup]="loginForm"
                       novalidate>
                     <div class="form-group has-feedback has-error col-12"
@@ -42,14 +46,14 @@
                         </div>
                     </div>
                     <div>
-                        <button class="btn btn-success pointer-cursor ld-ext-left pull-right"
+                        <button class="btn btn-success pointer-cursor ld-ext-left pull-right pointer-cursor"
                                 type="submit"
                                 [ngClass]="{ 'running': loginLoading }"
                                 (click)="submitLoginForm()">
                             <i class="ld ld-spin ld-ring"></i>
                             Se connecter
                         </button>
-                        <button class="btn btn-primary" (click)="toSignup()">Première connexion ?</button>
+                        <a class="btn btn-primary pointer-cursor" routerLink="/signup">Première connexion ?</a>
                     </div>
                 </form>
                 <br>
