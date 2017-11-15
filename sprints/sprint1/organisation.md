@@ -5,7 +5,7 @@
 |  	Adrien	    |   |   |   |   |   |   |   |   |   |    |    |    |
 |   Amine       |  T1_P | T2_P  | T3_P  | T3_P  | T3_P   | T4_P | T4_P  |  T19_TEST |  T20_TEST  | T20_TEST  | T20_TEST   |  |
 |   Dimitri     |   |   |   |   |   |   |   |   |   |    |    |    |
-|   Mathieu     |   |   |   |   |   |   |   |   |   |    |    |    |
+|   Mathieu     |  T5_B | T6_MB  | T6_MB  | T6_MB  | T6_MB  |  T6_MB | T6_MB  | T18_BUILD  | T18_BUILD  |  T18_BUILD  | T18_BUILD   |  T18_BUILD  |
 
 ## Kanban
 
@@ -15,8 +15,8 @@
 |         |         | T2_P |
 |         |         | T3_P | 
 |         |         | T4_P | 
-|  T5_B	  |         |      |
-|  T6_MB  |         |      |
+|  	  |         |   T5_B   |
+|    |         |   T6_MB   |
 |   	  |         | T7_M |
 |  T8_PM  |         |      |
 |  	      |         | T9_M     |
@@ -28,7 +28,7 @@
 |    	  |         | T15_M    |
 |    	  |         | T16_M    |
 |  T17_DOC 	  |         |      |
-|  T18_BUILD  |         |      |
+|    |     T18_BUILD    |      |
 |  	      |             |   T19_TEST   |
 |     	  |  T20_TEST   |      |
 |     	  |  T21_TEST   |      |
