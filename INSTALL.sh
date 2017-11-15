@@ -7,13 +7,14 @@ PID_MONGO=""
 if [[ $1 == "dev" ]]
 then
     # run angular compilation
-    cd web-app ; ng build --watch -dev & PID_ANGULAR=$!; echo $PID_ANGULAR
-
-    # run api server
-    cd ../api ; node api.js & PID_NODE=$!; echo $PID_NODE
+    cd web-app ; \
+    ng build --watch -dev & PID_ANGULAR=$!
 
     # run mongodb server
-    mongod --dbpath data/ & PID_MONGO=$!; echo $PID_MONGO
+    # And run api server
+    cd ../api ; \
+    mongod --dbpath data/ & PID_MONGO=$! ; \
+    node api.js & PID_NODE=$! ;
 
     while :
     do

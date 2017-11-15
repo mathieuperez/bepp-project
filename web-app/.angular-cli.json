@@ -21,6 +21,8 @@
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
+        "assets/css/loading/loading.css",
+        "assets/css/loading/loading-btn.css",
         "styles.css"
       ],
       "scripts": [

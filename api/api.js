@@ -62,7 +62,7 @@ app.post('/api/users/token', function(req, res) {
             var token = jwt.sign(docs[0], app.get('superSecret'));
             res.json({
                 success: true,
-                message: 'Authentification succeded!',
+                message: 'Authentication succeded!',
                 token: token
             });
         }
