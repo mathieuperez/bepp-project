@@ -1,16 +1,32 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
+import {AppConstants} from "../../../app-constants";
 
+/**
+ * Represents the top bar logic of the dashboard.
+ */
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: ['./top-bar.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./top-bar.component.css']
 })
-export class TopBarComponent implements OnInit {
+export class TopBarComponent {
 
-  constructor() { }
+    /**
+     * TopBarComponent constructor.
+     * @param {Router} router
+     */
+    public constructor (private router: Router) {}
 
-  ngOnInit() {
-  }
+    /**
+     * Do the logout.
+     */
+    public doLogout () {
+        localStorage.removeItem(AppConstants.ACCESS_COOKIE_NAME);
+
+        // TODO Call logout api service
+
+        this.router.navigate(['login'])
+    }
 
 }

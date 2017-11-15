@@ -83,7 +83,6 @@ app.post('/api/users', function (req, res) {
     var login = req.body.login;
     var password = req.body.password;
 
-
     var db = req.db;
     var collection = db.get('userCollection');
 
