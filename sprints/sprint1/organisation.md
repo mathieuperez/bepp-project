@@ -29,7 +29,7 @@
 |    	  |   T16_M     |      |
 |  T17_DOC 	  |         |      |
 |  T18_BUILD  |         |      |
-|  	      |  T19_TEST   |      |
+|  	      |             |   T19_TEST   |
 |     	  |  T20_TEST   |      |
 |     	  |  T21_TEST   |      |
 |  T22_PM	  |         |      |

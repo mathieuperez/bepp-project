@@ -29,22 +29,3 @@
 | T26_PM  |  |  |  | X|  |  |  | X| X|  |  |  |  | | | |
 
 
-### Redaction des Tests Unitaires
-| ID_Tache | Affectation | Durée Estimée (heure homme) | Resultat de TU | Etat | 
-| --- | --- | --- | --- | --- |
-| T5_B  |  | 1 | | :x:
-| T6_MB |  | 1 | | :x:
-| T7_M  |  | 1 | | :x:
-| T8_PM |  | 1 | | :x:
-| T9_M  |  | 1 | | :x:
-| T10_M |  | 1 | | :x:
-| T11_M |  | 1 | | :x:
-| T12_M |  | 1 | | :x:
-| T13_M |  | 1 | | :x:
-| T14_M |  | 1 | | :x:
-| T15_M |  | 1 | | :x:
-| T16_M |  | 1 | | :x:
-| T22_PM|  |1/2| | :x:
-| T23_PM|  |1/2| | :x:
-| T24_PM|  |1/2| | :x:
-| T20_PM|  |1/2| | :x:
