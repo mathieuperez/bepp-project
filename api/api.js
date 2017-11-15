@@ -22,28 +22,6 @@ app.use(function(req,res,next){
     next();
 });
 
-function verifyAuthentification(req, res)
-{
-    var result = new Object();
-    //result.status = {}
-    var token = req.body.token;
-    var db = req.db;
-    var collection = db.get('userCollection');
-    var query = {token : token};
-    collection.find(query, {}, function(e, docs) {
-        if (docs.length != 0) {
-            console.log("Le token a trouvé correspondance.");
-
-        }
-        else {
-            console.log("Le token n'a pas trouvé correspondance.");
-        }
-    });
-    return result;
-}
-
-
-
 //We can test the POST with CURL commands like (localhost example) :
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
 //curl --data rl --data "name=Humus&description=TreslongueDescription&login=mperez" http://localhost:8080/api/projects/
@@ -62,53 +40,121 @@ function verifyAuthentification(req, res)
 
 app.set('superSecret', "12345"); // secret variable
 
+
+//Authentification Service
+//Check Login Password
+//Check Login Password
+app.post('/api/users/token', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var userLogin = req.body.login;
+    var userPassword = req.body.password;
+
+    //Compléter le service REST qui vérifie que la BD contient bien le login et le password d'un utilisateur(connexion d'un utilisateur US1)
+    // Set our internal DB variable
+    var db = req.db;
+
+    // Find in a collection
+    var query = { login: userLogin, password: userPassword};
+
+    db.collection("userCollection").find(query, {}, function(e, docs) {
+        if (docs.length != 0) {
+            var query = {login: userLogin};
+            var token = jwt.sign(docs[0], app.get('superSecret'));
+            res.json({
+                success: true,
+                message: 'Authentification succeded!',
+                token: token
+            });
+        }
+        else {
+            res.json({ success: false, message: 'Authentication failed. Wrong login/password.' });
+        }
+    });
+});
+
 //Add a User Service
 //Suppose :
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
-    app.post('/api/users', function(req, res) {
-        var name = req.body.name;
-        var surname = req.body.surname;
-        var login = req.body.login;
-        var password = req.body.password;
+app.post('/api/users', function(req, res) {
+    var name = req.body.name;
+    var surname = req.body.surname;
+    var login = req.body.login;
+    var password = req.body.password;
 
 
-    	var db = req.db;
-    	var collection = db.get('userCollection');
+    var db = req.db;
+    var collection = db.get('userCollection');
 
-    	//Check if login already exists
-    	collection.find({name : name}, {}, function(err, doc) {
-    	    if (err) {
-                res.send("There was a problem with the database while checking if the login already exists.");
+    //Check if login already exists
+    collection.find({name : name}, {}, function(err, doc) {
+        if (err) {
+            res.send("There was a problem with the database while checking if the login already exists.");
+        }
+        else {
+            if (doc.length == 0) {
+                //Add the user
+                collection.insert({
+                    "name" : name,
+                    "surname" : surname,
+                    "login" : login,
+                    "password" : password
+                }, function (err, doc) {
+                    if (err) {
+                        res.send("There was a problem with the database while adding the user.");
+                    }
+                    else {
+                        res.redirect("userlist");
+                    }
+                });
             }
             else {
-                if (doc.length == 0) {
-                    collection.insert({
-                        "name" : name,
-                        "surname" : surname,
-                        "login" : login,
-                        "password" : password
-                    }, function (err, doc) {
-                        if (err) {
-                            res.send("There was a problem with the database while adding the user.");
-                        }
-                        else {
-                            res.redirect("userlist");
-                        }
-                    });
-                }
-                else {
-                    res.send("There is already a user with this login.");
-                }
+                res.send("There is already a user with this login.");
             }
-        })
-    });
+        }
+    })
+});
 
+// route middleware to verify a token
+function verifyAuth(req, res, next) {
+
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    // decode token
+    if (token) {
+
+        // verifies secret and checks exp
+        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+            if (err) {
+                console.log("Okay ?");
+                res.json({ success: false, message: 'Failed to authenticate token.' });
+                console.log("Oh !");
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                console.log("Decoded : ");
+                console.log(decoded);
+                next();
+            }
+        });
+
+    } else {
+
+        // if there is no token
+        // return an error
+        res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+    }
+
+}
 
 //Add a Project Service
 //Suppose :
 // POST : {"name":"foo", "description":"bar", "token":"token"}
-// POST : url?name=foo&description=bar
+// POST : url?name=foo&description=bar&token=token
 app.post('/api/projects', function(req, res) {
 	var name = req.body.name;
 	var description = req.body.description;
@@ -118,108 +164,58 @@ app.post('/api/projects', function(req, res) {
     var userCollection = db.get('userCollection');
     var projectCollection = db.get('projectCollection')
 
-    var userQuery = {token : token};
-    var projectQuery = {name : name};
+    verifyAuth(req, res, function() {
 
-    userCollection.find(userQuery, {}, function(e, docUser) {
-        if (docUser.length != 0) {
-            //Is the project name available
-            projectCollection.find(projectQuery, {}, function(e, docProject) {
-                if (e) {
-                    res.send("There was a problem with the database while checking if the project already exists.");
+        var userQuery = {login : req.decoded.login};
+        var projectQuery = {name : name};
+        //Is the project name available
+        projectCollection.find(projectQuery, {}, function (e, docProject) {
+            if (e) {
+                res.send("There was a problem with the database while checking if the project already exists.");
+            }
+            else {
+                if (docProject.length == 0) {
+                    //Creation of the project
+                    projectCollection.insert({
+                        "name": name,
+                        "description": description
+                    }, function (err, doc) {
+                        if (err) {
+                            res.send("There was a problem with the database while creating the project.");
+                        }
+                        else {
+                            //Add the project to the user's list
+                            var updateProject = {$addToSet: {users: req.decoded.login}};
+                            projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
+                                if (err) {
+                                    res.send("There was a problem with the database while creating the project: adding the user to the project's user list.");
+                                }
+                                else {
+                                    res.redirect("projectlist");
+                                }
+                            });
+
+                            //Add the user to the project's list
+                            var updateUser = {$addToSet: {projects: name}};
+                            userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
+                                if (err) {
+                                    res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
+                                }
+                                else {
+                                    //res.redirect("projectlist");
+                                }
+                            });
+                        }
+                    });
                 }
                 else {
-                    if (docProject.length == 0) {
-                        //Creation of the project
-                        projectCollection.insert({
-                            "name" : name,
-                            "description" : description
-                        }, function (err, doc) {
-                            if (err) {
-                                res.send("There was a problem with the database while creating the project.");
-                            }
-                            else {
-                                //Add the project to the user's list
-                                var updateProject={$addToSet: {users: docUser[0].login}};
-                                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
-                                    if (err) {
-                                        res.send("There was a problem with the database while creating the project: adding the user to the project's user list.");
-                                    }
-                                    else{
-                                        res.redirect("projectlist");
-                                    }});
-
-                                //Add the user to the project's list
-                                var updateUser={$addToSet: {projects: name}};
-                                userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
-                                    if (err) {
-                                        res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
-                                    }
-                                    else{
-                                        //res.redirect("projectlist");
-                                    }});
-                            }
-                        });
-                    }
-                    else {
-                        res.send("There is already a project with this name.");
-                    }
+                    res.send("There is already a project with this name.");
                 }
-            });
-        }
-        else {
-            res.send("You must be logged in.");
-        }
+            }
+        });
     });
-});
 
 
-//Authentification Service
-//Check Login Password
-//Check Login Password
-app.get('/api/users/:login/:password', function(req, res) {
-	res.setHeader('Content-Type', 'application/json');
-	var userLogin = req.params.login;
-	var userPassword = req.params.password;
-
-    //Compléter le service REST qui vérifie que la BD contient bien le login et le password d'un utilisateur(connexion d'un utilisateur US1)
-    // Set our internal DB variable
-	var db = req.db;
-
-	// Find in a collection
-  	var query = { login: userLogin, password: userPassword};
-
-
-
-	db.collection("userCollection").find(query, {}, function(e, docs) {
-		if (docs.length != 0) {
-			console.log("Il y a bien un utilisateur " + userLogin + " avec le mdp " + userPassword);
-			console.log(docs);
-            var token = jwt.sign(docs[0], app.get('superSecret'));
-
-            // return the information including token as JSON
-            res.json({
-                success: true,
-                message: 'Authentification succeded!',
-                token: token
-            });
-
-            var query = {login: userLogin};
-            db.collection('userCollection').update(query, { $set: {token: token}}, {upsert: true}, function (err, doc) {
-                if (err) {
-                    // If it failed, return error
-                    //res.send("There was a problem with the database while adding the token.");
-                }
-                else{
-                    //res.redirect("projectlist");
-                }});
-
-		}
-		else {
-            console.log("Il n'y a pas d'utilisateur " + userLogin + " avec le mdp " + userPassword);
-            res.json({ success: false, message: 'Authentication failed. Wrong login/password.' });
-		}
-	});
 });
 
 //Get a User Service
@@ -266,7 +262,6 @@ app.get('/api/projects/:name', function(req, res) {
     });
 });
 
-//Add a Project Service
 //Add to the project with the "name" the User with the "login".
 //Suppose :
 // POST : {"name":"foo", "login":"bar"}
@@ -281,20 +276,13 @@ app.put('/api/projects/:name/users/:login', function(req, res) {
     var projectQuery = {name : projectName};
     var userQuery = {login : userLogin};
 
+    var projectCollection = db.get("projectCollection");
+    var userCollection = db.get("userCollection");
 
-    //Steps :
-	//Check if there is the project
-	//Check if there is the user
-	//Add the user (without its projects list) to the project
-	//Add the project (without its users list) to the user
-	//Done
-
-
-
-    db.collection("projectCollection").find(projectQuery, {}, function(e, docsProject) {
+    projectCollection.find(projectQuery, {}, function(e, docsProject) {
         if (docsProject.length != 0) {
 
-            db.collection("userCollection").find(userQuery, {}, function(e, docsUser) {
+            userCollection.find(userQuery, {}, function(e, docsUser) {
                 if (docsUser.length != 0) {
 
                 	if (docsProject[0].users  == undefined)
@@ -316,7 +304,7 @@ app.put('/api/projects/:name/users/:login', function(req, res) {
                         }});
 
 
-                	db.collection("projectCollection").update(projectQuery, docsProject[0], function(err, res) {
+                    projectCollection.update(projectQuery, docsProject[0], function(err, res) {
                 		if (err) throw err;
 
                         if (docsUser[0].projects  == undefined)
@@ -327,7 +315,7 @@ app.put('/api/projects/:name/users/:login', function(req, res) {
                         delete project['users'];
                         docsUser[0].projects.push(project);
 
-                        db.collection("userCollection").update(userQuery, docsUser[0], function(err, res) {
+                        userCollection.update(userQuery, docsUser[0], function(err, res) {
                             if (err) throw err;
 
                             console.log("document updated");
