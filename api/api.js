@@ -67,31 +67,41 @@ app.set('superSecret', "12345"); // secret variable
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
     app.post('/api/users', function(req, res) {
-        var user = new Object();
-        user.name = req.body.name;
-        user.surname = req.body.surname;
-        user.login = req.body.login;
-        user.password = req.body.password;
-        console.log(user);
+        var name = req.body.name;
+        var surname = req.body.surname;
+        var login = req.body.login;
+        var password = req.body.password;
+
 
     	var db = req.db;
-    	// Set our collection
     	var collection = db.get('userCollection');
-        // Submit to the DB
-    	collection.insert({
-        	"name" : user.name,
-        	"surname" : user.surname,
-        	"login" : user.login,
-        	"password" : user.password
-    	}, function (err, doc) {
-        	if (err) {
-            	res.send("There was a problem adding the information to the database.");
-        	}
-        	else {
-            	res.redirect("userlist");
-        	}
-    	});
 
+    	//Check if login already exists
+    	collection.find({name : name}, {}, function(err, doc) {
+    	    if (err) {
+                res.send("There was a problem with the database while checking if the login already exists.");
+            }
+            else {
+                if (doc.length == 0) {
+                    collection.insert({
+                        "name" : name,
+                        "surname" : surname,
+                        "login" : login,
+                        "password" : password
+                    }, function (err, doc) {
+                        if (err) {
+                            res.send("There was a problem with the database while adding the user.");
+                        }
+                        else {
+                            res.redirect("userlist");
+                        }
+                    });
+                }
+                else {
+                    res.send("There is already a user with this login.");
+                }
+            }
+        })
     });
 
 
