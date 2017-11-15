@@ -25,6 +25,8 @@ app.use(function(req,res,next){
 //We can test the POST with CURL commands like (localhost example) :
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
 //curl --data rl --data "name=Humus&description=TreslongueDescription&login=mperez" http://localhost:8080/api/projects/
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTBjOTNhZmUwNDU4ZjAzNGQ5ZGJlMWUiLCJuYW1lIjoiUHJlc3RhdCIsInN1cm5hbWUiOiJEaW1pdHJpIiwibG9naW4iOiJkcHJlc3RhdCIsInBhc3N3b3JkIjoiZHAzMyIsImlhdCI6MTUxMDc3MzY4OH0.DulBB-8fzxOpGODepAfmLzMiO-zACa5eK2kaO8x_oHU
+//curl --data rl --data "name=Humus&description=TreslongueDescription&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTBjOTNhZmUwNDU4ZjAzNGQ5ZGJlMWUiLCJuYW1lIjoiUHJlc3RhdCIsInN1cm5hbWUiOiJEaW1pdHJpIiwibG9naW4iOiJkcHJlc3RhdCIsInBhc3N3b3JkIjoiZHAzMyIsImlhdCI6MTUxMDc3MzY4OH0.DulBB-8fzxOpGODepAfmLzMiO-zACa5eK2kaO8x_oHU" http://localhost:8080/api/projects/
 //curl -X PUT http://localhost:8080/api/projects/Humus/users/mperez
 
 //Test procedures :
@@ -127,13 +129,10 @@ function verifyAuth(req, res, next) {
         // verifies secret and checks exp
         jwt.verify(token, app.get('superSecret'), function(err, decoded) {
             if (err) {
-                console.log("Okay ?");
                 res.json({ success: false, message: 'Failed to authenticate token.' });
-                console.log("Oh !");
             } else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
-                console.log("Decoded : ");
                 console.log(decoded);
                 next();
             }
@@ -185,6 +184,7 @@ app.post('/api/projects', function(req, res) {
                         }
                         else {
                             //Add the project to the user's list
+
                             var updateProject = {$addToSet: {users: req.decoded.login}};
                             projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
                                 if (err) {
@@ -251,14 +251,33 @@ app.get('/api/projects/:name', function(req, res) {
     // Find in a collection
     var query = { name: projectName};
 
-    db.collection("projectCollection").find(query, {}, function(e, docs) {
-        if (docs.length != 0) {
-            res.send(docs);
-        }
-        else {
-            res.status(404);
-            res.send({ error: 404});
-        }
+    verifyAuth(req, res, function() {
+        //Fetch Project
+        db.collection("projectCollection").find(query, {}, function (e, docs) {
+            if (docs.length != 0) {
+
+                console.log("Here ! ");
+                //Check if the user is in the project
+                var found = false;
+                console.log("To search : " + req.decoded.login);
+                for (var i=0; i< docs[0].users.length; i++) {
+                    if (docs[0].users[i] == req.decoded.login) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    res.send(docs);
+                }
+                else {
+                    res.status(403);
+                    res.send({error: 403});
+                }
+            }
+            else {
+                res.status(404);
+                res.send({error: 404});
+            }
+        });
     });
 });
 
@@ -293,20 +312,11 @@ app.put('/api/projects/:name/users/:login', function(req, res) {
                 		delete user['projects'];
                 	docsProject[0].users.push(user);
 
-
-                    collection.update(query, updateUser, {upsert: true}, function (err, doc) {
-                        if (err) {
-                            // If it failed, return error
-                            res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
-                        }
-                        else{
-                            //res.redirect("projectlist");
-                        }});
-
-
-                    projectCollection.update(projectQuery, docsProject[0], function(err, res) {
+                    projectCollection.update(projectQuery, docsProject[0].name, function(err, res) {
                 		if (err) throw err;
 
+
+                		/*
                         if (docsUser[0].projects  == undefined)
                             docsUser[0].projects = [];
 
@@ -314,8 +324,8 @@ app.put('/api/projects/:name/users/:login', function(req, res) {
                         if (project.users != undefined)
                         delete project['users'];
                         docsUser[0].projects.push(project);
-
-                        userCollection.update(userQuery, docsUser[0], function(err, res) {
+                        */
+                        userCollection.update(userQuery, docsUser[0].login, function(err, res) {
                             if (err) throw err;
 
                             console.log("document updated");
