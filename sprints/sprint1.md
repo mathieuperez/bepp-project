@@ -50,12 +50,12 @@
 | T7_M | Mettre en place le coté serveur : l'Express et le NodeJS | Dimitri | 1/2 | ∅ | :x:
 | T8_PM | Définir les liaisons entre les placeholders et les services | Adrien | 1/2 | ∅ | :x:
 | T9_M | Service REST POST  : Créer un utilisateur| Dimitri | 2 | 1 | :white_check_mark:
-| T10_M | Service REST POST  : Authentification | Dimitri | 4 | 1 | :x:
-| T11_M | Service REST POST  : Créer un projet | Dimitri | 2 | 2 | :x:
-| T12_M | Service REST GET   : Obtenir les informations d'un utilisateur | Dimitri | 2 | 3 | :x:
-| T13_M | Service REST GET   : Obtenir les informations d'un projet | Dimitri | 2 | 17 | :x:
-| T14_M | Service REST PATCH : Ajouter un utilisateur à un projet | Dimitri | 4 | 4 | :x:
-| T15_M | Verification de l'authentification à l'aide de tokens sur les services | Dimitri | 5 | 2 / 3 / 17 / 4 | :x:
+| T10_M | Service REST POST  : Authentification | Dimitri | 4 | 1 | :white_check_mark:
+| T11_M | Service REST POST  : Créer un projet | Dimitri | 2 | 2 | :white_check_mark:
+| T12_M | Service REST GET   : Obtenir les informations d'un utilisateur | Dimitri | 2 | 3 | :white_check_mark:
+| T13_M | Service REST GET   : Obtenir les informations d'un projet | Dimitri | 2 | 17 | :white_check_mark:
+| T14_M | Service REST PATCH : Ajouter un utilisateur à un projet | Dimitri | 4 | 4 | :white_check_mark:
+| T15_M | Verification de l'authentification à l'aide de tokens sur les services | Dimitri | 5 | 2 / 3 / 17 / 4 | :white_check_mark:
 | T16_M | Initialiser l'environnement de développement du framework Angular | Adrien | 1/2 | ∅ | :x:
 | T17_DOC | La documentation des services "SWAGGER" | Dimitri | 1/2 | ∅ | :x:
 | T18_BUILD | Mettre en place le conteneur "Docker" | Mathieu | 1/2 | ∅ | :x:
