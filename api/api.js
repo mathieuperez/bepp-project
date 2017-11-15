@@ -68,7 +68,7 @@ app.post('/api/users/token', function (req, res) {
             });
         }
         else {
-            res.json({success: false, message: 'Authentication failed. Wrong login/password.'});
+            res.status(400).json({success: false, message: 'Authentication failed. Wrong login/password.'});
         }
     });
 });
@@ -90,7 +90,7 @@ app.post('/api/users', function (req, res) {
     //Check if login already exists
     collection.find({name: name}, {}, function (err, doc) {
         if (err) {
-            res.send("There was a problem with the database while checking if the login already exists.");
+            res.status(500).send("There was a problem with the database while checking if the login already exists.");
         }
         else {
             if (doc.length == 0) {
@@ -102,7 +102,7 @@ app.post('/api/users', function (req, res) {
                     "password": password
                 }, function (err, doc) {
                     if (err) {
-                        res.send("There was a problem with the database while adding the user.");
+                        res.status(500).send("There was a problem with the database while adding the user.");
                     }
                     else {
                         res.status(200).send({success: true});
@@ -169,7 +169,7 @@ app.post('/api/projects', function (req, res) {
         //Is the project name available
         projectCollection.find(projectQuery, {}, function (e, docProject) {
             if (e) {
-                res.send("There was a problem with the database while checking if the project already exists.");
+                res.status(500).send("There was a problem with the database while checking if the project already exists.");
             }
             else {
                 if (docProject.length == 0) {
@@ -179,7 +179,7 @@ app.post('/api/projects', function (req, res) {
                         "description": description
                     }, function (err, doc) {
                         if (err) {
-                            res.send("There was a problem with the database while creating the project.");
+                            res.status(500).send("There was a problem with the database while creating the project.");
                         }
                         else {
                             //Add the project to the user's list
@@ -187,7 +187,7 @@ app.post('/api/projects', function (req, res) {
                             var updateProject = {$addToSet: {users: req.decoded.login}};
                             projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
                                 if (err) {
-                                    res.send("There was a problem with the database while creating the project: adding the user to the project's user list.");
+                                    res.status(500).send("There was a problem with the database while creating the project: adding the user to the project's user list.");
                                 }
                                 else {
                                     res.status(200).send({success: true});
@@ -198,7 +198,7 @@ app.post('/api/projects', function (req, res) {
                             var updateUser = {$addToSet: {projects: name}};
                             userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
                                 if (err) {
-                                    res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
+                                    res.status(500).send("There was a problem with the database while creating the project: adding the project to the user's project list.");
                                 }
                                 else {
                                     res.status(200).send({success: true});
@@ -230,7 +230,7 @@ app.get('/api/users/:login', function (req, res) {
 
     db.collection("userCollection").find(query, {}, function (e, docs) {
         if (docs.length != 0) {
-            res.send(docs);
+            res.status(500).send(docs);
         }
         else {
             res.status(404);
@@ -262,7 +262,7 @@ app.get('/api/projects/:name', function (req, res) {
                     }
                 }
                 if (found) {
-                    res.send(docs);
+                    res.status(200).send(docs);
                 }
                 else {
                     res.status(403);
