@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require("body-parser");
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('localhost:27017/nodetest1');	//our database is nodetest1
-var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
@@ -13,11 +13,11 @@ var users = require('./routes/users');
 */
 var app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Make our db accessible to our router
-app.use(function(req,res,next){
+app.use(function (req, res, next) {
     req.db = db;
     next();
 });
@@ -25,9 +25,8 @@ app.use(function(req,res,next){
 //We can test the POST with CURL commands like (localhost example) :
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
 //curl --data rl --data "name=Humus&description=TreslongueDescription&login=mperez" http://localhost:8080/api/projects/
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTBjOTNhZmUwNDU4ZjAzNGQ5ZGJlMWUiLCJuYW1lIjoiUHJlc3RhdCIsInN1cm5hbWUiOiJEaW1pdHJpIiwibG9naW4iOiJkcHJlc3RhdCIsInBhc3N3b3JkIjoiZHAzMyIsImlhdCI6MTUxMDc3MzY4OH0.DulBB-8fzxOpGODepAfmLzMiO-zACa5eK2kaO8x_oHU
 //curl --data rl --data "name=Humus&description=TreslongueDescription&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTBjOTNhZmUwNDU4ZjAzNGQ5ZGJlMWUiLCJuYW1lIjoiUHJlc3RhdCIsInN1cm5hbWUiOiJEaW1pdHJpIiwibG9naW4iOiJkcHJlc3RhdCIsInBhc3N3b3JkIjoiZHAzMyIsImlhdCI6MTUxMDc3MzY4OH0.DulBB-8fzxOpGODepAfmLzMiO-zACa5eK2kaO8x_oHU" http://localhost:8080/api/projects/
-//curl -X PUT http://localhost:8080/api/projects/Humus/users/mperez
+//curl -X PUT --data "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTBjOTNhZmUwNDU4ZjAzNGQ5ZGJlMWUiLCJuYW1lIjoiUHJlc3RhdCIsInN1cm5hbWUiOiJEaW1pdHJpIiwibG9naW4iOiJkcHJlc3RhdCIsInBhc3N3b3JkIjoiZHAzMyIsInByb2plY3RzIjpbIkh1bXVzIl0sImlhdCI6MTUxMDc4MDExNX0.w6DjZYUL95QMqFs8nm1UuNekyHeC7a85-OvsHWLZYZQ" http://localhost:8080/api/projects/Humus/users/mperez
 
 //Test procedures :
 //npm i
@@ -46,7 +45,7 @@ app.set('superSecret', "12345"); // secret variable
 //Authentification Service
 //Check Login Password
 //Check Login Password
-app.post('/api/users/token', function(req, res) {
+app.post('/api/users/token', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var userLogin = req.body.login;
     var userPassword = req.body.password;
@@ -56,9 +55,9 @@ app.post('/api/users/token', function(req, res) {
     var db = req.db;
 
     // Find in a collection
-    var query = { login: userLogin, password: userPassword};
+    var query = {login: userLogin, password: userPassword};
 
-    db.collection("userCollection").find(query, {}, function(e, docs) {
+    db.collection("userCollection").find(query, {}, function (e, docs) {
         if (docs.length != 0) {
             var query = {login: userLogin};
             var token = jwt.sign(docs[0], app.get('superSecret'));
@@ -69,7 +68,7 @@ app.post('/api/users/token', function(req, res) {
             });
         }
         else {
-            res.json({ success: false, message: 'Authentication failed. Wrong login/password.' });
+            res.json({success: false, message: 'Authentication failed. Wrong login/password.'});
         }
     });
 });
@@ -78,7 +77,7 @@ app.post('/api/users/token', function(req, res) {
 //Suppose :
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
-app.post('/api/users', function(req, res) {
+app.post('/api/users', function (req, res) {
     var name = req.body.name;
     var surname = req.body.surname;
     var login = req.body.login;
@@ -89,7 +88,7 @@ app.post('/api/users', function(req, res) {
     var collection = db.get('userCollection');
 
     //Check if login already exists
-    collection.find({name : name}, {}, function(err, doc) {
+    collection.find({name: name}, {}, function (err, doc) {
         if (err) {
             res.send("There was a problem with the database while checking if the login already exists.");
         }
@@ -97,16 +96,16 @@ app.post('/api/users', function(req, res) {
             if (doc.length == 0) {
                 //Add the user
                 collection.insert({
-                    "name" : name,
-                    "surname" : surname,
-                    "login" : login,
-                    "password" : password
+                    "name": name,
+                    "surname": surname,
+                    "login": login,
+                    "password": password
                 }, function (err, doc) {
                     if (err) {
                         res.send("There was a problem with the database while adding the user.");
                     }
                     else {
-                        res.redirect("userlist");
+                        res.status(200).send({success: true});
                     }
                 });
             }
@@ -127,9 +126,9 @@ function verifyAuth(req, res, next) {
     if (token) {
 
         // verifies secret and checks exp
-        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+        jwt.verify(token, app.get('superSecret'), function (err, decoded) {
             if (err) {
-                res.json({ success: false, message: 'Failed to authenticate token.' });
+                res.success(401).json({success: false, message: 'Failed to authenticate token.'});
             } else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
@@ -142,7 +141,7 @@ function verifyAuth(req, res, next) {
 
         // if there is no token
         // return an error
-        res.status(403).send({
+        res.status(401).send({
             success: false,
             message: 'No token provided.'
         });
@@ -154,19 +153,19 @@ function verifyAuth(req, res, next) {
 //Suppose :
 // POST : {"name":"foo", "description":"bar", "token":"token"}
 // POST : url?name=foo&description=bar&token=token
-app.post('/api/projects', function(req, res) {
-	var name = req.body.name;
-	var description = req.body.description;
+app.post('/api/projects', function (req, res) {
+    var name = req.body.name;
+    var description = req.body.description;
     var token = req.body.token;
 
     var db = req.db;
     var userCollection = db.get('userCollection');
     var projectCollection = db.get('projectCollection')
 
-    verifyAuth(req, res, function() {
+    verifyAuth(req, res, function () {
 
-        var userQuery = {login : req.decoded.login};
-        var projectQuery = {name : name};
+        var userQuery = {login: req.decoded.login};
+        var projectQuery = {name: name};
         //Is the project name available
         projectCollection.find(projectQuery, {}, function (e, docProject) {
             if (e) {
@@ -191,7 +190,7 @@ app.post('/api/projects', function(req, res) {
                                     res.send("There was a problem with the database while creating the project: adding the user to the project's user list.");
                                 }
                                 else {
-                                    res.redirect("projectlist");
+                                    res.status(200).send({success: true});
                                 }
                             });
 
@@ -202,7 +201,7 @@ app.post('/api/projects', function(req, res) {
                                     res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
                                 }
                                 else {
-                                    //res.redirect("projectlist");
+                                    res.status(200).send({success: true});
                                 }
                             });
                         }
@@ -220,47 +219,44 @@ app.post('/api/projects', function(req, res) {
 
 //Get a User Service
 //From the Login
-app.get('/api/users/:login', function(req, res) {
+app.get('/api/users/:login', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var userLogin = req.params.login;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
     var db = req.db;
 
     // Find in a collection
-    var query = { login: userLogin};
+    var query = {login: userLogin};
 
-    db.collection("userCollection").find(query, {}, function(e, docs) {
+    db.collection("userCollection").find(query, {}, function (e, docs) {
         if (docs.length != 0) {
             res.send(docs);
         }
         else {
             res.status(404);
-            res.send({ error: 404});
+            res.send({error: 404});
         }
     });
 });
 
 //Get a Project Service
 //From the Project Name
-app.get('/api/projects/:name', function(req, res) {
+app.get('/api/projects/:name', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var projectName = req.params.name;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un projet selon son nom
     var db = req.db;
 
     // Find in a collection
-    var query = { name: projectName};
+    var query = {name: projectName};
 
-    verifyAuth(req, res, function() {
+    verifyAuth(req, res, function () {
         //Fetch Project
         db.collection("projectCollection").find(query, {}, function (e, docs) {
             if (docs.length != 0) {
-
-                console.log("Here ! ");
                 //Check if the user is in the project
                 var found = false;
-                console.log("To search : " + req.decoded.login);
-                for (var i=0; i< docs[0].users.length; i++) {
+                for (var i = 0; i < docs[0].users.length; i++) {
                     if (docs[0].users[i] == req.decoded.login) {
                         found = true;
                     }
@@ -285,71 +281,92 @@ app.get('/api/projects/:name', function(req, res) {
 //Suppose :
 // POST : {"name":"foo", "login":"bar"}
 // POST : url?name=foo&login=bar
-app.put('/api/projects/:name/users/:login', function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
+app.put('/api/projects/:name/users/:login', function (req, res) {
     var projectName = req.params.name;
     var userLogin = req.params.login;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
     var db = req.db;
 
-    var projectQuery = {name : projectName};
-    var userQuery = {login : userLogin};
 
-    var projectCollection = db.get("projectCollection");
-    var userCollection = db.get("userCollection");
+    verifyAuth(req, res, function () {
+        var projectQuery = {name: projectName};
+        var userQuery = {login: userLogin};
 
-    projectCollection.find(projectQuery, {}, function(e, docsProject) {
-        if (docsProject.length != 0) {
+        var projectCollection = db.get("projectCollection");
+        var userCollection = db.get("userCollection");
 
-            userCollection.find(userQuery, {}, function(e, docsUser) {
-                if (docsUser.length != 0) {
-
-                	if (docsProject[0].users  == undefined)
-                		docsProject[0].users = [];
-
-                	var user = docsUser[0];
-                	if (user.projects != undefined)
-                		delete user['projects'];
-                	docsProject[0].users.push(user);
-
-                    projectCollection.update(projectQuery, docsProject[0].name, function(err, res) {
-                		if (err) throw err;
+        projectCollection.find(projectQuery, {}, function (e, docsProject) {
+            if (docsProject.length != 0) {
 
 
-                		/*
-                        if (docsUser[0].projects  == undefined)
-                            docsUser[0].projects = [];
+                var found = false;
+                for (var i = 0; i < docsProject[0].users.length; i++) {
+                    if (docsProject[0].users[i] == req.decoded.login) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    userCollection.find(userQuery, {}, function (e, docsUser) {
+                        if (docsUser.length != 0) {
 
-                        var project = docsProject[0];
-                        if (project.users != undefined)
-                        delete project['users'];
-                        docsUser[0].projects.push(project);
-                        */
-                        userCollection.update(userQuery, docsUser[0].login, function(err, res) {
-                            if (err) throw err;
+                            /*
+                            if (docsProject[0].users  == undefined)
+                                docsProject[0].users = [];
 
-                            console.log("document updated");
-                        })
-					})
+                            var user = docsUser[0];
+                            if (user.projects != undefined)
+                                delete user['projects'];
+                            docsProject[0].users.push(user);
+                            */
+
+                            projectCollection.update(projectQuery, {$addToSet: {users: userLogin}}, function (err, doc) {
+                                if (err) {
+                                    throw err;
+                                }
+
+
+                                /*
+                                if (docsUser[0].projects  == undefined)
+                                    docsUser[0].projects = [];
+
+                                var project = docsProject[0];
+                                if (project.users != undefined)
+                                delete project['users'];
+                                docsUser[0].projects.push(project);
+                                */
+                                userCollection.update(userQuery, {$addToSet: {projects: projectName}}, function (err, doc) {
+                                    if (err) {
+                                        throw err;
+                                    }
+
+                                    res.status(200).send({success: true});
+                                })
+                            })
+                        }
+                        else {
+                            res.status(404);
+                            res.send({error: 404});
+                        }
+                    });
                 }
                 else {
-                    res.status(404);
-                    res.send({ error: 404});
+                    res.status(403);
+                    res.send({error: 403});
                 }
-            });
-        }
-        else {
-            res.status(404);
-            res.send({ error: 404});
-        }
-    });
 
+            }
+            else {
+                res.status(404);
+                res.send({error: 404});
+            }
+        });
+    });
 });
 
 ////// Attach application /////
 
 // Catch all other routes and return an application file
-app.get(['/', '/:requested'], function(req, res, next) {
+app.get(['/', '/:requested'], function (req, res, next) {
     var requestedFileName = req.params.requested ? req.params.requested : 'index.html';
 
     var requestedPath = path.join(__dirname, '../web-app/dist', requestedFileName);
@@ -360,11 +377,11 @@ app.get(['/', '/:requested'], function(req, res, next) {
     }
     else {
         next();
-	}
+    }
 });
 
 ///// else page introuvable
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send('Page introuvable !');
 });
@@ -377,6 +394,6 @@ app.set('port', port);
 var server = http.createServer(app);
 
 // Listen on provided port, on all network interfaces.
-server.listen(port, function(){
-	console.log("API running on localhost:" + port);
+server.listen(port, function () {
+    console.log("API running on localhost:" + port);
 });
