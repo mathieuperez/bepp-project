@@ -22,6 +22,27 @@ app.use(function(req,res,next){
     next();
 });
 
+function verifyAuthentification(req, res)
+{
+    var result = new Object();
+    //result.status = {}
+    var token = req.body.token;
+    var db = req.db;
+    var collection = db.get('userCollection');
+    var query = {token : token};
+    collection.find(query, {}, function(e, docs) {
+        if (docs.length != 0) {
+            console.log("Le token a trouvé correspondance.");
+
+        }
+        else {
+            console.log("Le token n'a pas trouvé correspondance.");
+        }
+    });
+    return result;
+}
+
+
 
 //We can test the POST with CURL commands like (localhost example) :
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
@@ -53,9 +74,6 @@ app.set('superSecret', "12345"); // secret variable
         user.password = req.body.password;
         console.log(user);
 
-        //Insertion dans la BD
-        //Compléter le service REST qui insère un utilisateur dans la BD(création d'un compte utilisateur US1)
-        // Set our internal DB variable
     	var db = req.db;
     	// Set our collection
     	var collection = db.get('userCollection');
@@ -67,77 +85,84 @@ app.set('superSecret', "12345"); // secret variable
         	"password" : user.password
     	}, function (err, doc) {
         	if (err) {
-            	// If it failed, return error
             	res.send("There was a problem adding the information to the database.");
         	}
         	else {
-        	    console.log("Yes !");
-            	// And forward to success page
             	res.redirect("userlist");
         	}
     	});
+
     });
+
+
 //Add a Project Service
 //Suppose :
-// POST : {"name":"foo", "description":"bar", "login":"toto"}
+// POST : {"name":"foo", "description":"bar", "token":"token"}
 // POST : url?name=foo&description=bar
 app.post('/api/projects', function(req, res) {
-	var project = new Object();
-	project.name = req.body.name;
-	project.description = req.body.description;
-    project.login = req.body.login;
+	var name = req.body.name;
+	var description = req.body.description;
+    var token = req.body.token;
 
-	//Insertion dans la BD
-	//Compléter le service REST qui créé un projet et le lie à l'utilisateur connecté(Création d'un projet US2)
-    // Set our internal DB variable
-	var db = req.db;
+    var db = req.db;
+    var userCollection = db.get('userCollection');
+    var projectCollection = db.get('projectCollection')
 
-    //Créer le projet
-    // Set our collection
-    var collection = db.get('projectCollection');
-    // Submit to the DB
-    collection.insert({
-        "name" : project.name,
-        "description" : project.description
-    }, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-            res.send("There was a problem with the database while creating the project.");
+    var userQuery = {token : token};
+    var projectQuery = {name : name};
+
+    userCollection.find(userQuery, {}, function(e, docUser) {
+        if (docUser.length != 0) {
+            //Is the project name available
+            projectCollection.find(projectQuery, {}, function(e, docProject) {
+                if (e) {
+                    res.send("There was a problem with the database while checking if the project already exists.");
+                }
+                else {
+                    if (docProject.length == 0) {
+                        //Creation of the project
+                        projectCollection.insert({
+                            "name" : name,
+                            "description" : description
+                        }, function (err, doc) {
+                            if (err) {
+                                res.send("There was a problem with the database while creating the project.");
+                            }
+                            else {
+                                //Add the project to the user's list
+                                var updateProject={$addToSet: {users: docUser[0].login}};
+                                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
+                                    if (err) {
+                                        res.send("There was a problem with the database while creating the project: adding the user to the project's user list.");
+                                    }
+                                    else{
+                                        res.redirect("projectlist");
+                                    }});
+
+                                //Add the user to the project's list
+                                var updateUser={$addToSet: {projects: name}};
+                                userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
+                                    if (err) {
+                                        res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
+                                    }
+                                    else{
+                                        //res.redirect("projectlist");
+                                    }});
+                            }
+                        });
+                    }
+                    else {
+                        res.send("There is already a project with this name.");
+                    }
+                }
+            });
+        }
+        else {
+            res.send("You must be logged in.");
         }
     });
-
-    //Ajouter l'utilisateur à la liste des utilisateurs du projet
-    // Set our collection
-    var collection = db.get('projectCollection');
-    var updateProject={$addToSet: {users: project.login}};
-    var query = {name: project.name};
-    collection.update(query, updateProject, {upsert: true}, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-            res.send("There was a problem with the database while creating the project: adding the user to the project's user list.");
-        }
-        else{
-            res.redirect("projectlist");
-        }});
-
-    //Lier le projet à l'utilisateur connecté
-    //Ajouter le projet à la liste des projets de l'utilisateur
-    // Set our collection   
-    var collection = db.get('userCollection');
-    // Submit to the DB
-    var query = {login: project.login};
-    var updateUser={$addToSet: {projects: project.name}};
-    collection.update(query, updateUser, {upsert: true}, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-            res.send("There was a problem with the database while creating the project: adding the project to the user's project list.");
-        }
-        else{
-            //res.redirect("projectlist");
-        }});
-
-
 });
+
 
 //Authentification Service
 //Check Login Password
