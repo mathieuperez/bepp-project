@@ -54,8 +54,6 @@ export class LoginComponent implements OnInit {
             login: new FormControl('', [ Validators.required ]),
             password: new FormControl('', [ Validators.required ])
         });
-
-        console.log (this.loginForm);
     }
 
     /**
@@ -63,6 +61,7 @@ export class LoginComponent implements OnInit {
      */
     public submitLoginForm(): void {
         this.loginSubmitted = true;
+
         if (this.loginForm.valid){
             this.loginLoading = true;
             this.httpClient.post("/api/users/token",

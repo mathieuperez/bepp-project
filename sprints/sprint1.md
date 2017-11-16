@@ -62,7 +62,7 @@
 | T19_TEST | Redaction des tests : E2E(Protractor)| Amine | 1 | toutes | :x:
 | T20_TEST | Effectuer les tests : E2E(Protractor)| Amine | 4 | toutes | :x:
 | T21_TEST | Mise en place de "Travis" |  | 1/2 | ∅ | :x:
-| T22_PM | Faire le lien entre l'interface de la tâche T1_P et les services de l'api | Adrien | 1/2 | 1 | :x:
+| T22_PM | Faire le lien entre l'interface de la tâche T1_P et les services de l'api | Adrien | 1/2 | 1 | :white_check_mark:
 | T23_PM | Faire le lien entre l'interface de la tâche T2_P et les services de l'api | Adrien | 1/2 | 1 | :x:
 | T24_PM | Faire le lien entre l'interface de la tâche T3_P et les services de l'api | Adrien | 1/2 | 3, 4, 5 | :x:
 | T25_PM | Faire le lien entre l'interface de la tâche T4_P et les services de l'api | Adrien | 1/2 | 4, 17 | :x:
