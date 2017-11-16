@@ -57,7 +57,7 @@
 | T14_M | Service REST PATCH : Ajouter un utilisateur à un projet | Dimitri | 4 | 4 | :white_check_mark:
 | T15_M | Verification de l'authentification à l'aide de tokens sur les services | Dimitri | 5 | 2 / 3 / 17 / 4 | :white_check_mark:
 | T16_M | Initialiser l'environnement de développement du framework Angular | Adrien | 1/2 | ∅ | :white_check_mark:
-| T17_DOC | La documentation des services "SWAGGER" | Dimitri | 1/2 | ∅ | :x:
+| T17_DOC | La documentation des services "SWAGGER" | Dimitri | 1/2 | ∅ | :white_check_mark:
 | T18_BUILD | Mettre en place le conteneur "Docker" | Mathieu | 5 | ∅ | :x:
 | T19_TEST | Redaction des tests : E2E(Protractor)| Amine | 1 | toutes | :x:
 | T20_TEST | Effectuer les tests : E2E(Protractor)| Amine | 4 | toutes | :x:
