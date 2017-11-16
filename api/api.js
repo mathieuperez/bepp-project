@@ -141,7 +141,6 @@ function verifyAuth(req, res, next) {
             } else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
-                console.log(decoded);
                 next();
             }
         });
@@ -204,7 +203,7 @@ app.post('/api/projects', function (req, res) {
                                         res.status(500).send("There was a problem with the database while creating the project: adding the user to the project's user list.");
                                     }
                                     else {
-                                        res.status(200).send({success: true});
+                                        //res.status(200).send({success: true});
                                     }
                                 });
 
@@ -243,7 +242,7 @@ app.get('/api/users/:login', function (req, res) {
 
     db.collection("userCollection").find(query, {}, function (e, docs) {
         if (docs.length != 0) {
-            res.status(500).send(docs);
+            res.status(200).send(docs[0]);
         }
         else {
             res.status(404);
