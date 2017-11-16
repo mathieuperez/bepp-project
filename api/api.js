@@ -201,6 +201,9 @@ app.post('/api/projects', function (req, res) {
                                     delete req.decoded['projects'];
                                 console.log("Req decoded");
                                 console.log(req.decoded);
+
+                                req.decoded.role = "Développeur";
+
                                 var updateProject = {$addToSet: {users: req.decoded}};
                                 projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
                                     if (err) {
@@ -338,6 +341,8 @@ app.put('/api/projects/:name/users/:login', function (req, res) {
                             if (docsUser[0].projects != undefined)
                                 delete docsUser[0]['projects'];
 
+                            docsUser[0].role = role;
+
                             console.log("Add U: ");
                             console.log(projectQuery);
                             console.log(docsUser[0]);
@@ -349,8 +354,6 @@ app.put('/api/projects/:name/users/:login', function (req, res) {
                                 console.log(doc);
                                 if (docsProject[0].users != undefined)
                                     delete docsProject[0]['users'];
-
-                                docsProject[0].role = role;
 
                                 console.log("Add P:");
                                 console.log(userQuery);

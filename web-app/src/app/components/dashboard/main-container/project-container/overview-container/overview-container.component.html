@@ -1,4 +1,4 @@
-<div *ngIf="loading">
+<div *ngIf="loading" class="page-loading text-center">
     <i class="ld ld-spin ld-ring"></i>
 </div>
 <div *ngIf="!loading">
@@ -22,8 +22,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of currentProject.users">
-                    <td><span class="username" name="{{ user.name }}">{{ user.name }} {{ user.username }}</span></td>
-                    <td>Developpeur</td>
+                    <td><span class="email">{{ user.login }}</span>&nbsp;(<span name="{{ user.name }}" class="username">{{ user.name }} {{ user.surname }}</span>)</td>
+                    <td>{{ user.role }}</td>
                 </tr>
                 <tr *ngIf="currentProject.users && currentProject.users.length === 0"
                     class="empty-list">
@@ -40,10 +40,14 @@
         <div class="col-md-9">
             <div [hidden]="!showAddMember" class="panel panel-default">
                 <h4 align="center">Ajouter un membre</h4>
+                <div class="alert alert-danger"
+                     *ngIf="errorMessageAddMember !== null">
+                    {{ errorMessageAddMember }}
+                </div>
+
                 <form novalidate [formGroup]="addMemberForm">
                     <table class="table addMember">
-                    <tr>
-
+                        <tr>
                         <td>
                             <div class="form-group has-feedback"
                                  [ngClass]="{ 'has-error': login.invalid && (login.dirty || login.touched || addMemberFormSubmitted) }">
@@ -72,31 +76,33 @@
                                     <label for="addedUserRole">Rôle</label>
                                     <select id="addedUserRole"
                                             class="form-control"
-                                            [formControlName]="role">
-                                        <option value="Product Owner">Product Owner</option>
-                                        <option id="OptionDev" value="Développeur" [selected]="true">Développeur</option>
-
+                                            [formControlName]="'role'">
+                                        <option *ngFor="let role of availabledRole"
+                                                [attr.value]="role.id"
+                                                [selected]="role.id == 2">
+                                            {{ role.name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                         </td>
 
                     </tr>
-
-                </table>
+                    </table>
                 </form>
             </div>
         </div>
-
         <div class="col-md-3">
             <div class="panel-body" [hidden]="showAddMember">
-                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">Nouveau membre</button>
+                <button class="btn-add btn btn-primary pull-right" (click)="toggleAddMember()">Nouveau membre</button>
             </div>
 
             <div class="panel-body" [hidden]="!showAddMember">
-                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">Ajouter</button>
+                <button class="btn-add btn btn-success pull-right" (click)="submitAddMemberForm()">Ajouter</button>
             </div>
+
         </div>
+
     </div>
 
 </div>

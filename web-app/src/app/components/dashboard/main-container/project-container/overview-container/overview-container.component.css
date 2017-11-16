@@ -2,14 +2,19 @@
     background-color: #ddd;
 }
 
-.members-list .username {
+.members-list .email {
     font-weight: bold;
 }
 
-.members-list .login {
+.members-list .username {
     font-style: italic;
 }
 
 table.addMember {
     margin:0;
+}
+
+.page-loading {
+    font-size: 5rem;
+    margin-top: 2rem;
 }

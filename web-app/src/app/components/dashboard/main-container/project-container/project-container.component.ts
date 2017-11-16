@@ -10,8 +10,6 @@ export class ProjectContainerComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute) { }
 
-    public ngOnInit(): void {
-        console.log (this.activatedRoute)
-    }
+    public ngOnInit(): void {}
 
 }

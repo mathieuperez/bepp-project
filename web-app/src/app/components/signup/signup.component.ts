@@ -5,6 +5,9 @@ import {ControlEqualValidator} from "../../validators/control-equal.validator";
 import {HttpClient} from "@angular/common/http";
 import {AppConstants} from "../../app-constants";
 
+/**
+ * Logic for the signup page.
+ */
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -12,17 +15,37 @@ import {AppConstants} from "../../app-constants";
 })
 export class SignupComponent implements OnInit {
 
+    /**
+     * FormGroup for the signup.
+     */
     private signupForm: FormGroup;
 
+    /**
+     * True if the form has been submitted at least one.
+     */
     private signupSubmitted: boolean;
 
+    /**
+     * True if the form has been submitted but response not received.
+     */
     private signupLoading: boolean;
 
+    /**
+     * Signup error to display.
+     */
     private signupError: string;
 
+    /**
+     * SignupComponent constructor.
+     * @param {Router} router
+     * @param {HttpClient} httpClient
+     */
     public constructor(private router: Router,
                        private httpClient: HttpClient) { }
 
+    /**
+     * Initialize variable for signup form.
+     */
     public ngOnInit(): void {
         this.signupSubmitted = false;
         this.signupLoading = false;
@@ -37,8 +60,8 @@ export class SignupComponent implements OnInit {
             password: passwordFormControl,
             confirmPassword: new FormControl('', [Validators.required, ControlEqualValidator(passwordFormControl)])
         });
-        console.log (passwordFormControl);
 
+        // if password updated, check validity for the confirm password.
         this.password.valueChanges.subscribe(() => {
             this.confirmPassword.updateValueAndValidity();
         });
@@ -64,10 +87,12 @@ export class SignupComponent implements OnInit {
         return this.signupForm.get('confirmPassword');
     }
 
+    /**
+     * Submit the signup form, if response is a success, we call the authentication service.
+     */
     public submitSignUpForm () {
         this.signupSubmitted = true;
-        console.log (this.signupForm)
-        console.log (this.signupLoading)
+
         if (this.signupForm.valid && !this.signupLoading) {
             this.signupLoading = true;
             this.httpClient.post("/api/users",
