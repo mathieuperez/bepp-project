@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
     public submitLoginForm(): void {
         this.loginSubmitted = true;
 
-        if (this.loginForm.valid){
+        if (this.loginForm.valid && !this.loginLoading){
             this.loginLoading = true;
             this.httpClient.post("/api/users/token",
                 this.loginForm.value,{

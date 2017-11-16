@@ -66,7 +66,7 @@ export class SignupComponent implements OnInit {
 
     public submitSignUpForm () {
         this.signupSubmitted = true;
-        if (this.signupForm.valid) {
+        if (this.signupForm.valid && !this.signupLoading) {
             this.signupLoading = true;
             this.httpClient.post("/api/users",
                 this.signupForm.value,{

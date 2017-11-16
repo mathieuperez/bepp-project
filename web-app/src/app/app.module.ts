@@ -21,6 +21,7 @@ import {AuthGuard} from './guards/auth/auth.guard';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
+import {CheckAuthService} from "./services/check-auth.service";
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
     ],
     providers: [
         AuthGuard,
-        UnAuthGuard
+        UnAuthGuard,
+        CheckAuthService
     ],
     bootstrap: [AppComponent]
 })
