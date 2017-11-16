@@ -73,32 +73,31 @@ export class SignupComponent implements OnInit {
                     responseType: 'json'
                 }
             ).subscribe((response: any) => {
-                const signupForm = this.signupForm;
-
-                // TODO enlever le if
-                if (response.hasOwnProperty('success') && response.success) {
-                    this.httpClient.post("/api/users/token",
-                        {
-                            login: this.signupForm.value.login,
-                            password: this.signupForm.value.password
-                        },
-                        {
-                            responseType: 'json'
-                        }
-                    ).subscribe((response: any) => {
-                        this.signupLoading = false;
-                        localStorage.setItem(AppConstants.ACCESS_COOKIE_NAME, response['token']);
-                        this.router.navigate(['/dashboard']);
-                    }, () => {
-                        this.signupLoading = false;
-                        this.signupError = "Une erreur s'est produite lors de l'authentification, veuillez réessayer plutard.";
-                    });
-                }
-            }, () => {
+                this.httpClient.post("/api/users/token",
+                    {
+                        login: this.signupForm.value.login,
+                        password: this.signupForm.value.password
+                    },
+                    {
+                        responseType: 'json'
+                    }
+                ).subscribe((response: any) => {
+                    this.signupLoading = false;
+                    localStorage.setItem(AppConstants.ACCESS_COOKIE_NAME, response['token']);
+                    this.router.navigate(['/dashboard']);
+                }, () => {
+                    this.signupLoading = false;
+                    this.signupError = "Une erreur s'est produite lors de l'authentification, veuillez réessayer plutard.";
+                });
+            }, (error: any) => {
                 this.signupLoading = false;
 
-                // TODO parse errors
-                this.signupError = "Une erreur s'est produite lors de l'authentification, veuillez réessayer plutard.";
+                if (error.status === 409) {
+                    this.signupError = `L'adresse email entrée existe déjà dans la base.`;
+                }
+                else {
+                    this.signupError = `Une erreur s'est produite lors de l'authentification, veuillez réessayer plutard.`;
+                }
             });
         }
     }
