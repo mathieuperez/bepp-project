@@ -96,7 +96,7 @@ app.post('/api/users', function (req, res) {
         var collection = db.get('userCollection');
 
         //Check if login already exists
-        collection.find({name: name}, {}, function (err, doc) {
+        collection.find({login: login}, {}, function (err, doc) {
             if (err) {
                 res.status(500).send("There was a problem with the database while checking if the login already exists.");
             }
@@ -118,7 +118,7 @@ app.post('/api/users', function (req, res) {
                     });
                 }
                 else {
-                    res.send("There is already a user with this login.");
+                    res.status(409).send("There is already a user with this login.");
                 }
             }
         })
@@ -222,7 +222,7 @@ app.post('/api/projects', function (req, res) {
                         });
                     }
                     else {
-                        res.send("There is already a project with this name.");
+                        res.status(409).send("There is already a project with this name.");
                     }
                 }
             });
