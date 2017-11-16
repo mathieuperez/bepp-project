@@ -7,7 +7,7 @@ describe('Creating a project', function() {
         browser.get('http://localhost:8080/');
 
         //Fill the email and password fields and submit
-        element(by.name('email')).sendKeys('amine@email.com');
+        element(by.name('email')).sendKeys('Amine@email.com');
         element(by.name('password')).sendKeys('123');
 
         element(by.name('login')).click();
@@ -37,5 +37,9 @@ describe('Creating a project', function() {
         //Expect to go the project overview page
         expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard/projects/ProjetTest/overview");
 
+        browser.sleep(3000);
+
+        //Click to logout
+        element(by.name('logout')).click();
     });
 });

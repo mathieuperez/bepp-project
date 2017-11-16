@@ -34,6 +34,7 @@
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon5">Date de début</span>
                             <input type="date"
+                                   name="datedebut"
                                    class="form-control"
                                    placeholder="JJ/MM/AAAA"
                                    formControlName="date"/>
@@ -94,6 +95,7 @@
                     <div>
                         <button class="btn btn-success pointer-cursor ld-ext-left pull-right"
                                 type="submit"
+                                name="addproject"
                                 [ngClass]="{ 'running': newProjectLoading }"
                                 (click)="newProjectSubmit()">
                             <i class="ld ld-spin ld-ring"></i>

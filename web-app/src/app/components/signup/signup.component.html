@@ -70,7 +70,7 @@
                             <input type="password"
                                    class="form-control"
                                    placeholder="Veuillez entrer votre mot de passe"
-                                   name="password"
+                                   name="password1"
                                    formControlName="password"/>
                         </div>
                         <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
@@ -85,7 +85,7 @@
                         <div class="input-group">
                             <span class="input-group-addon">Confirmer le mdp</span>
                             <input type="password"
-                                   name="password"
+                                   name="password2"
                                    class="form-control"
                                    placeholder="Confirmez votre mot de passe"
                                    formControlName="confirmPassword"/>
@@ -101,6 +101,7 @@
                     <div>
                         <button class="btn btn-success pointer-cursor ld-ext-left pull-right"
                                 type="submit"
+                                name="createaccount"
                                 [ngClass]="{ 'running': signupLoading }"
                                 (click)="submitSignUpForm()">
                             <i class="ld ld-spin ld-ring"></i>

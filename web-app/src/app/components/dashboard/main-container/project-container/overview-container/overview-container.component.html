@@ -47,7 +47,7 @@
                             <div class="btn-group">
                                 <select class="form-control" name="Developpeur">
                                     <option selected disabled hidden>Membre</option>
-                                    <option>Mathieu</option>
+                                    <option id="optionDev">Mathieu</option>
                                     <option>Adrien</option>
                                 </select>
                             </div>
@@ -58,11 +58,10 @@
                         <td>
                             <div class="btn-group">
 
-                                <select class="form-control">
+                                <select class="form-control" name="Role">
                                     <option selected disabled hidden>Rôle</option>
-                                    <option>Product Owner</option>
+                                    <option id="optionTask">Product Owner</option>
                                     <option>Développeur</option>
-
                                 </select>
                             </div>
                         </td>
@@ -75,11 +74,11 @@
         </div>
         <div class="col-md-3">
             <div class="panel-body" [hidden]="showAddMember">
-                <button class="btn-add btn btn-primary pull-right" (click)="toggleAddMember()">Nouveau membre</button>
+                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">Nouveau membre</button>
             </div>
 
             <div class="panel-body" [hidden]="!showAddMember">
-                <button class="btn-add btn btn-success pull-right" (click)="AddMember()">Ajouter</button>
+                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="AddMember()">Ajouter</button>
             </div>
 
         </div>

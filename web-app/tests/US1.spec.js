@@ -1,4 +1,4 @@
-// Test for US1
+// Test for US5
 
 describe('Creating a user account', function() {
 
@@ -15,9 +15,9 @@ describe('Creating a user account', function() {
         }, 5000);
 
         //Fill the sign up form and submit it
-        element(by.name('name')).sendKeys('Med');
+        element(by.name('name')).sendKeys('Amine');
         element(by.name('surname')).sendKeys('Amn');
-        element(by.name('email')).sendKeys('test@email.com');
+        element(by.name('email')).sendKeys('Amine@email.com');
         element(by.name('password1')).sendKeys('123');
         element(by.name('password2')).sendKeys('123');
 
@@ -27,6 +27,9 @@ describe('Creating a user account', function() {
 
         //Should be redirected to the dashboard !
         expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard");
+
+        //Click to logout
+        element(by.name('logout')).click();
 
     });
 });
