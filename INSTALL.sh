@@ -30,5 +30,20 @@ then
         fi
     done
 else
-    echo "Usage: ./INSTALL.sh dev"
+	if [[ $1 == "test_api" ]]
+	then
+		# run mongodb server
+		# And run api server
+		cd api ; \
+		rm -rf dataTest; \
+		mkdir dataTest; \
+		mongod --dbpath dataTest/ & PID_MONGO=$! ; \
+		node api.js & PID_NODE=$! ;
+		npm test;
+		
+		(kill -9 $PID_NODE > /dev/null 2>&1);
+		(kill -9 $PID_MONGO > /dev/null 2>&1);
+	else
+		echo "Usage: ./INSTALL.sh dev or ./INSTALL.sh test_api"
+	fi
 fi
