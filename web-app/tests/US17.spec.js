@@ -22,14 +22,15 @@ describe('Adding a memeber to a project', function() {
             return element(by.name('vueensemble')).isPresent();
         }, 5000);
 
-        //Select project info tab
+        //Select project overview tab
         element(by.name('vueensemble')).click();
         browser.sleep(5000);
 
         //Verify the added user
+        element(by.name('Amine')).isPresent();
 
-
-        browser.sleep(5000);
+        //Click to logout
+        element(by.name('logout')).click();
 
     });
 });

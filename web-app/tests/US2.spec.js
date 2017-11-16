@@ -23,7 +23,7 @@ describe('Creating a project', function() {
             return element(by.name('addproject')).isPresent();
         }, 5000);
 
-        // Fill the form
+        // Fill the project info form
         element(by.name('project-name')).sendKeys('ProjetTest');
         element(by.name('datedebut')).sendKeys('17112017');
         element(by.name('nbSprints')).sendKeys('3');

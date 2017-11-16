@@ -1,5 +1,5 @@
-// To run the tests
-// sudo webdriver-manager start
+// To run the tests :
+// sudo webdriver-manager start    ** TO START A SELENIUM SERVER: CHROME IS DEFAULT **
 // protractor conf.js
 
 exports.config = {

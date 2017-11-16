@@ -22,7 +22,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of currentProject.users">
-                    <td><span class="username">{{ user.name }} {{ user.username }}</span></td>
+                    <td><span class="username" name="{{ user.name }}">{{ user.name }} {{ user.username }}</span></td>
                     <td>Developpeur</td>
                 </tr>
                 <tr *ngIf="currentProject.users && currentProject.users.length === 0"
@@ -72,9 +72,9 @@
                                     <label for="addedUserRole">Rôle</label>
                                     <select id="addedUserRole"
                                             class="form-control"
-                                            [formControlName]="'role'">
+                                            [formControlName]="role">
                                         <option value="Product Owner">Product Owner</option>
-                                        <option value="Développeur" [selected]="true">Développeur</option>
+                                        <option id="OptionDev" value="Développeur" [selected]="true">Développeur</option>
 
                                     </select>
                                 </div>
@@ -87,17 +87,16 @@
                 </form>
             </div>
         </div>
+
         <div class="col-md-3">
             <div class="panel-body" [hidden]="showAddMember">
-                <button class="btn-add btn btn-primary pull-right" (click)="toggleAddMember()">Nouveau membre</button>
+                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">Nouveau membre</button>
             </div>
 
             <div class="panel-body" [hidden]="!showAddMember">
-                <button class="btn-add btn btn-success pull-right" (click)="submitAddMemberForm()">Ajouter</button>
+                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">Ajouter</button>
             </div>
-
         </div>
-
     </div>
 
 </div>
