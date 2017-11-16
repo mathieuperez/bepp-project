@@ -23,6 +23,8 @@ export class OverviewContainerComponent implements OnInit {
     private addMemberFormSubmitted: boolean;
     private addMemberFormLoading: boolean;
 
+    private errorMessageAddMember: string;
+
     private availabledRole = [
         {id: 0, name: "Développeur"},
         {id: 1, name: "Product Owner"}
@@ -32,6 +34,7 @@ export class OverviewContainerComponent implements OnInit {
                        private activatedRoute: ActivatedRoute,
                        private checkAuthService: CheckAuthService) {
         this.loading = true;
+        this.errorMessageAddMember = null;
     }
 
     public ngOnInit(): void {
@@ -97,7 +100,7 @@ export class OverviewContainerComponent implements OnInit {
 
             sendingParams.role = this.availabledRole[sendingParams.role].name;
 
-            const userLogin = encodeURIComponent(localStorage.getItem(AppConstants.LOGIN_USER));
+            const userLogin = encodeURIComponent(this.addMemberForm.value.login);
             const projectName = encodeURIComponent(this.currentProject.name);
             this.httpClient.put(`/api/projects/${projectName}/users/${userLogin}`,
                 sendingParams,{
@@ -107,17 +110,23 @@ export class OverviewContainerComponent implements OnInit {
                 this.addMemberFormLoading = false;
                 this.getProject (this.currentProject.name);
                 this.showAddMember = !this.showAddMember;
+                this.errorMessageAddMember = null;
+                this.login.setValue(null);
+                this.addMemberFormSubmitted = false;
             }, (error) => {
                 this.addMemberFormLoading = false;
+
+                if (error.status === 404){
+                    this.errorMessageAddMember = `Aucun utilisateur trouvé`;
+                }
+
                 this.checkAuthService.check(error);
             });
         }
-
-        //TODO: associate member to project on the API
-        //
     }
 
     public get login (): AbstractControl {
         return this.addMemberForm.get('login');
     }
+
 }

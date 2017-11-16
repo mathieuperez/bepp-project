@@ -43,10 +43,11 @@ export class ProjectsBarComponent implements OnInit, OnDestroy {
         ).subscribe((response: any) => {
             this.projectsLoading = false;
             this.projectsList = response.projects || [];
+            if (!localStorage.getItem(AppConstants.LOGIN_USER)) {
+                localStorage.setItem(AppConstants.LOGIN_USER, response.login);
+            }
         }, (error) => {
-
             this.projectsLoading = false;
-
             this.checkAuthService.check(error);
         });
     }

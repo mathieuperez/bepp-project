@@ -40,10 +40,14 @@
         <div class="col-md-9">
             <div [hidden]="!showAddMember" class="panel panel-default">
                 <h4 align="center">Ajouter un membre</h4>
+                <div class="alert alert-danger"
+                     *ngIf="errorMessageAddMember !== null">
+                    {{ errorMessageAddMember }}
+                </div>
+
                 <form novalidate [formGroup]="addMemberForm">
                     <table class="table addMember">
-                    <tr>
-
+                        <tr>
                         <td>
                             <div class="form-group has-feedback"
                                  [ngClass]="{ 'has-error': login.invalid && (login.dirty || login.touched || addMemberFormSubmitted) }">
@@ -84,8 +88,7 @@
                         </td>
 
                     </tr>
-
-                </table>
+                    </table>
                 </form>
             </div>
         </div>
