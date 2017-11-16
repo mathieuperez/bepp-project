@@ -22,6 +22,7 @@ export class CheckAuthService {
     public check (apiError: any) {
         if (apiError.status === 401) {
             localStorage.removeItem(AppConstants.ACCESS_COOKIE_NAME);
+            localStorage.removeItem(AppConstants.LOGIN_USER);
             this.router.navigate(['login']);
         }
     }

@@ -22,6 +22,7 @@ const routes: Routes = [
         component: DashboardComponent,
         canActivate: [AuthGuard],
         children: [
+            { path:'', redirectTo: 'newproject', pathMatch: 'full' },
             {
                 path: 'projects/:name',
                 component: ProjectContainerComponent,
@@ -33,6 +34,7 @@ const routes: Routes = [
                 ]
             },
             { path: 'newproject', component: NewProjectComponent }
+
     ]},
 
     {
