@@ -1,4 +1,4 @@
-<div *ngIf="loading">
+<div *ngIf="loading" class="page-loading text-center">
     <i class="ld ld-spin ld-ring"></i>
 </div>
 <div *ngIf="!loading">
@@ -22,8 +22,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of currentProject.users">
-                    <td><span class="username">{{ user.name }} {{ user.username }}</span></td>
-                    <td>Developpeur</td>
+                    <td><span class="email">{{ user.login }}</span>&nbsp;(<span class="username">{{ user.name }} {{ user.surname }}</span>)</td>
+                    <td>{{ user.role }}</td>
                 </tr>
                 <tr *ngIf="currentProject.users && currentProject.users.length === 0"
                     class="empty-list">
@@ -73,9 +73,11 @@
                                     <select id="addedUserRole"
                                             class="form-control"
                                             [formControlName]="'role'">
-                                        <option value="Product Owner">Product Owner</option>
-                                        <option value="Développeur" [selected]="true">Développeur</option>
-
+                                        <option *ngFor="let role of availabledRole"
+                                                [attr.value]="role.id"
+                                                [selected]="role.id == 2">
+                                            {{ role.name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>

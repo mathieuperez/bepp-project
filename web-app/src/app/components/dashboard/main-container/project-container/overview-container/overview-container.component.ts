@@ -23,6 +23,11 @@ export class OverviewContainerComponent implements OnInit {
     private addMemberFormSubmitted: boolean;
     private addMemberFormLoading: boolean;
 
+    private availabledRole = [
+        {id: 0, name: "Développeur"},
+        {id: 1, name: "Product Owner"}
+    ];
+
     public constructor(private httpClient: HttpClient,
                        private activatedRoute: ActivatedRoute,
                        private checkAuthService: CheckAuthService) {
@@ -33,16 +38,19 @@ export class OverviewContainerComponent implements OnInit {
         this.loading = true;
 
         this.addMemberFormSubmitted = false;
+        this.addMemberFormLoading = false;
 
         this.addMemberForm = new FormGroup ({
             login: new FormControl('', [Validators.required]),
             role: new FormControl('', [Validators.required])
         });
 
+        this.addMemberForm.setValue({
+            login: null,
+            role: 0
+        });
 
         this.routeParamsSub = this.activatedRoute.parent.params.subscribe((params) => {
-
-
             this.getProject (params['name']);
         });
     }
@@ -59,8 +67,6 @@ export class OverviewContainerComponent implements OnInit {
         }).subscribe((response: any) => {
             this.loading = false;
             this.currentProject = response[0];
-
-            this.currentProject.users = [];
         }, (error) => {
             this.loading = false;
             this.checkAuthService.check(error);
@@ -80,9 +86,6 @@ export class OverviewContainerComponent implements OnInit {
     public submitAddMemberForm(): void {
         this.addMemberFormSubmitted = true;
 
-        console.log (this.addMemberForm)
-        console.log (this.addMemberFormLoading)
-
         if (this.addMemberForm.valid && !this.addMemberFormLoading){
             this.addMemberFormLoading = true;
 
@@ -92,15 +95,18 @@ export class OverviewContainerComponent implements OnInit {
                     token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
                 });
 
+            sendingParams.role = this.availabledRole[sendingParams.role].name;
+
             const userLogin = encodeURIComponent(localStorage.getItem(AppConstants.LOGIN_USER));
-            const projectName = encodeURIComponent(localStorage.getItem(this.currentProject.name));
+            const projectName = encodeURIComponent(this.currentProject.name);
             this.httpClient.put(`/api/projects/${projectName}/users/${userLogin}`,
                 sendingParams,{
                     responseType: 'json'
                 }
             ).subscribe((response: any) => {
                 this.addMemberFormLoading = false;
-                this.getProject (this.currentProject.name)
+                this.getProject (this.currentProject.name);
+                this.showAddMember = !this.showAddMember;
             }, (error) => {
                 this.addMemberFormLoading = false;
                 this.checkAuthService.check(error);
@@ -108,7 +114,7 @@ export class OverviewContainerComponent implements OnInit {
         }
 
         //TODO: associate member to project on the API
-        this.showAddMember = !this.showAddMember;
+        //
     }
 
     public get login (): AbstractControl {
