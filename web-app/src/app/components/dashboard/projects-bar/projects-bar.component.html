@@ -1,10 +1,23 @@
 
 <div class="panel panel-default">
-  <div class="panel-heading">Projects</div>
-    <ul class="list-group">
-      <app-bar-project></app-bar-project>
-    </ul>
-  <div class="panel-body">
-      <button class="btn btn-primary pull-right" (click)="newProject()">Nouveau projet</button>
-  </div>
+    <div class="panel-heading">Projects</div>
+        <ul class="list-group projects">
+            <li class="list-group-item projects-loader text-center"
+                *ngIf="projectsLoading">
+                <i class="ld ld-spin ld-ring"></i>
+            </li>
+            <li *ngIf="!projectsLoading && projectsList.length === 0"
+                class="text-center list-group-item">
+                Pas encore de projet
+            </li>
+            <li *ngFor="let project of projectsList" class="list-group-item project">
+                <a class="pointer-cursor" routerLink="projects">
+                    {{ project }}
+                </a>
+            </li>
+        </ul>
+    <div class="panel-body">
+        <a class="btn btn-primary pull-right"
+            routerLink="newproject">Nouveau projet</a>
+    </div>
 </div>

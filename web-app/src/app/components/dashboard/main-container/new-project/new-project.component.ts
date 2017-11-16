@@ -57,9 +57,6 @@ export class NewProjectComponent implements OnInit {
             ).subscribe((response: any) => {
                 this.newProjectLoading = false;
 
-
-
-
             }, (error) => {
                 console.log (error);
                 this.newProjectLoading = false;

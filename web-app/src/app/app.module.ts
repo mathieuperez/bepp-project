@@ -8,7 +8,6 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ProjectsBarComponent} from './components/dashboard/projects-bar/projects-bar.component';
 import {TopBarComponent} from './components/dashboard/top-bar/top-bar.component';
 import {MainContainerComponent} from './components/dashboard/main-container/main-container.component';
-import {ProjectBarComponent} from './components/dashboard/projects-bar/project/project.component';
 import {MembresContainerComponent} from './components/dashboard/main-container/project-container/membres-container/membres-container.component';
 import {BacklogContainerComponent} from './components/dashboard/main-container/project-container/backlog-container/backlog-container.component';
 import {SprintsContainerComponent} from './components/dashboard/main-container/project-container/sprints-container/sprints-container.component';
@@ -31,7 +30,6 @@ import {CheckAuthService} from "./services/check-auth.service";
         ProjectsBarComponent,
         TopBarComponent,
         MainContainerComponent,
-        ProjectBarComponent,
         MembresContainerComponent,
         BacklogContainerComponent,
         SprintsContainerComponent,
