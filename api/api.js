@@ -52,7 +52,8 @@ app.post('/api/users/token', function (req, res) {
 
     if (userLogin == null || userPassword == null) {
         res.status(422).send("Missing Arguments.");
-    } {
+    }
+    else {
         //Compléter le service REST qui vérifie que la BD contient bien le login et le password d'un utilisateur(connexion d'un utilisateur US1)
         // Set our internal DB variable
         var db = req.db;
@@ -89,7 +90,8 @@ app.post('/api/users', function (req, res) {
 
     if (name == null || surname == null || login == null || password == null) {
         res.status(422).send("Missing Arguments.");
-    } {
+    }
+    else {
         var db = req.db;
         var collection = db.get('userCollection');
 
@@ -164,9 +166,10 @@ app.post('/api/projects', function (req, res) {
     var name = req.body.name;
     var description = req.body.description;
 
-    if (name == null || surname == null || login == null || password == null) {
+    if (name == null || description == null) {
         res.status(422).send("Missing Arguments.");
-    } {
+    }
+    else {
         var token = req.body.token;
 
         var db = req.db;

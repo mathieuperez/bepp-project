@@ -29,6 +29,8 @@ describe("Scrum Management API", function() {
                 url:     localurl,
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
+                console.log("Post Auth : ");
+                console.log(body);
                 expect(response.statusCode).to.equal(200);
                 done();
             });
@@ -36,30 +38,32 @@ describe("Scrum Management API", function() {
     });
 
 
-    /*
+
     describe("POST Créer un projet", function() {
         var localurl = url + "projects/";
+        var authurl = url + "users/token";
 
         it("returns status 200", function(done) {
-
             request.post({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     url + "users/token",
+                url:     authurl,
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
-                console.log(response.status);
+                var bodyJson = JSON.parse(body);
+                //done();
                 request.post({
-                    headers: {'x-access-token' : body.token},
+                    headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { name: "Bepp", description: "Notre projet"}
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
+
             });
         });
     });
-    */
+
     describe("GET Obtenir un utilisateur", function() {
 
     });
