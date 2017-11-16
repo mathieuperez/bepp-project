@@ -50,27 +50,32 @@ app.post('/api/users/token', function (req, res) {
     var userLogin = req.body.login;
     var userPassword = req.body.password;
 
-    //Compléter le service REST qui vérifie que la BD contient bien le login et le password d'un utilisateur(connexion d'un utilisateur US1)
-    // Set our internal DB variable
-    var db = req.db;
+    if (userLogin == null || userPassword == null) {
+        res.status(422).send("Missing Arguments.");
+    }
+    else {
+        //Compléter le service REST qui vérifie que la BD contient bien le login et le password d'un utilisateur(connexion d'un utilisateur US1)
+        // Set our internal DB variable
+        var db = req.db;
 
-    // Find in a collection
-    var query = {login: userLogin, password: userPassword};
+        // Find in a collection
+        var query = {login: userLogin, password: userPassword};
 
-    db.collection("userCollection").find(query, {}, function (e, docs) {
-        if (docs.length != 0) {
-            var query = {login: userLogin};
-            var token = jwt.sign(docs[0], app.get('superSecret'));
-            res.json({
-                success: true,
-                message: 'Authentication succeded!',
-                token: token
-            });
-        }
-        else {
-            res.status(400).json({success: false, message: 'Authentication failed. Wrong login/password.'});
-        }
-    });
+        db.collection("userCollection").find(query, {}, function (e, docs) {
+            if (docs.length != 0) {
+                var query = {login: userLogin};
+                var token = jwt.sign(docs[0], app.get('superSecret'));
+                res.json({
+                    success: true,
+                    message: 'Authentication succeded!',
+                    token: token
+                });
+            }
+            else {
+                res.status(400).json({success: false, message: 'Authentication failed. Wrong login/password.'});
+            }
+        });
+    }
 });
 
 //Add a User Service
@@ -83,36 +88,41 @@ app.post('/api/users', function (req, res) {
     var login = req.body.login;
     var password = req.body.password;
 
-    var db = req.db;
-    var collection = db.get('userCollection');
+    if (name == null || surname == null || login == null || password == null) {
+        res.status(422).send("Missing Arguments.");
+    }
+    else {
+        var db = req.db;
+        var collection = db.get('userCollection');
 
-    //Check if login already exists
-    collection.find({name: name}, {}, function (err, doc) {
-        if (err) {
-            res.status(500).send("There was a problem with the database while checking if the login already exists.");
-        }
-        else {
-            if (doc.length == 0) {
-                //Add the user
-                collection.insert({
-                    "name": name,
-                    "surname": surname,
-                    "login": login,
-                    "password": password
-                }, function (err, doc) {
-                    if (err) {
-                        res.status(500).send("There was a problem with the database while adding the user.");
-                    }
-                    else {
-                        res.status(200).send({success: true});
-                    }
-                });
+        //Check if login already exists
+        collection.find({name: name}, {}, function (err, doc) {
+            if (err) {
+                res.status(500).send("There was a problem with the database while checking if the login already exists.");
             }
             else {
-                res.send("There is already a user with this login.");
+                if (doc.length == 0) {
+                    //Add the user
+                    collection.insert({
+                        "name": name,
+                        "surname": surname,
+                        "login": login,
+                        "password": password
+                    }, function (err, doc) {
+                        if (err) {
+                            res.status(500).send("There was a problem with the database while adding the user.");
+                        }
+                        else {
+                            res.status(200).send({success: true});
+                        }
+                    });
+                }
+                else {
+                    res.send("There is already a user with this login.");
+                }
             }
-        }
-    })
+        })
+    }
 });
 
 // route middleware to verify a token
@@ -155,65 +165,69 @@ function verifyAuth(req, res, next) {
 app.post('/api/projects', function (req, res) {
     var name = req.body.name;
     var description = req.body.description;
-    var token = req.body.token;
 
-    var db = req.db;
-    var userCollection = db.get('userCollection');
-    var projectCollection = db.get('projectCollection')
+    if (name == null || description == null) {
+        res.status(422).send("Missing Arguments.");
+    }
+    else {
+        var token = req.body.token;
 
-    verifyAuth(req, res, function () {
+        var db = req.db;
+        var userCollection = db.get('userCollection');
+        var projectCollection = db.get('projectCollection')
 
-        var userQuery = {login: req.decoded.login};
-        var projectQuery = {name: name};
-        //Is the project name available
-        projectCollection.find(projectQuery, {}, function (e, docProject) {
-            if (e) {
-                res.status(500).send("There was a problem with the database while checking if the project already exists.");
-            }
-            else {
-                if (docProject.length == 0) {
-                    //Creation of the project
-                    projectCollection.insert({
-                        "name": name,
-                        "description": description
-                    }, function (err, doc) {
-                        if (err) {
-                            res.status(500).send("There was a problem with the database while creating the project.");
-                        }
-                        else {
-                            //Add the project to the user's list
+        verifyAuth(req, res, function () {
 
-                            var updateProject = {$addToSet: {users: req.decoded.login}};
-                            projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
-                                if (err) {
-                                    res.status(500).send("There was a problem with the database while creating the project: adding the user to the project's user list.");
-                                }
-                                else {
-                                    res.status(200).send({success: true});
-                                }
-                            });
-
-                            //Add the user to the project's list
-                            var updateUser = {$addToSet: {projects: name}};
-                            userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
-                                if (err) {
-                                    res.status(500).send("There was a problem with the database while creating the project: adding the project to the user's project list.");
-                                }
-                                else {
-                                    res.status(200).send({success: true});
-                                }
-                            });
-                        }
-                    });
+            var userQuery = {login: req.decoded.login};
+            var projectQuery = {name: name};
+            //Is the project name available
+            projectCollection.find(projectQuery, {}, function (e, docProject) {
+                if (e) {
+                    res.status(500).send("There was a problem with the database while checking if the project already exists.");
                 }
                 else {
-                    res.send("There is already a project with this name.");
+                    if (docProject.length == 0) {
+                        //Creation of the project
+                        projectCollection.insert({
+                            "name": name,
+                            "description": description
+                        }, function (err, doc) {
+                            if (err) {
+                                res.status(500).send("There was a problem with the database while creating the project.");
+                            }
+                            else {
+                                //Add the project to the user's list
+
+                                var updateProject = {$addToSet: {users: req.decoded.login}};
+                                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
+                                    if (err) {
+                                        res.status(500).send("There was a problem with the database while creating the project: adding the user to the project's user list.");
+                                    }
+                                    else {
+                                        res.status(200).send({success: true});
+                                    }
+                                });
+
+                                //Add the user to the project's list
+                                var updateUser = {$addToSet: {projects: name}};
+                                userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
+                                    if (err) {
+                                        res.status(500).send("There was a problem with the database while creating the project: adding the project to the user's project list.");
+                                    }
+                                    else {
+                                        res.status(200).send({success: true});
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        res.send("There is already a project with this name.");
+                    }
                 }
-            }
+            });
         });
-    });
-
-
+    }
 });
 
 //Get a User Service
