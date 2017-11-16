@@ -180,24 +180,28 @@ app.post('/api/projects', function (req, res) {
             var userQuery = {login: req.decoded.login};
             var projectQuery = {name: name};
             //Is the project name available
-            projectCollection.find(projectQuery, {}, function (e, docProject) {
+            projectCollection.find(projectQuery, {}, function (e, doc) {
                 if (e) {
                     res.status(500).send("There was a problem with the database while checking if the project already exists.");
                 }
                 else {
-                    if (docProject.length == 0) {
+                    if (doc.length == 0) {
                         //Creation of the project
                         projectCollection.insert({
                             "name": name,
                             "description": description
-                        }, function (err, doc) {
+                        }, function (err, docProject) {
                             if (err) {
                                 res.status(500).send("There was a problem with the database while creating the project.");
                             }
                             else {
                                 //Add the project to the user's list
 
-                                var updateProject = {$addToSet: {users: req.decoded.login}};
+                                if (req.decoded.projects != undefined)
+                                    delete req.decoded['projects'];
+                                console.log("Req decoded");
+                                console.log(req.decoded);
+                                var updateProject = {$addToSet: {users: req.decoded}};
                                 projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
                                     if (err) {
                                         res.status(500).send("There was a problem with the database while creating the project: adding the user to the project's user list.");
@@ -207,13 +211,19 @@ app.post('/api/projects', function (req, res) {
                                     }
                                 });
 
+                                console.log("doc Project");
+                                console.log(docProject);
+                                if (docProject.users != undefined)
+                                    delete docProject['users'];
                                 //Add the user to the project's list
-                                var updateUser = {$addToSet: {projects: name}};
+                                var updateUser = {$addToSet: {projects: docProject}};
                                 userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
                                     if (err) {
                                         res.status(500).send("There was a problem with the database while creating the project: adding the project to the user's project list.");
                                     }
                                     else {
+                                        console.log("Updated : ");
+                                        console.log(doc);
                                         res.status(200).send({success: true});
                                     }
                                 });
@@ -268,8 +278,9 @@ app.get('/api/projects/:name', function (req, res) {
             if (docs.length != 0) {
                 //Check if the user is in the project
                 var found = false;
+                console.log(docs);
                 for (var i = 0; i < docs[0].users.length; i++) {
-                    if (docs[0].users[i] == req.decoded.login) {
+                    if (docs[0].users[i].login == req.decoded.login) {
                         found = true;
                     }
                 }
@@ -313,7 +324,7 @@ app.put('/api/projects/:name/users/:login', function (req, res) {
 
                 var found = false;
                 for (var i = 0; i < docsProject[0].users.length; i++) {
-                    if (docsProject[0].users[i] == req.decoded.login) {
+                    if (docsProject[0].users[i].login == req.decoded.login) {
                         found = true;
                     }
                 }
@@ -321,36 +332,32 @@ app.put('/api/projects/:name/users/:login', function (req, res) {
                     userCollection.find(userQuery, {}, function (e, docsUser) {
                         if (docsUser.length != 0) {
 
-                            /*
-                            if (docsProject[0].users  == undefined)
-                                docsProject[0].users = [];
+                            if (docsUser[0].projects != undefined)
+                                delete docsUser[0]['projects'];
 
-                            var user = docsUser[0];
-                            if (user.projects != undefined)
-                                delete user['projects'];
-                            docsProject[0].users.push(user);
-                            */
-
-                            projectCollection.update(projectQuery, {$addToSet: {users: userLogin}}, function (err, doc) {
+                            console.log("Add U: ");
+                            console.log(projectQuery);
+                            console.log(docsUser[0]);
+                            projectCollection.update(projectQuery, {$addToSet: {users: docsUser[0]}}, {upsert: true}, function (err, doc) {
                                 if (err) {
                                     throw err;
                                 }
+                                console.log("Update P :");
+                                console.log(doc);
+                                if (docsProject[0].users != undefined)
+                                    delete docsProject[0]['users'];
 
 
-                                /*
-                                if (docsUser[0].projects  == undefined)
-                                    docsUser[0].projects = [];
+                                console.log("Add P:");
+                                console.log(userQuery);
+                                console.log(docsProject[0]);
 
-                                var project = docsProject[0];
-                                if (project.users != undefined)
-                                delete project['users'];
-                                docsUser[0].projects.push(project);
-                                */
-                                userCollection.update(userQuery, {$addToSet: {projects: projectName}}, function (err, doc) {
+                                userCollection.update(userQuery, {$addToSet: {projects: docsProject[0]}}, {upsert: true}, function (err, doc) {
                                     if (err) {
                                         throw err;
                                     }
-
+                                    console.log("Update U :");
+                                    console.log(doc);
                                     res.status(200).send({success: true});
                                 })
                             })
