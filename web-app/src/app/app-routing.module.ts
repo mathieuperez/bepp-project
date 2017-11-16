@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
-import {MembresContainerComponent} from './components/dashboard/main-container/project-container/membres-container/membres-container.component';
+import {OverviewContainerComponent} from './components/dashboard/main-container/project-container/overview-container/overview-container.component';
 import {BacklogContainerComponent} from './components/dashboard/main-container/project-container/backlog-container/backlog-container.component';
 import {SprintsContainerComponent} from './components/dashboard/main-container/project-container/sprints-container/sprints-container.component';
 import {SignupComponent} from "./components/signup/signup.component";
@@ -23,10 +23,11 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
             {
-                path: 'projects',
+                path: 'projects/:name',
                 component: ProjectContainerComponent,
                 children: [
-                    { path: 'membres', component: MembresContainerComponent },
+                    { path:'', redirectTo: 'overview', pathMatch: 'full' },
+                    { path: 'overview', component: OverviewContainerComponent },
                     { path: 'backlog', component: BacklogContainerComponent },
                     { path: 'sprints', component: SprintsContainerComponent }
                 ]

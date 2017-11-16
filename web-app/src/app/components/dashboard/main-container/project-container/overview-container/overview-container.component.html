@@ -1,0 +1,89 @@
+<div *ngIf="loading">
+    <i class="ld ld-spin ld-ring"></i>
+</div>
+<div *ngIf="!loading">
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h1 align="center">{{ currentProject.name }}</h1>
+            <p align="center">{{ currentProject.description }}</p>
+            <p align="center">Date de debut : xx/xx/xxxx --- Date de fin : xx/xx/xxxx</p>
+        </div>
+    </div>
+
+    <br>
+    <div class="panel panel-default members-list">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Rôle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of currentProject.users">
+                    <td>Med Amine</td>
+                    <td>Developpeur</td>
+                </tr>
+                <tr *ngIf="currentProject.users && currentProject.users.length === 0"
+                    class="empty-list">
+                    <td colspan="2" class="text-center">
+                        Aucun utilisateur n'a été ajouté au projet.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-9">
+            <div [hidden]="!showAddMember" class="panel panel-default">
+
+                <table class="table">
+                    <tr>
+
+                        <td>
+                            <div class="btn-group">
+                                <select class="form-control" name="Developpeur">
+                                    <option selected disabled hidden>Membre</option>
+                                    <option>Mathieu</option>
+                                    <option>Adrien</option>
+                                </select>
+                            </div>
+                        </td>
+
+                        <td>
+
+                        <td>
+                            <div class="btn-group">
+
+                                <select class="form-control">
+                                    <option selected disabled hidden>Rôle</option>
+                                    <option>Product Owner</option>
+                                    <option>Développeur</option>
+
+                                </select>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel-body" [hidden]="showAddMember">
+                <button class="btn-add btn btn-primary pull-right" (click)="toggleAddMember()">Nouveau membre</button>
+            </div>
+
+            <div class="panel-body" [hidden]="!showAddMember">
+                <button class="btn-add btn btn-success pull-right" (click)="AddMember()">Ajouter</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

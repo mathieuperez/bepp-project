@@ -8,7 +8,7 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ProjectsBarComponent} from './components/dashboard/projects-bar/projects-bar.component';
 import {TopBarComponent} from './components/dashboard/top-bar/top-bar.component';
 import {MainContainerComponent} from './components/dashboard/main-container/main-container.component';
-import {MembresContainerComponent} from './components/dashboard/main-container/project-container/membres-container/membres-container.component';
+import {OverviewContainerComponent} from './components/dashboard/main-container/project-container/overview-container/overview-container.component';
 import {BacklogContainerComponent} from './components/dashboard/main-container/project-container/backlog-container/backlog-container.component';
 import {SprintsContainerComponent} from './components/dashboard/main-container/project-container/sprints-container/sprints-container.component';
 import {SprintComponent} from './components/dashboard/main-container/project-container/sprints-container/sprint/sprint.component';
@@ -21,6 +21,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
 import {CheckAuthService} from "./services/check-auth.service";
+import {ApiCallingObserverService} from "./services/api-call-observer.service";
 
 @NgModule({
     declarations: [
@@ -30,7 +31,7 @@ import {CheckAuthService} from "./services/check-auth.service";
         ProjectsBarComponent,
         TopBarComponent,
         MainContainerComponent,
-        MembresContainerComponent,
+        OverviewContainerComponent,
         BacklogContainerComponent,
         SprintsContainerComponent,
         SprintComponent,
@@ -48,7 +49,8 @@ import {CheckAuthService} from "./services/check-auth.service";
     providers: [
         AuthGuard,
         UnAuthGuard,
-        CheckAuthService
+        CheckAuthService,
+        ApiCallingObserverService
     ],
     bootstrap: [AppComponent]
 })

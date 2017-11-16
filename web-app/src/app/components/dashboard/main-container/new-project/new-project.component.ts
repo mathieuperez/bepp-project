@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {AppConstants} from "../../../../app-constants";
 import {CheckAuthService} from "../../../../services/check-auth.service";
+import {ApiCallingObserverService} from "../../../../services/api-call-observer.service";
 
 @Component({
   selector: 'app-new-project',
@@ -19,7 +20,9 @@ export class NewProjectComponent implements OnInit {
     private newProjectMessage: string;
 
     public constructor(private httpClient: HttpClient,
-                       private checkAuthService: CheckAuthService) { }
+                       private checkAuthService: CheckAuthService,
+                       private router: Router,
+                       private apiCallingObserverService: ApiCallingObserverService) { }
 
     public ngOnInit(): void {
         this.newProjectSubmitted = false;
@@ -56,6 +59,9 @@ export class NewProjectComponent implements OnInit {
                 }
             ).subscribe((response: any) => {
                 this.newProjectLoading = false;
+
+                this.apiCallingObserverService.updateListProject.next(true);
+                this.router.navigate(['dashboard/projects', this.newProjectForm.value.name])
 
             }, (error) => {
                 console.log (error);

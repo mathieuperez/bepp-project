@@ -1,8 +1,10 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {AppConstants} from "../../../app-constants";
 import {CheckAuthService} from "../../../services/check-auth.service";
+import {ApiCallingObserverService} from "../../../services/api-call-observer.service";
+import {Subscription} from "rxjs/Subscription";
 
 
 @Component({
@@ -10,20 +12,29 @@ import {CheckAuthService} from "../../../services/check-auth.service";
   templateUrl: './projects-bar.component.html',
   styleUrls: ['./projects-bar.component.css']
 })
-export class ProjectsBarComponent implements OnInit {
+export class ProjectsBarComponent implements OnInit, OnDestroy {
 
     private projectsLoading: boolean;
 
     private projectsList: Array<string>;
 
+    private updateListProjectSub: Subscription;
+
     public constructor(private httpClient: HttpClient,
-                       private checkAuthService: CheckAuthService) {
+                       private checkAuthService: CheckAuthService,
+                       private apiCallingObserverService: ApiCallingObserverService) {
         this.projectsLoading = false;
         this.projectsList = [];
     }
 
     public ngOnInit(): void {
+        this.updateProjectList();
+        this.updateListProjectSub = this.apiCallingObserverService.updateListProject.subscribe(() => {
+            this.updateProjectList();
+        })
+    }
 
+    private updateProjectList () {
         const userLogin = encodeURIComponent(localStorage.getItem(AppConstants.LOGIN_USER));
         this.httpClient.get(`/api/users/${userLogin}`,
             {
@@ -34,17 +45,14 @@ export class ProjectsBarComponent implements OnInit {
             this.projectsList = response.projects || [];
         }, (error) => {
 
-          this.projectsLoading = false;
+            this.projectsLoading = false;
 
-          this.checkAuthService.check(error);
-
-          if (error.status !== 401) {
-              //this.newProjectMessage = `Une erreur inconnue s'est produite, veuillez réessayer plutard`;
-          }
+            this.checkAuthService.check(error);
         });
-  }
+    }
 
-  newProject() {
-      //this.router.navigate(['dashboard/newproject']);
-  }
+    public ngOnDestroy (): void {
+        this.updateListProjectSub.unsubscribe();
+        this.updateListProjectSub = null;
+    }
 }
