@@ -16,13 +16,13 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Firstname</th>
+                    <th>Utilisateur</th>
                     <th>Rôle</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let user of currentProject.users">
-                    <td>Med Amine</td>
+                    <td><span class="username">{{ user.name }} {{ user.username }}</span></td>
                     <td>Developpeur</td>
                 </tr>
                 <tr *ngIf="currentProject.users && currentProject.users.length === 0"

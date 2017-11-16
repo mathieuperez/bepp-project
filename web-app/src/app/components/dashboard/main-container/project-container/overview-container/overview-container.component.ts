@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AppConstants} from "../../../../../app-constants";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     templateUrl: './overview-container.component.html',
@@ -15,7 +16,9 @@ export class OverviewContainerComponent implements OnInit {
 
     private currentProject: any;
 
-    constructor(private httpClient: HttpClient,
+    private routeParamsSub: Subscription;
+
+    public constructor(private httpClient: HttpClient,
                 private activatedRoute: ActivatedRoute) {
         this.loading = true;
     }
@@ -23,7 +26,8 @@ export class OverviewContainerComponent implements OnInit {
     public ngOnInit(): void {
         this.loading = true;
 
-        this.activatedRoute.parent.params.subscribe((params) => {
+        this.routeParamsSub = this.activatedRoute.parent.params.subscribe((params) => {
+            console.log (params)
             let httpParams = new HttpParams()
                 .set('token', localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME));
 
@@ -35,14 +39,20 @@ export class OverviewContainerComponent implements OnInit {
             ).subscribe((response: any) => {
                 this.loading = false;
                 this.currentProject = response[0];
-                this.currentProject.users = [];
+
+                console.log (this.currentProject)
             }, (error) => {
                 this.loading = false;
 
-                console.log ("error")
-                console.log (error)
+                console.log ("error");
+                console.log (error);
             });
         });
+    }
+
+    public ngOnDestroy (): void {
+        this.routeParamsSub.unsubscribe();
+        this.routeParamsSub = null;
     }
 
     toggleAddMember() {

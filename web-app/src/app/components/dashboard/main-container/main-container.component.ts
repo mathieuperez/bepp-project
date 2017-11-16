@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Subscription} from "rxjs/Subscription";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-main-container',
@@ -8,9 +10,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class MainContainerComponent implements OnInit {
 
-  constructor() { }
+    public constructor() { }
 
-  ngOnInit() {
-  }
+    public ngOnInit(): void {}
+
+    public ngOnDestroy ():void  {}
 
 }
