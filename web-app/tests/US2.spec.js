@@ -1,4 +1,4 @@
-// Test for US2 and US3
+// Test for US2
 
 describe('Creating a project', function() {
 
@@ -6,11 +6,10 @@ describe('Creating a project', function() {
 
         browser.get('http://localhost:8080/');
 
-        //Fill the email and password fields
+        //Fill the email and password fields and submit
         element(by.name('email')).sendKeys('amine@email.com');
         element(by.name('password')).sendKeys('123');
 
-        //Click on login
         element(by.name('login')).click();
 
         //Waiting form to appear
@@ -20,11 +19,11 @@ describe('Creating a project', function() {
 
         element(by.name('newproject')).click();
 
-
         browser.wait(function() {
             return element(by.name('addproject')).isPresent();
         }, 5000);
 
+        // Fill the form
         element(by.name('project-name')).sendKeys('ProjetTest');
         element(by.name('datedebut')).sendKeys('17112017');
         element(by.name('nbSprints')).sendKeys('3');
@@ -35,6 +34,7 @@ describe('Creating a project', function() {
 
         browser.sleep(3000);
 
+        //Expect to go the project overview page
         expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard/projects/ProjetTest/overview");
 
     });

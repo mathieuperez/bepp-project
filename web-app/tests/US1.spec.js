@@ -4,14 +4,17 @@ describe('Creating a user account', function() {
 
     it('The test should be successful if the user is created and redirected to the dashboard', function() {
 
+        //Go to login page
         browser.get('http://localhost:8080/');
 
+        //Hit sign up button
         element(by.name('signup')).click();
 
         browser.wait(function() {
             return element(by.name('createaccount')).isPresent();
         }, 5000);
 
+        //Fill the sign up form and submit it
         element(by.name('name')).sendKeys('Med');
         element(by.name('surname')).sendKeys('Amn');
         element(by.name('email')).sendKeys('test@email.com');
@@ -22,6 +25,7 @@ describe('Creating a user account', function() {
 
         browser.sleep(1000);
 
+        //Should be redirected to the dashboard !
         expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard");
 
     });

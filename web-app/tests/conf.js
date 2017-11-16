@@ -4,6 +4,7 @@ exports.config = {
     specs: [
         'login_logout.spec.js',
         'US1.spec.js',
-        'US2.spec.js'
+        'US2.spec.js',
+        'US3.spec.js'
     ]
 }
