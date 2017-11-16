@@ -22,7 +22,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of currentProject.users">
-                    <td><span class="email">{{ user.login }}</span>&nbsp;(<span name="{{ user.name }}" class="username">{{ user.name }} {{ user.surname }}</span>)</td>
+                    <td ><span class="email" id="{{ user.login }}">{{ user.login }}</span>&nbsp;(<span class="username">{{ user.name }} {{ user.surname }}</span>)</td>
                     <td>{{ user.role }}</td>
                 </tr>
                 <tr *ngIf="currentProject.users && currentProject.users.length === 0"

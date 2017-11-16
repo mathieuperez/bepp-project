@@ -27,7 +27,7 @@ describe('Adding a memeber to a project', function() {
         browser.sleep(5000);
 
         //Verify the added user
-        element(by.name('Amine')).isPresent();
+        element(by.id('Amine')).isPresent();
 
         //Click to logout
         element(by.name('logout')).click();
