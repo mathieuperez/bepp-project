@@ -39,38 +39,52 @@
 
         <div class="col-md-9">
             <div [hidden]="!showAddMember" class="panel panel-default">
-
-                <table class="table">
+                <h4 align="center">Ajouter un membre</h4>
+                <form novalidate [formGroup]="addMemberForm">
+                    <table class="table addMember">
                     <tr>
 
                         <td>
-                            <div class="btn-group">
-                                <select class="form-control" name="Developpeur">
-                                    <option selected disabled hidden>Membre</option>
-                                    <option>Mathieu</option>
-                                    <option>Adrien</option>
-                                </select>
+                            <div class="form-group has-feedback"
+                                 [ngClass]="{ 'has-error': login.invalid && (login.dirty || login.touched || addMemberFormSubmitted) }">
+                                <label for="addedUserLogin">Adresse email à ajouter</label>
+                                <input type="email"
+                                       class="form-control"
+                                       id="addedUserLogin"
+                                       placeholder="Email"
+                                       name="login"
+                                       formControlName="login"
+                                       [email]="true"/>
+
+                                <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
+                                      [ngClass]="{ 'show': login.invalid && (login.dirty || login.touched || addMemberFormSubmitted) }"></span>
+                                <div class="col-12 text-danger"
+                                     *ngIf="login.invalid && (login.dirty || login.touched || addMemberFormSubmitted)">
+                                    <span class="validation-message" *ngIf="login.errors.required">L'adresse email est requis.</span>
+                                    <span class="validation-message" *ngIf="login.errors.email">L'adresse email entrée est invalide</span>
+                                </div>
                             </div>
+
                         </td>
-
-                        <td>
-
                         <td>
                             <div class="btn-group">
+                                <div class="form-group">
+                                    <label for="addedUserRole">Rôle</label>
+                                    <select id="addedUserRole"
+                                            class="form-control"
+                                            [formControlName]="'role'">
+                                        <option value="Product Owner">Product Owner</option>
+                                        <option value="Développeur" [selected]="true">Développeur</option>
 
-                                <select class="form-control">
-                                    <option selected disabled hidden>Rôle</option>
-                                    <option>Product Owner</option>
-                                    <option>Développeur</option>
-
-                                </select>
+                                    </select>
+                                </div>
                             </div>
                         </td>
 
                     </tr>
 
                 </table>
-
+                </form>
             </div>
         </div>
         <div class="col-md-3">
@@ -79,7 +93,7 @@
             </div>
 
             <div class="panel-body" [hidden]="!showAddMember">
-                <button class="btn-add btn btn-success pull-right" (click)="AddMember()">Ajouter</button>
+                <button class="btn-add btn btn-success pull-right" (click)="submitAddMemberForm()">Ajouter</button>
             </div>
 
         </div>

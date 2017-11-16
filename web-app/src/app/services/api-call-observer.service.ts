@@ -18,6 +18,4 @@ export class ApiCallingObserverService {
         this.updateListProject = new Subject<boolean>();
     }
 
-
-
 }

@@ -307,6 +307,9 @@ app.get('/api/projects/:name', function (req, res) {
 app.put('/api/projects/:name/users/:login', function (req, res) {
     var projectName = req.params.name;
     var userLogin = req.params.login;
+
+    var role = req.body.role;
+
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
     var db = req.db;
 
@@ -347,6 +350,7 @@ app.put('/api/projects/:name/users/:login', function (req, res) {
                                 if (docsProject[0].users != undefined)
                                     delete docsProject[0]['users'];
 
+                                docsProject[0].role = role;
 
                                 console.log("Add P:");
                                 console.log(userQuery);

@@ -11,8 +11,8 @@
                 Pas encore de projet
             </li>
             <li *ngFor="let project of projectsList" class="list-group-item project">
-                <a class="pointer-cursor" [routerLink]="['projects', project]" >
-                    {{ project }}
+                <a class="pointer-cursor" [routerLink]="['projects', project.name]" >
+                    {{ project.name }}
                 </a>
             </li>
         </ul>

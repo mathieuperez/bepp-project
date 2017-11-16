@@ -66,6 +66,8 @@ export class SignupComponent implements OnInit {
 
     public submitSignUpForm () {
         this.signupSubmitted = true;
+        console.log (this.signupForm)
+        console.log (this.signupLoading)
         if (this.signupForm.valid && !this.signupLoading) {
             this.signupLoading = true;
             this.httpClient.post("/api/users",
@@ -84,6 +86,7 @@ export class SignupComponent implements OnInit {
                 ).subscribe((response: any) => {
                     this.signupLoading = false;
                     localStorage.setItem(AppConstants.ACCESS_COOKIE_NAME, response['token']);
+                    localStorage.setItem(AppConstants.LOGIN_USER, this.signupForm.value.login);
                     this.router.navigate(['/dashboard']);
                 }, () => {
                     this.signupLoading = false;

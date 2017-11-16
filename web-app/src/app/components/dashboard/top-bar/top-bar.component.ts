@@ -23,9 +23,8 @@ export class TopBarComponent {
      */
     public doLogout () {
         localStorage.removeItem(AppConstants.ACCESS_COOKIE_NAME);
-
+        localStorage.removeItem(AppConstants.LOGIN_USER);
         // TODO Call logout api service
-
         this.router.navigate(['login'])
     }
 
