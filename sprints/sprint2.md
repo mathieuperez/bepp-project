@@ -8,6 +8,7 @@
 | 6 | En tant que **développeur**, je souhaite pouvoir modifier / supprimer une US du Backlog d'un projet.| 1 | 2 | :x:
 | 7 | En tant que **développeur**, je souhaite pouvoir ajouter un sprint (Date début, durée) à un projet.| 1 | 3 | :x:
 | 18 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des US contenues dans le Backlog d'un projet.| 2 | 4 | :x:
+| 23 | En tant que **Product Owner**, je souhaite pouvoir saisir et modifier les priorités des US.| 1 | 2 | :x:
 
 ### Tâches
 
