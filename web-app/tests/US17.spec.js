@@ -6,7 +6,7 @@ describe('Adding a memeber to a project', function() {
         browser.get('http://localhost:8080/');
 
         //Fill the email and password fields and submit
-        element(by.name('email')).sendKeys('Amine@email.com');
+        element(by.name('email')).sendKeys('amine@email.com');
         element(by.name('password')).sendKeys('123');
 
         element(by.name('login')).click();
@@ -16,7 +16,7 @@ describe('Adding a memeber to a project', function() {
         }, 5000);
 
         //Select the created test project
-        element(by.id('ProjetTest')).click();
+        element(by.name('ProjetTest')).click();
 
         browser.wait(function() {
             return element(by.name('vueensemble')).isPresent();
@@ -27,7 +27,7 @@ describe('Adding a memeber to a project', function() {
         browser.sleep(5000);
 
         //Verify the added user
-        element(by.id('Amine')).isPresent();
+        element(by.id('med@email.com')).isPresent();
 
         //Click to logout
         element(by.name('logout')).click();

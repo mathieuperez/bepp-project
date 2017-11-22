@@ -17,7 +17,7 @@ describe('Creating a user account', function() {
         //Fill the sign up form and submit it
         element(by.name('name')).sendKeys('Amine');
         element(by.name('surname')).sendKeys('Amn');
-        element(by.name('email')).sendKeys('Amine@email.com');
+        element(by.name('email')).sendKeys('amine@email.com');
         element(by.name('password1')).sendKeys('123');
         element(by.name('password2')).sendKeys('123');
 
@@ -26,7 +26,7 @@ describe('Creating a user account', function() {
         browser.sleep(1000);
 
         //Should be redirected to the dashboard !
-        expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard");
+        expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard/newproject");
 
         //Click to logout
         element(by.name('logout')).click();

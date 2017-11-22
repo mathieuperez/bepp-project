@@ -5,8 +5,27 @@ describe('Adding a memeber to a project', function() {
 
         browser.get('http://localhost:8080/');
 
+        //Hit sign up button
+        element(by.name('signup')).click();
+
+        browser.wait(function() {
+            return element(by.name('createaccount')).isPresent();
+        }, 5000);
+
+        //Fill the sign up form and submit it
+        element(by.name('name')).sendKeys('Avfmine');
+        element(by.name('surname')).sendKeys('Anmn');
+        element(by.name('email')).sendKeys('med@email.com');
+        element(by.name('password1')).sendKeys('123');
+        element(by.name('password2')).sendKeys('123');
+
+        element(by.name('createaccount')).click();
+
+        //Click to logout
+        element(by.name('logout')).click();
+
         //Fill the email and password fields and submit
-        element(by.name('email')).sendKeys('Amine@email.com');
+        element(by.name('email')).sendKeys('amine@email.com');
         element(by.name('password')).sendKeys('123');
 
         element(by.name('login')).click();
@@ -31,7 +50,7 @@ describe('Adding a memeber to a project', function() {
         browser.sleep(5000);
 
         //Add the user email and select a task and submit
-        element(by.id('addedUserLogin')).sendKeys('Amine@email.com');
+        element(by.id('addedUserLogin')).sendKeys('amine@email.com');
 
         browser.sleep(1000);
 
@@ -39,7 +58,7 @@ describe('Adding a memeber to a project', function() {
         {
             eachElement.click();
             browser.driver.sleep(500);
-            element(by.id('OptionDev')).click();
+            element(by.id('addedUserRole')).click();
             browser.driver.sleep(500);
         });
 
@@ -52,3 +71,4 @@ describe('Adding a memeber to a project', function() {
 
     });
 });
+

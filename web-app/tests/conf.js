@@ -12,4 +12,5 @@ exports.config = {
         'US4.spec.js',
         'US17.spec.js'
     ]
+
 }

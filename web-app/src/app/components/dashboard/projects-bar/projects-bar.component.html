@@ -11,13 +11,13 @@
                 Pas encore de projet
             </li>
             <li *ngFor="let project of projectsList" class="list-group-item project">
-                <a class="pointer-cursor" name={{project.name}} [routerLink]="['projects', project.name]" >
+                <a class="pointer-cursor" [name]="project.name" [routerLink]="['projects', project.name]" >
                     {{ project.name }}
                 </a>
             </li>
         </ul>
     <div class="panel-body">
-        <a class="btn btn-primary pull-right"
+        <a class="btn btn-primary pull-right" name="newproject"
             routerLink="newproject">Nouveau projet</a>
     </div>
 </div>

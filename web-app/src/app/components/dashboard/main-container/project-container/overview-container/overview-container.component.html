@@ -22,7 +22,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of currentProject.users">
-                    <td ><span class="email" id="{{ user.login }}">{{ user.login }}</span>&nbsp;(<span class="username">{{ user.name }} {{ user.surname }}</span>)</td>
+                    <td><span class="email" [id]="user.login">{{ user.login }}</span>&nbsp;(<span class="username">{{ user.name }} {{ user.surname }}</span>)</td>
                     <td>{{ user.role }}</td>
                 </tr>
                 <tr *ngIf="currentProject.users && currentProject.users.length === 0"
@@ -94,11 +94,11 @@
         </div>
         <div class="col-md-3">
             <div class="panel-body" [hidden]="showAddMember">
-                <button class="btn-add btn btn-primary pull-right" (click)="toggleAddMember()">Nouveau membre</button>
+                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">Nouveau membre</button>
             </div>
 
             <div class="panel-body" [hidden]="!showAddMember">
-                <button class="btn-add btn btn-success pull-right" (click)="submitAddMemberForm()">Ajouter</button>
+                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">Ajouter</button>
             </div>
 
         </div>
