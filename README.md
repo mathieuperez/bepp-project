@@ -18,10 +18,10 @@ Projet de l'UE **Conduite de Projet**
 
 | ID | User Story | Difficulté | Priorité | Fait |
 | --- | --- | --- | --- | --- |
-| 1 | En tant qu'**Utilisateur**, je souhaite pouvoir créer un compte afin de me connecter.| 2 | 1 | X 
-| 2 | En tant qu'**Utilisateur**, je souhaite pouvoir créer un projet (Nom projet). | 1 | 1 | X 
-| 3 | En tant qu'**Utilisateur**, je souhaite pouvoir accéder à la liste de mes projets.| 1 | 4 | X 
-| 4 | En tant que **développeur**, je souhaite pouvoir inviter des utilisateurs en leur affectant un rôle (Product Owner / Developpeur) à mon projet.| 2 | 4 | X
+| 1 | En tant qu'**Utilisateur**, je souhaite pouvoir créer un compte afin de me connecter.| 2 | 1 | :white_check_mark: 
+| 2 | En tant qu'**Utilisateur**, je souhaite pouvoir créer un projet (Nom projet). | 1 | 1 | :white_check_mark:  
+| 3 | En tant qu'**Utilisateur**, je souhaite pouvoir accéder à la liste de mes projets.| 1 | 4 | :white_check_mark:  
+| 4 | En tant que **développeur**, je souhaite pouvoir inviter des utilisateurs en leur affectant un rôle (Product Owner / Developpeur) à mon projet.| 2 | 4 | :white_check_mark: 
 | 5 | En tant que **développeur**, je souhaite ajouter une User Story (Description, Difficulté (Suite de Fibonacci)) au BackLog d'un projet.| 1 | 2 | X   
 | 6 | En tant que **développeur**, je souhaite pouvoir modifier / supprimer une US du Backlog d'un projet.| 1 | 2 | X
 | 7 | En tant que **développeur**, je souhaite pouvoir ajouter un sprint (Date début, durée) à un projet.| 1 | 3 | X
@@ -33,7 +33,7 @@ Projet de l'UE **Conduite de Projet**
 | 13 | En tant que **développeur**, je souhaite assigner une tâche en sélectionnant dans une liste le développeur qui s'occupera de cette tâche.| 2 | 4 | X
 | 15 | En tant que **développeur**, je souhaite pouvoir changer l'état des tâches (TODO, DOING, DONE).| 2 | 4 | X
 | 16 | En tant que **développeur**, je souhaite associer un build à un sprint.| 1 | 4 | X
-| 17 | En tant qu'**Utilisateur**, je souhaite accéder à la liste des membres d'un projet.| 1 | 4 | X
+| 17 | En tant qu'**Utilisateur**, je souhaite accéder à la liste des membres d'un projet.| 1 | 4 | :white_check_mark: 
 | 18 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des US contenues dans le Backlog d'un projet.| 2 | 4 | X
 | 19 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des US ciblées dans un Sprint d'un projet.| 2 | 4 | X
 | 20 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des tâches d'un sprint d'un projet avec pour chaque tâche l'assignation, l'état et la date de début/fin.| 2 | 4 | X
