@@ -1,14 +1,16 @@
-api:
-  build: ./api
-  ports:
-    - 8080
-  links:
-    - mongo
-  environment:
-    - MONGO_HOST=mongo
-  command: "node api.js"
-mongo:
-  image: mongo
-  ports:
-    - "27017:27017"
-  command: "--smallfiles --logpath=/dev/null"
+version: '2'
+
+services:
+  mongo:
+    image: mongo:3.4
+    restart: always
+    ports:
+      - "27017:27017"
+  angular:
+    build: web-app
+  express:
+    build: api
+    ports:
+      - "8080:8080"
+    links:
+      - mongo

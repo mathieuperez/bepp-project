@@ -4,6 +4,7 @@ USER node
 
 RUN mkdir -p /home/node/app
 
+
 WORKDIR /home/node/app
 
 COPY package.json /home/node/app
@@ -14,6 +15,6 @@ RUN npm install -save
 
 COPY . /home/node/app
 
-EXPOSE 8080
+EXPOSE 4020
 
-CMD ["node", "api.js"]
+CMD ["npm", "run-script", "build"]
