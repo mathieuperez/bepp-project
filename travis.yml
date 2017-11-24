@@ -1,0 +1,21 @@
+language: node_js
+sudo: required
+services:
+  - docker
+cache:
+  directories:
+    - node_modules
+node_js:
+  - 6
+before_install:
+  - cd api/
+  - npm install -g node-gyp
+before_script:
+  - npm install -g standard
+  - docker-compose build
+  - docker-compose up
+  - sleep 3
+script:
+  - npm test
+after_script:
+  - docker-compose kill
