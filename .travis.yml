@@ -15,7 +15,7 @@ before_script:
   - docker-compose build
   - docker-compose up -d
   - sleep 3
-  - mongo --eval "use nodetest1;db.dropDatabase();"
+  - mongo "localhost:27017/nodetest1" --eval "db.dropDatabase();"
 script:
   - npm test
 after_script:
