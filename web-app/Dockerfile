@@ -2,6 +2,8 @@ FROM node:9
 
 USER node
 
+RUN rm -rf /home/node/app/dist/
+
 RUN mkdir -p /home/node/app
 
 
