@@ -198,7 +198,7 @@
         }
       }
     },
-    "/api/US/" : {
+    "/api/projects/{name}/US/" : {
       "put" : {
         "tags" : [ "User Stories" ],
         "summary" : "Create User Stories",
@@ -206,6 +206,12 @@
         "operationId" : "createUS",
         "produces" : [ "application/xml", "application/json" ],
         "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "description" : "The name of the US' project.",
+          "required" : true,
+          "type" : "string"
+        }, {
           "in" : "body",
           "name" : "body",
           "description" : "Created User Stories object",
@@ -218,32 +224,20 @@
           "200" : {
             "description" : "successful operation"
           },
+          "401" : {
+            "description" : "Failed to authenticate token"
+          },
           "403" : {
             "description" : "User not allowed"
-          }
-        }
-      }
-    },
-    "/api/US/{id}" : {
-      "patch" : {
-        "tags" : [ "User Stories" ],
-        "summary" : "Modify US by id",
-        "description" : "",
-        "operationId" : "patchUSById",
-        "produces" : [ "application/json" ],
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "description" : "The id of the US to patch.",
-          "required" : true,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "successful operation"
           },
           "404" : {
-            "description" : "US not found"
+            "description" : "Page introuvable"
+          },
+          "422" : {
+            "description" : "Missing arguments"
+          },
+          "500" : {
+            "description" : "There was a problem with the database"
           }
         }
       }
@@ -272,13 +266,71 @@
           "200" : {
             "description" : "successful operation"
           },
+          "401" : {
+            "description" : "Failed to authenticate token"
+          },
+          "403" : {
+            "description" : "User not allowed"
+          },
           "404" : {
+            "description" : "Page introuvable"
+          },
+          "409" : {
             "description" : "US not found"
+          },
+          "422" : {
+            "description" : "Missing arguments"
+          },
+          "500" : {
+            "description" : "There was a problem with the database"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "User Stories" ],
+        "summary" : "Modify US by id",
+        "description" : "",
+        "operationId" : "patchUSById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The id of the US to patch.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "path",
+          "description" : "The name of the US' project.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "401" : {
+            "description" : "Failed to authenticate token"
+          },
+          "403" : {
+            "description" : "User not allowed"
+          },
+          "404" : {
+            "description" : "Page introuvable"
+          },
+          "409" : {
+            "description" : "US not found"
+          },
+          "422" : {
+            "description" : "Missing arguments"
+          },
+          "500" : {
+            "description" : "There was a problem with the database"
           }
         }
       }
     },
-    "/api/PO/US/{id}" : {
+    "/api/projects/{name}/user/{role}/US/{id}" : {
       "patch" : {
         "tags" : [ "User Stories" ],
         "summary" : "Modify US' priority",
@@ -291,21 +343,45 @@
           "description" : "The id of the US to modify",
           "required" : true,
           "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "path",
+          "description" : "The name of the US' project.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "role",
+          "in" : "path",
+          "description" : "The user's role.",
+          "required" : true,
+          "type" : "string"
         } ],
         "responses" : {
           "200" : {
             "description" : "successful operation"
           },
+          "401" : {
+            "description" : "Failed to authenticate token"
+          },
           "403" : {
             "description" : "User not allowed"
           },
           "404" : {
+            "description" : "Page introuvable"
+          },
+          "409" : {
             "description" : "US not found"
+          },
+          "422" : {
+            "description" : "Missing arguments"
+          },
+          "500" : {
+            "description" : "There was a problem with the database"
           }
         }
       }
     },
-    "/api/sprints/" : {
+    "/api/projects/{name}/sprints/" : {
       "put" : {
         "tags" : [ "Sprint" ],
         "summary" : "Create Sprint",
@@ -313,6 +389,12 @@
         "operationId" : "createSprint",
         "produces" : [ "application/xml", "application/json" ],
         "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "description" : "The name of the US' project.",
+          "required" : true,
+          "type" : "string"
+        }, {
           "in" : "body",
           "name" : "body",
           "description" : "Created Sprint object",
@@ -325,11 +407,23 @@
           "200" : {
             "description" : "successful operation"
           },
+          "401" : {
+            "description" : "Failed to authenticate token"
+          },
           "403" : {
             "description" : "User not allowed"
           },
+          "404" : {
+            "description" : "Page introuvable"
+          },
           "409" : {
             "description" : "Already a sprint at this date"
+          },
+          "422" : {
+            "description" : "Missing arguments"
+          },
+          "500" : {
+            "description" : "There was a problem with the database"
           }
         }
       }
@@ -358,11 +452,23 @@
           "200" : {
             "description" : "successful operation"
           },
+          "401" : {
+            "description" : "Failed to authenticate token"
+          },
           "403" : {
             "description" : "User not allowed"
           },
           "404" : {
-            "description" : "sprint or US not found"
+            "description" : "Page introuvable"
+          },
+          "409" : {
+            "description" : "Sprint or US not found"
+          },
+          "422" : {
+            "description" : "Missing arguments"
+          },
+          "500" : {
+            "description" : "There was a problem with the database"
           }
         }
       }
