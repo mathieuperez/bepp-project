@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-backlog-container',
@@ -8,9 +9,42 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class BacklogContainerComponent implements OnInit {
 
-  constructor() { }
+    /**
+     * If true, the form for adding a US is shown.
+     * @type {boolean}
+     */
+  private showAddUS: boolean;
 
-  ngOnInit() {
+    /**
+     * FormGroup for add member form
+     */
+  private addUSForm: FormGroup;
+
+
+  constructor() {
+      this.showAddUS = false;
   }
 
+  ngOnInit() {
+
+      this.addUSForm = new FormGroup ({
+          us: new FormControl('', [Validators.required]),
+          priority: new FormControl('', [Validators.required]),
+          difficulty: new FormControl('', [Validators.required])
+      });
+
+      this.addUSForm.setValue({
+          us: "En tant que bla bla ...",
+          priority: "",
+          difficulty : ""
+      });
+  }
+
+  public toggleAddUS(): void {
+        this.showAddUS = !this.showAddUS;
+  }
+
+  public submitAddUSForm() {
+      this.toggleAddUS();
+  }
 }

@@ -7,16 +7,83 @@
       <th>Difficulté</th>
       <th>Priorité</th>
       <th>Fait</th>
+      <th>Action</th>
     </tr>
     <tr>
-      <th>1</th>
-      <th>En tant que ***, Je souhaite *** afin de ***</th>
-      <th>3</th>
-      <th>1</th>
-      <th>X</th>
+      <td>1</td>
+      <td>En tant que ***, Je souhaite *** afin de ***</td>
+      <td>3</td>
+      <td>1</td>
+      <td>X</td>
+      <td>
+
+          <button type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          </button>
+
+          <button type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          </button>
+
+      </td>
+
     </tr>
   </table>
 </div>
 
-<button class="btn btn-primary  pull-right">Nouvelle UserStory</button>
+<div class="row">
+
+    <div class="col-md-9">
+
+
+
+        <div [hidden]="!showAddUS" class="panel panel-default">
+
+
+            <h4 align="center">Ajouter une Userstory</h4>
+
+            <form novalidate [formGroup]="addUSForm">
+
+                <table class="table addMember">
+                    <tr>
+                        <td>
+                            <div class="form-group has-feedback">
+                                <label>Userstory à ajouter</label>
+                                <input class="form-control" size="100" name="us" placeholder="En tant que *** je souhaite *** afin de ***"/>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="btn-group">
+                                <div class="form-group">
+                                    <label>Priorité</label>
+                                    <input type = "number" min="0" size="5" name="priority" class="form-control"/>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="btn-group">
+                                <div class="form-group">
+                                    <label>Difficulté</label>
+                                    <input type = "number" min="0" size="5" name="difficulty" class="form-control"/>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel-body" [hidden]="showAddUS">
+            <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddUS()">Ajouter Userstory</button>
+        </div>
+        <div class="panel-body" [hidden]="!showAddUS">
+            <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddUSForm()">Ajouter</button>
+        </div>
+    </div>
+
+</div>
 
