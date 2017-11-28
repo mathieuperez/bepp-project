@@ -7,6 +7,7 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 const userStories = require('./userStories');
+const router = express.Router();
 
 var app = express();
 
@@ -56,8 +57,8 @@ function verifyAuth(req, res, next) {
 //Add a UserStory Service
 //Create a userStory in the userStoryCollection. Also add it in the projectCollection array: userStories
 //Suppose :
-// POST : {"description":"foo", "difficulty":"difficulty"}
-// POST : url?description=foo&difficulty=difficulty
+// PUT : {"name":"foo"}
+// PUT : url?name=foo
 app.put('/projects/:name', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
@@ -106,8 +107,8 @@ app.put('/projects/:name', function (req, res) {
 //Add a UserStory Service
 //Update a userStory (by it's id) in the userStoryCollection. Also update the project's array of userStories
 //Suppose :
-// POST : {"description":"foo", "difficulty":"difficulty"}
-// POST : url?description=foo&difficulty=difficulty
+// PATCH : {"id":"usid", "name":"project1"}
+// PATCH : url?id=usid&name=project1
 app.patch('/:id/projects/:name', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
@@ -151,14 +152,14 @@ app.patch('/:id/projects/:name', function (req, res) {
 
 
 //Add a UserStory Service
-//Delete a userStory (by it's id) in the userStoryCollection. Also update the project's array of userStories
+//Delete a userStory (by it's description) in the userStoryCollection. Also update the project's array of userStories
 //Suppose :
-// POST : {"description":"foo", "difficulty":"difficulty"}
-// POST : url?description=foo&difficulty=difficulty
-app.delete('/:id/projects/:name', function (req, res) {
+// DELETE : {"description":"foo"}
+// DELETE : url?description=foo
+app.delete('/:description/projects/:name', function (req, res) {
     //var projectName = req.params.name;
     var projectName = req.decoded.projects;
-    var userStoryId = req.params.id;
+    var userStoryDescription = req.params.description;
 
         var db = req.db;
         var userStoryCollection = db.get('userStoryCollection');
@@ -166,15 +167,62 @@ app.delete('/:id/projects/:name', function (req, res) {
 
         verifyAuth(req, res, function () {
         //Delete the userStory
-        var userStoryQuery = {description: description, difficulte: difficulte};
-        var updateUserStory = {description: description, difficulte: difficulte};
+        var userStoryQuery = {description: userStoryDescription};
+        userStoryCollection.remove(userStoryQuery, function (err, doc) {
+        
+            //Update projectCollection by removing the userstory of it's list
+            var updateProject = {$pull: {userStories: description}};
+            var projectQuery = {name: projectName};
+            projectCollection.update(projectQuery, updateProject, {multi: true}, function (err, doc) {
+                if (err) {
+                    res.status(500).send("There was a problem with the database while updating the project: removing the userStory in the project's userStory list.");
+                }
+                else {
+                    res.status(200).send({success: true});
+                }
+            });
 
-        userStoryCollection.update(userStoryQuery, updateUserStory, {upsert: true}, function (err, doc) {
-            
+
+
         });
     }); //end of verifyAuth
 });
 
 
+
+//Add a UserStory Service
+//Update the priority of a userStory in the userStoryCollection.
+//Suppose :
+// PATCH : {"id":"usid", "name":"project1", "role":"PO"}
+// PATCH : url?id=usid&name=project1&role=PO
+app.patch('/:id/projects/:name/user/:role', function (req, res) {
+    var priority = req.body.priority;
+    //var projectName = req.params.name;
+    var projectName = req.decoded.projects;
+    var userStoryId = req.params.id;
+    var userRole = req.params.role;
+
+    if (priority == null) {
+        res.status(422).send("Missing Arguments.");
+    }
+    else {
+        var db = req.db;
+        var userStoryCollection = db.get('userStoryCollection');
+
+        verifyAuth(req, res, function () {
+            //Update the userStory
+            var userStoryQuery = {id: id};
+            var updateUserStory = {$set: {"priority": priority}};
+            userStoryCollection.update(userStoryQuery, updateUserStory, {upsert: true}, function (err, doc) {
+                if (err) {
+                    res.status(500).send("There was a problem with the database while updating the userStory's priority.");
+                }
+                else {
+                    res.status(200).send({success: true});
+                }
+            });
+        }); //end of verifyAuth
+    }
+});
 
 module.exports = app;

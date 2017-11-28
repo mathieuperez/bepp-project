@@ -7,6 +7,7 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 const users = require('./users');
+const router = express.Router();
 
 var app = express();
 
@@ -126,3 +127,6 @@ app.get('/:login', function (req, res) {
         }
     });
 });
+
+
+module.exports = app;
