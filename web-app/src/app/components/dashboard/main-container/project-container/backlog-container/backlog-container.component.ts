@@ -16,6 +16,12 @@ export class BacklogContainerComponent implements OnInit {
   private showAddUS: boolean;
 
     /**
+     * If true, the form for adding a US is shown.
+     * @type {boolean}
+     */
+    private showModifyUS: boolean;
+
+    /**
      * FormGroup for add member form
      */
   private addUSForm: FormGroup;
@@ -23,6 +29,7 @@ export class BacklogContainerComponent implements OnInit {
 
   constructor() {
       this.showAddUS = false;
+      this.showModifyUS = false;
   }
 
   ngOnInit() {
@@ -34,7 +41,7 @@ export class BacklogContainerComponent implements OnInit {
       });
 
       this.addUSForm.setValue({
-          us: "En tant que bla bla ...",
+          us: "",
           priority: "",
           difficulty : ""
       });
@@ -44,7 +51,21 @@ export class BacklogContainerComponent implements OnInit {
         this.showAddUS = !this.showAddUS;
   }
 
+  public toggleModifyUS(): void {
+        this.showModifyUS = !this.showModifyUS;
+  }
+
   public submitAddUSForm() {
       this.toggleAddUS();
+  }
+
+  public deleteUS() {
+
+  }
+
+  public modifyUS() {
+      console.log("i'm here");
+        this.toggleModifyUS();
+
   }
 }

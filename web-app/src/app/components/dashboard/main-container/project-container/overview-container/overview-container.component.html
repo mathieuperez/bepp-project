@@ -94,12 +94,21 @@
         </div>
         <div class="col-md-3">
             <div class="panel-body" [hidden]="showAddMember">
-                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">Nouveau membre</button>
+                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <span> Assigner un membre</span>
+                </button>
             </div>
 
             <div class="panel-body" [hidden]="!showAddMember">
-                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">Ajouter</button>
+                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">
+                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                    <span > Ajouter</span>
+                </button>
             </div>
+
+
+
 
         </div>
 
