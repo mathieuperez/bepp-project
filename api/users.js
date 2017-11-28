@@ -11,8 +11,8 @@ const users = require('./users');
 var app = express();
 var router=express.Router();
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.json());
 
 // Make our db accessible to our router
 router.use(function (req, res, next) {

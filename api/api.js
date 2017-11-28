@@ -10,43 +10,21 @@ const users = require('./users');
 const projects = require('./projects');
 const userStories = require('./userStories');
 
-/*
-var routes = require('./routes/index');
-var users = require('./routes/users');
-*/
 var app = express();
-var router=express.Router();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Make our db accessible to our router
-router.use(function (req, res, next) {
+app.use(function (req, res, next) {
     req.db = db;
     next();
 });
 
 // API location
-router.use('/api/users', users);
-router.use('/api/projects', projects);
-router.use('/api/userStories', userStories);
-
-//We can test the POST with CURL commands like (localhost example) :
-//curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
-//curl --data rl --data "name=Humus&description=TreslongueDescription&login=mperez" http://localhost:8080/api/projects/
-//curl --data rl --data "name=Humus&description=TreslongueDescription&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTBjOTNhZmUwNDU4ZjAzNGQ5ZGJlMWUiLCJuYW1lIjoiUHJlc3RhdCIsInN1cm5hbWUiOiJEaW1pdHJpIiwibG9naW4iOiJkcHJlc3RhdCIsInBhc3N3b3JkIjoiZHAzMyIsImlhdCI6MTUxMDc3MzY4OH0.DulBB-8fzxOpGODepAfmLzMiO-zACa5eK2kaO8x_oHU" http://localhost:8080/api/projects/
-//curl -X PUT --data "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTBjOTNhZmUwNDU4ZjAzNGQ5ZGJlMWUiLCJuYW1lIjoiUHJlc3RhdCIsInN1cm5hbWUiOiJEaW1pdHJpIiwibG9naW4iOiJkcHJlc3RhdCIsInBhc3N3b3JkIjoiZHAzMyIsInByb2plY3RzIjpbIkh1bXVzIl0sImlhdCI6MTUxMDc4MDExNX0.w6DjZYUL95QMqFs8nm1UuNekyHeC7a85-OvsHWLZYZQ" http://localhost:8080/api/projects/Humus/users/mperez
-
-//Test procedures :
-//npm i
-//for installing dependencies
-//in a terminal
-//mongodb --dbpath nodes_modules/data/
-// in an other terminal
-//node api.js
-//You can now access http://localhost:8080/api/* !
-
-//Temporally, in the future, set the config in a json file.
+app.use('/api/users', users);
+app.use('/api/projects', projects);
+app.use('/api/userStories', userStories);
 
 app.set('superSecret', "12345"); // secret variable
 
@@ -85,7 +63,7 @@ function verifyAuth(req, res, next) {
 ////// Attach application /////
 
 // Catch all other routes and return an application file
-router.get(['/', '/:requested'], function (req, res, next) {
+app.get(['/', '/:requested'], function (req, res, next) {
     var requestedFileName = req.params.requested ? req.params.requested : 'index.html';
 
     var requestedPath = path.join(__dirname, '../web-app/dist', requestedFileName);
@@ -100,7 +78,7 @@ router.get(['/', '/:requested'], function (req, res, next) {
 });
 
 ///// else page introuvable
-router.use(function (req, res, next) {
+app.use(function (req, res, next) {
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send('Page introuvable !');
 });
