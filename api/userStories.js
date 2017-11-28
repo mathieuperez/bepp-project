@@ -9,12 +9,13 @@ var fs = require('fs');
 const userStories = require('./userStories');
 
 var app = express();
+var router=express.Router();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Make our db accessible to our router
-app.use(function (req, res, next) {
+router.use(function (req, res, next) {
     req.db = db;
     next();
 });
@@ -58,7 +59,7 @@ function verifyAuth(req, res, next) {
 //Suppose :
 // POST : {"description":"foo", "difficulty":"difficulty"}
 // POST : url?description=foo&difficulty=difficulty
-app.put('/projects/:name', function (req, res) {
+router.put('/projects/:name', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
     //var projectName = req.params.name;
@@ -108,7 +109,7 @@ app.put('/projects/:name', function (req, res) {
 //Suppose :
 // POST : {"description":"foo", "difficulty":"difficulty"}
 // POST : url?description=foo&difficulty=difficulty
-app.patch('/:id/projects/:name', function (req, res) {
+router.patch('/:id/projects/:name', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
     //var projectName = req.params.name;
@@ -155,7 +156,7 @@ app.patch('/:id/projects/:name', function (req, res) {
 //Suppose :
 // POST : {"description":"foo", "difficulty":"difficulty"}
 // POST : url?description=foo&difficulty=difficulty
-app.delete('/:id/projects/:name', function (req, res) {
+router.delete('/:id/projects/:name', function (req, res) {
     //var projectName = req.params.name;
     var projectName = req.decoded.projects;
     var userStoryId = req.params.id;
@@ -176,3 +177,5 @@ app.delete('/:id/projects/:name', function (req, res) {
 });
 
 
+
+module.exports = router;

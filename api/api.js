@@ -15,20 +15,21 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 */
 var app = express();
+var router=express.Router();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Make our db accessible to our router
-app.use(function (req, res, next) {
+router.use(function (req, res, next) {
     req.db = db;
     next();
 });
 
 // API location
-app.use('/api/users', users);
-app.use('/api/projects', projects);
-app.use('/api/userStories', userStories);
+router.use('/api/users', users);
+router.use('/api/projects', projects);
+router.use('/api/userStories', userStories);
 
 //We can test the POST with CURL commands like (localhost example) :
 //curl --data rl --data "name=Perez&surname=Mathieu&login=mperez&password=mp33" http://localhost:8080/api/users/
@@ -84,7 +85,7 @@ function verifyAuth(req, res, next) {
 ////// Attach application /////
 
 // Catch all other routes and return an application file
-app.get(['/', '/:requested'], function (req, res, next) {
+router.get(['/', '/:requested'], function (req, res, next) {
     var requestedFileName = req.params.requested ? req.params.requested : 'index.html';
 
     var requestedPath = path.join(__dirname, '../web-app/dist', requestedFileName);
@@ -99,7 +100,7 @@ app.get(['/', '/:requested'], function (req, res, next) {
 });
 
 ///// else page introuvable
-app.use(function (req, res, next) {
+router.use(function (req, res, next) {
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send('Page introuvable !');
 });
