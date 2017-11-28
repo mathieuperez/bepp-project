@@ -9,13 +9,12 @@ var fs = require('fs');
 const userStories = require('./userStories');
 
 var app = express();
-var router=express.Router();
 
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 // Make our db accessible to our router
-router.use(function (req, res, next) {
+app.use(function (req, res, next) {
     req.db = db;
     next();
 });
@@ -58,7 +57,7 @@ function verifyAuth(req, res, next) {
 //Suppose :
 // POST : {"name":"foo", "description":"bar", "token":"token"}
 // POST : url?name=foo&description=bar&token=token
-router.post('/', function (req, res) {
+app.post('/', function (req, res) {
     var name = req.body.name;
     var description = req.body.description;
 
@@ -141,7 +140,7 @@ router.post('/', function (req, res) {
 
 //Get a Project Service
 //From the Project Name
-router.get('/:name', function (req, res) {
+app.get('/:name', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var projectName = req.params.name;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un projet selon son nom
@@ -183,7 +182,7 @@ router.get('/:name', function (req, res) {
 //Suppose :
 // POST : {"name":"foo", "login":"bar"}
 // POST : url?name=foo&login=bar
-router.put('/:name/users/:login', function (req, res) {
+app.put('/:name/users/:login', function (req, res) {
     var projectName = req.params.name;
     var userLogin = req.params.login;
 
@@ -264,4 +263,4 @@ router.put('/:name/users/:login', function (req, res) {
     });
 });
 
-module.exports = router;
+module.exports = app;

@@ -9,13 +9,12 @@ var fs = require('fs');
 const users = require('./users');
 
 var app = express();
-var router=express.Router();
 
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 // Make our db accessible to our router
-router.use(function (req, res, next) {
+app.use(function (req, res, next) {
     req.db = db;
     next();
 });
@@ -25,7 +24,7 @@ app.set('superSecret', "12345"); // secret variable
 
 //Authentification Service
 //Check Login Password
-router.post('/token', function (req, res) {
+app.post('/token', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var userLogin = req.body.login;
     var userPassword = req.body.password;
@@ -62,7 +61,7 @@ router.post('/token', function (req, res) {
 //Suppose :
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
-router.post('/', function (req, res) {
+app.post('/', function (req, res) {
     var name = req.body.name;
     var surname = req.body.surname;
     var login = req.body.login;
@@ -108,7 +107,7 @@ router.post('/', function (req, res) {
 
 //Get a User Service
 //From the Login
-router.get('/:login', function (req, res) {
+app.get('/:login', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var userLogin = req.params.login;
     //Remplacer userTestJSON par une requête MangoDB qui sélectionne un user selon son login
@@ -127,6 +126,3 @@ router.get('/:login', function (req, res) {
         }
     });
 });
-
-
-module.exports = router;
