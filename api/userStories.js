@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Make our db accessible to our router
-app.use(function (req, res, next) {
+router.use(function (req, res, next) {
     req.db = db;
     next();
 });
@@ -59,7 +59,7 @@ function verifyAuth(req, res, next) {
 //Suppose :
 // PUT : {"name":"foo"}
 // PUT : url?name=foo
-app.put('/projects/:name', function (req, res) {
+router.put('/projects/:name', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
     //var projectName = req.params.name;
@@ -109,7 +109,7 @@ app.put('/projects/:name', function (req, res) {
 //Suppose :
 // PATCH : {"id":"usid", "name":"project1"}
 // PATCH : url?id=usid&name=project1
-app.patch('/:id/projects/:name', function (req, res) {
+router.patch('/:id/projects/:name', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
     //var projectName = req.params.name;
@@ -156,7 +156,7 @@ app.patch('/:id/projects/:name', function (req, res) {
 //Suppose :
 // DELETE : {"description":"foo"}
 // DELETE : url?description=foo
-app.delete('/:description/projects/:name', function (req, res) {
+router.delete('/:description/projects/:name', function (req, res) {
     //var projectName = req.params.name;
     var projectName = req.decoded.projects;
     var userStoryDescription = req.params.description;
@@ -195,7 +195,7 @@ app.delete('/:description/projects/:name', function (req, res) {
 //Suppose :
 // PATCH : {"id":"usid", "name":"project1", "role":"PO"}
 // PATCH : url?id=usid&name=project1&role=PO
-app.patch('/:id/projects/:name/user/:role', function (req, res) {
+router.patch('/:id/projects/:name/user/:role', function (req, res) {
     var priority = req.body.priority;
     //var projectName = req.params.name;
     var projectName = req.decoded.projects;
@@ -225,4 +225,4 @@ app.patch('/:id/projects/:name/user/:role', function (req, res) {
     }
 });
 
-module.exports = app;
+module.exports = router;
