@@ -7,8 +7,13 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 const users = require('./users');
+<<<<<<< HEAD
 const projects = require('./projects');
 const userStories = require('./userStories');
+=======
+const users = require('./userStories');
+const users = require('./projects');
+>>>>>>> 41a5c71019a8c0c97a6fbbe2c38350544f466329
 
 var app = express();
 
