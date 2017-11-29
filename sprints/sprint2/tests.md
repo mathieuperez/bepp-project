@@ -9,4 +9,13 @@
 |  18 | <ul><li>Dans la barre de gauche, appuyer sur le projet "TestProject 2".</li><li>Appuyer sur le menu "Sprints".</li><li>Choisir l'élément "Sprint 1".</li><li>Dans le mini Backlog, appuyer sur le bouton "Selectionner Userstory".</li><li>Selectionner la première US dans le backlog qui s'affiche.</li><li>Appuyer sur le bouton "Ajouter".</li><li>Vérifier que l'US s'ajoute bien au MiniBacklog du Sprint.</li></ul> |
 |  23 | <ul><li>Dans la barre de gauche, appuyer sur le projet "TestProject".</li><li>S'assigner en tant que PO dans ce Projet.</li><li>Appuyer sur le menu "Backlog".</li><li>Ajouter une nouvelle US.</li><li>Appuyer sur le bouton "Modifier" associé à la userstory précédente.</li><li>Remplir les champs du modification (priorité = 1).</li><li>Appuyer sur le bouton "Valider".</li><li>Vérifier que l'US a été bien modifiée.</li></ul> |
 
+### Rédaction des tests unitaires
 
+| ID_Tache | Affectation | Durée Estimée (heure homme) | Resultat de TU | Etat | 
+| --- | --- | --- | --- | --- |
+| T15_M  |  | 1 | | :x:
+| T16_M |  | 1 | | :x:
+| T17_M  |  | 1 | | :x:
+| T18_M |  | 1 | | :x:
+| T19_M  |  | 1 | | :x:
+| T20_M |  | 1 | | :x:
