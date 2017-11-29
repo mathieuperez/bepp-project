@@ -15,13 +15,13 @@
 
 | ID_Tache | Description | Affectation | Durée Estimée ( heure homme ) | US Associés | Etat |
 | --- | --- | --- | --- | --- | --- |
-| T1_BUILD | Mettre en place le conteneur "Docker" pour Angular | Dimitri | 5 | ∅ | :white_check_mark:
-| T2_BUILD | Mettre en place le conteneur "Docker" pour Mongo | Dimitri | 5 | ∅ | :white_check_mark:
-| T3_BUILD | Mettre en place le conteneur "Docker" pour Express | Dimitri | 5 | ∅ | :white_check_mark:
-| T4_TEST | Mise en place de "Travis" | Dimitri | 1/2 | ∅ | :white_check_mark:
-| T5_TEST | Mise en place de "Travis" pour exécuter les tests Mocha| Dimitri | 1/2 | ∅ | :white_check_mark:
-| T6_TEST | Mise en place de "Travis" pour exécuter les tests E2E| Dimitri | 1/2 | ∅ | :x:
-| T7_DELIVERY | Configuer Travis pour déployer des releases | Dimitri | 1/2 | ∅ | :x:
+| T1_BUILD | Mettre en place le conteneur "Docker" pour Angular | Dimitri | 4 | ∅ | :white_check_mark:
+| T2_BUILD | Mettre en place le conteneur "Docker" pour Mongo | Dimitri | 2 | ∅ | :white_check_mark:
+| T3_BUILD | Mettre en place le conteneur "Docker" pour Express | Dimitri | 4 | ∅ | :white_check_mark:
+| T4_TEST | Mise en place de "Travis" | Dimitri | 2 | ∅ | :white_check_mark:
+| T5_TEST | Mise en place de "Travis" pour exécuter les tests Mocha| Dimitri | 2 | ∅ | :white_check_mark:
+| T6_TEST | Mise en place de "Travis" pour exécuter les tests E2E| Dimitri | 2 | ∅ | :x:
+| T7_DELIVERY | Configuer Travis pour déployer des releases | Dimitri | 3 | ∅ | :x:
 | T8_P | Créer l'interface Front-end du Backlog contenant : <br><ul><li>Une liste des US associées au Projet</li><li>Un button pour permettre a l'utilisateur de créer une US(Description, Difficulté(suite de fibonacci))</li><li>Un button pour permettre a l'utilisateur de modifier une US</li><li>Un button pour permettre a l'utilisateur de supprimer une US</li></ul>| Amine | 2 | 1 | :x:
 | T9_P | Créer l'interface Front-end du panel des sprint <br><ul><li>Une barre de navigation verticale pour lister les sprint existants</li><li>Un button pour permettre a l'utilisateur de créer un nouveau sprint</li><li>Une interface pour la création d'un nouveau sprint(Date début, durée)</li></ul> | Amine | 1 | 3 | :x:
 | T10_P | Créer l'interface Front-end d'un sprint contenant : <br><ul><li>Une liste des US associées au sprint</li></ul>| Amine | 2 | 1 | :x:
