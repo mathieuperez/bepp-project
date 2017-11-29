@@ -11,7 +11,7 @@ const users = require('./users');
 const projects = require('./projects');
 const userStories = require('./userStories');
 
-var app = express.Router();
+var app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
