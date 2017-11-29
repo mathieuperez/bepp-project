@@ -8,9 +8,21 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class SprintComponent implements OnInit {
 
-  constructor() { }
+  public showSelectUS: boolean;
 
-  ngOnInit() {
+  constructor() {
+      this.showSelectUS = false;
   }
 
+  ngOnInit() {
+
+  }
+
+  public toggleSelectUS() {
+      this.showSelectUS = !this.showSelectUS;
+  }
+
+    submitSelectUSForm() {
+        this.toggleSelectUS();
+    }
 }
