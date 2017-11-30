@@ -83,8 +83,6 @@ describe('Adding a memeber to a project', function() {
 
         element(by.name('addus')).click();
 
-
-
         //Click to logout
         element(by.name('logout')).click();
     });

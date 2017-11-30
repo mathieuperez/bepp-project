@@ -21,7 +21,7 @@
 
             <div [hidden]='!showModifyUS'>
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Userstory" size="50"/>
+                    <input name="modifydescription" type="text" class="form-control" placeholder="Userstory" size="50"/>
                 </div>
             </div>
 
@@ -30,7 +30,7 @@
             <div [hidden]='showModifyUS'>3</div>
             <div [hidden]='!showModifyUS'>
                 <div class="input-group">
-                    <input type="number" min="0" class="form-control" placeholder="Difficulté" size="4"/>
+                    <input name="modifydifficulty" type="number" min="0" class="form-control" placeholder="Difficulté" size="4"/>
                 </div>
             </div>
         </td>
@@ -38,7 +38,7 @@
             <div [hidden]='showModifyUS'>3</div>
             <div [hidden]='!showModifyUS'>
                 <div class="input-group">
-                    <input type="number" min="0" class="form-control" placeholder="Priorité" size="4"/>
+                    <input name="modifypriority" type="number" min="0" class="form-control" placeholder="Priorité" size="4"/>
                 </div>
             </div>
         </td>
@@ -47,17 +47,17 @@
         </td>
         <td align="right">
             <div [hidden]="showModifyUS">
-                <button type="button" class="btn btn-default"  (click)="toggleModifyUS()">
+                <button name = "modifyus" type="button" class="btn btn-default"  (click)="toggleModifyUS()">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span> Modifier</span>
                 </button>
 
-                <button type="button" class="btn btn-default" (click)="deleteUS()">
+                <button name="deleteus" type="button" class="btn btn-default" (click)="deleteUS()">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span> Supprimer</span>
                 </button>
             </div>
 
             <div [hidden]="!showModifyUS">
-                <button type="button" class="btn btn-default" (click)="modifyUS()">
+                <button name="validatemodifs" type="button" class="btn btn-default" (click)="modifyUS()">
                     <span class="glyphicon glyphicon-check" aria-hidden="true" ></span><span> Valider</span>
                 </button>
             </div>
