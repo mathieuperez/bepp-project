@@ -111,7 +111,7 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
         verifyAuth(req, res, function () {
             //update the userStory in the projectCollection's array
 
-            var updateProject = {$set: {userStories: {"description": description, "difficulty": difficulte}}};
+            var updateProject = {$set: {"userStories.$": {"description": description, "difficulty": difficulte}}};
             
             var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryOldDescription}}};
             //REQUETE QUI FONCTIONNE DANS MONGO
@@ -163,7 +163,7 @@ router.delete('/:description/projects/:name', function (req, res) {
         projectCollection.update(projectQuery, updateProject, {}, function (err, doc) {
             console.log("Delete");
             console.log(doc);
-            if (doc.nModified != 0) {
+            if (doc.nModified == 0) {
                 if (err) {
                     res.status(500).send("There was a problem with the database while updating the project: removing the userStory in the project's userStory list.");
                 }
