@@ -17,58 +17,82 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let us of currentProject.userStories">
-                <td></td>
-                <td>
-                    <div [hidden]='showModifyUS'>{{ us.description }}</div>
+                <ng-container *ngFor="let us of currentProject.userStories">
+                    <tr *ngIf="!showModifyUS || shownModifyDescription !== us.description">
+                        <td></td>
+                        <td>{{ us.description }}</td>
+                        <td>{{ us.difficulty }}</td>
+                        <td>{{ us.priority }}</td>
+                        <td>
+                            <input disabled class="done_checkbox" type="checkbox">
+                        </td>
+                        <td align="right">
+                            <div [hidden]="showModifyUS">
+                                <button type="button" class="btn btn-default"  (click)="toggleModifyUS(us.description)">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    <span> Modifier</span>
+                                </button>
 
-                    <div [hidden]='!showModifyUS'>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Userstory" size="50"/>
-                        </div>
-                    </div>
+                                <button type="button" class="btn btn-default" (click)="deleteUS()">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    <span> Supprimer</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
 
-                </td>
-                <td>
-                    <div [hidden]='showModifyUS'>{{ us.difficulty }}</div>
-                    <div [hidden]='!showModifyUS'>
-                        <div class="input-group">
-                            <input type="number" min="0" class="form-control" placeholder="Difficulté" size="4"/>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div [hidden]='showModifyUS'> {{ us.priority }}</div>
-                    <div [hidden]='!showModifyUS'>
-                        <div class="input-group">
-                            <input type="number" min="0" class="form-control" placeholder="Priorité" size="4"/>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <input class="done_checkbox" type="checkbox">
-                </td>
-                <td align="right">
-                    <div [hidden]="showModifyUS">
-                        <button type="button" class="btn btn-default"  (click)="toggleModifyUS()">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                            <span> Modifier</span>
-                        </button>
-
-                        <button type="button" class="btn btn-default" (click)="deleteUS()">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            <span> Supprimer</span>
-                        </button>
-                    </div>
-
-                    <div [hidden]="!showModifyUS">
-                        <button type="button" class="btn btn-default" (click)="modifyUS()">
-                            <span class="glyphicon glyphicon-check" aria-hidden="true" ></span>
-                            <span> Valider</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngIf="showModifyUS">
+                    <td colspan="6">
+                        <form novalidate
+                              [formGroup]="modifyUsForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Userstory"
+                                               size="50"
+                                               [formControlName]="'us'"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <input type="number"
+                                               min="0"
+                                               class="form-control"
+                                               placeholder="Difficulté"
+                                               size="4"
+                                               [formControlName]="'difficulty'"/>
+                                    </div>
+                                </div>
+                                <div *ngIf="userIsPO"
+                                     class="col-md-2">
+                                    <div class="input-group">
+                                        <input type="number"
+                                               min="0" class="form-control"
+                                               placeholder="Priorité"
+                                               size="4"
+                                               [formControlName]="'priority'"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-default" (click)="modifyUS()">
+                                        <span class="glyphicon glyphicon-check" aria-hidden="true" ></span>
+                                        <span> Valider</span>
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-default"
+                                            (click)="cancelModifyUS()"
+                                    >
+                                        <span class="glyphicon glyphicon-check" aria-hidden="true" ></span>
+                                        <span> Annuler</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
                 <tr *ngIf="currentProject.userStories.length === 0"
                     class="empty-project text-center">
                     <td colspan="6">Aucune US pour ce projet</td>

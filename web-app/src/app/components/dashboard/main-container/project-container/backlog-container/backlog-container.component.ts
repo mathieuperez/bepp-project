@@ -50,6 +50,10 @@ export class BacklogContainerComponent implements OnInit {
     private addUsLoading: boolean;
     private addUsSubmitted: boolean;
 
+    private modifyUsForm: FormGroup;
+
+    private shownModifyDescription: string|null;
+
 
     public constructor(private projectManagerService: ProjectManagerService,
                        private activatedRoute: ActivatedRoute,
@@ -67,6 +71,7 @@ export class BacklogContainerComponent implements OnInit {
         this.userIsPO = false;
         this.addUsLoading = false;
         this.addUsSubmitted = false;
+        this.shownModifyDescription = null;
     }
 
     private getProject (name: string) {
@@ -90,6 +95,12 @@ export class BacklogContainerComponent implements OnInit {
                 [];
 
             this.addUSForm = new FormGroup ({
+                us: new FormControl('', [Validators.required]),
+                priority: new FormControl('', priorityValidators),
+                difficulty: new FormControl('', [Validators.required])
+            });
+
+            this.modifyUsForm = new FormGroup ({
                 us: new FormControl('', [Validators.required]),
                 priority: new FormControl('', priorityValidators),
                 difficulty: new FormControl('', [Validators.required])
@@ -128,6 +139,33 @@ export class BacklogContainerComponent implements OnInit {
         }
     }
 
+    /**
+     * Return Us object in the project with the given name
+     * @param {string} description
+     */
+    private getUs (description: string) {
+        if (!this.currentProject) {
+            throw new Error (`Le projet courant n'est pas défini.`)
+        }
+
+        let indexUs = 0;
+        let indexFoundUs = -1;
+        while (indexUs < this.currentProject.userStories.length &&
+               indexFoundUs === -1) {
+
+            if (this.currentProject.userStories[indexUs].description === description) {
+                indexFoundUs = indexUs;
+            }
+            indexUs++;
+        }
+
+        if (indexFoundUs === -1) {
+            throw new Error (`Us not found.`)
+        }
+
+        return this.currentProject.userStories[indexFoundUs];
+    }
+
     public ngOnInit(): void {
         this.backlogLoading = true;
 
@@ -141,7 +179,23 @@ export class BacklogContainerComponent implements OnInit {
         this.showAddUS = !this.showAddUS;
     }
 
-    public toggleModifyUS(): void {
+    public toggleModifyUS(description?: string): void {
+
+        this.shownModifyDescription = (this.showModifyUS) ?
+            null :
+            description;
+
+        // if the opening requested
+        if (!this.showModifyUS) {
+            const us = this.getUs(description);
+
+            this.modifyUsForm.patchValue({
+                us: us.description,
+                priority: us.priority,
+                difficulty: us.difficulty
+            });
+        }
+
         this.showModifyUS = !this.showModifyUS;
     }
 
@@ -161,8 +215,11 @@ export class BacklogContainerComponent implements OnInit {
                 delete body.priority;
             }
 
+            body.difficulte = body.difficulty;
+            body.description = body.us;
+
             const projectName = encodeURIComponent(this.currentProject.name);
-            this.httpClient.put(`/api/projects/${projectName}/US`,
+            this.httpClient.put(`/api/userStories/projects/${projectName}`,
                 body, {
                     responseType: 'json'
                 }
@@ -187,7 +244,11 @@ export class BacklogContainerComponent implements OnInit {
 
     public modifyUS() {
         console.log("i'm here");
-        this.toggleModifyUS();
+        //this.toggleModifyUS();
+    }
+
+    public cancelModifyUS (description: string) {
+        this.toggleModifyUS(description);
     }
 
     public get descriptionUs () {
@@ -201,4 +262,6 @@ export class BacklogContainerComponent implements OnInit {
     public get difficulty () {
         return this.addUSForm.get('difficulty');
     }
+
+
 }
