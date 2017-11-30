@@ -5,7 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {UserManagerService} from "../../../../../services/user-manager.service";
 import {AuthGuard} from "../../../../../guards/auth/auth.guard";
 import {AppConstants} from "../../../../../app-constants";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {CheckAuthService} from "../../../../../services/check-auth.service";
 
 @Component({
@@ -56,6 +56,8 @@ export class BacklogContainerComponent implements OnInit {
 
     private shownModifyDescription: string|null;
 
+    private deleteUsLoading: boolean;
+
 
     public constructor(private projectManagerService: ProjectManagerService,
                        private activatedRoute: ActivatedRoute,
@@ -77,6 +79,8 @@ export class BacklogContainerComponent implements OnInit {
 
         this.modifyUsSubmitted = false;
         this.modifyUsLoading = false;
+
+        this.deleteUsLoading = false;
     }
 
     private getProject (name: string) {
@@ -285,8 +289,36 @@ export class BacklogContainerComponent implements OnInit {
             });
         }
     }
+    public deleteUS (description: string) {
+        if (!this.deleteUsLoading) {
+            this.deleteUsLoading = true;
 
-    public deleteUS() {}
+            // remove priority if not filled
+            const params = new HttpParams()
+                    .set('token', localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME))
+
+            const projectName = encodeURIComponent(this.currentProject.name);
+            const encodeDescription = encodeURIComponent(description);
+            this.httpClient.delete(`/api/userStories/${encodeDescription}/projects/${projectName}`,
+                {
+                    responseType: 'json',
+                    params: params
+                }
+            ).subscribe(() => {
+                this.deleteUsLoading = false;
+                const currentParams = this.activatedRoute.snapshot.parent.params;
+                this.getProject(currentParams['name']);
+            }, (error) => {
+                this.deleteUsLoading = false;
+                this.checkAuthService.check(error);
+
+                /* TODO Gestion d'erreur
+                if (error.status !== 401) {
+                    this.addUsMessage = `Une erreur inconnue s'est produite, veuillez réessayer plutard`;
+                }*/
+            });
+        }
+    }
 
     public cancelModifyUS (description: string) {
         this.toggleModifyUS(description);
