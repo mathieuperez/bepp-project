@@ -111,7 +111,7 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
         verifyAuth(req, res, function () {
             //update the userStory in the projectCollection's array
 
-            var updateProject = {$set: {userStories: {"description": description, "difficulty": difficulte}}};
+            var updateProject = {$set: {"userStories.$": {"description": description, "difficulty": difficulte}}};
             
             var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryOldDescription}}};
             //REQUETE QUI FONCTIONNE DANS MONGO

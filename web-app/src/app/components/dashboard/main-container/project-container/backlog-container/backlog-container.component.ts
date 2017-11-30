@@ -51,6 +51,8 @@ export class BacklogContainerComponent implements OnInit {
     private addUsSubmitted: boolean;
 
     private modifyUsForm: FormGroup;
+    private modifyUsLoading: boolean;
+    private modifyUsSubmitted: boolean;
 
     private shownModifyDescription: string|null;
 
@@ -72,6 +74,9 @@ export class BacklogContainerComponent implements OnInit {
         this.addUsLoading = false;
         this.addUsSubmitted = false;
         this.shownModifyDescription = null;
+
+        this.modifyUsSubmitted = false;
+        this.modifyUsLoading = false;
     }
 
     private getProject (name: string) {
@@ -239,13 +244,49 @@ export class BacklogContainerComponent implements OnInit {
             });
         }
     }
+    public submitModifyUSForm () {
+        this.modifyUsSubmitted = true;
+        if (this.modifyUsForm.valid && !this.modifyUsLoading) {
+            this.modifyUsLoading = true;
+
+            // remove priority if not filled
+            const body = Object.assign ({},
+                this.modifyUsForm.value,
+                {
+                    token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
+                });
+
+            if (!body.priority) {
+                delete body.priority;
+            }
+
+            body.difficulte = body.difficulty;
+            body.description = body.us;
+
+            const projectName = encodeURIComponent(this.currentProject.name);
+            const oldDescription = encodeURIComponent(this.shownModifyDescription);
+            this.httpClient.patch(`/api/userStories/${oldDescription}/projects/${projectName}`,
+                body, {
+                    responseType: 'json'
+                }
+            ).subscribe(() => {
+                this.modifyUsLoading = false;
+                const currentParams = this.activatedRoute.snapshot.parent.params;
+                this.getProject(currentParams['name']);
+                this.toggleModifyUS();
+            }, (error) => {
+                this.modifyUsLoading = false;
+                this.checkAuthService.check(error);
+
+                /* TODO Gestion d'erreur
+                if (error.status !== 401) {
+                    this.addUsMessage = `Une erreur inconnue s'est produite, veuillez réessayer plutard`;
+                }*/
+            });
+        }
+    }
 
     public deleteUS() {}
-
-    public modifyUS() {
-        console.log("i'm here");
-        //this.toggleModifyUS();
-    }
 
     public cancelModifyUS (description: string) {
         this.toggleModifyUS(description);
