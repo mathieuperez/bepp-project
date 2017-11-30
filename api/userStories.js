@@ -64,12 +64,12 @@ router.put('/projects/:name', function (req, res) {
     var difficulte = req.body.difficulte;
     var projectName = req.params.name;
 
-    if (description == null || difficulte == null || (priority == null && )) {
+    if (description == null || difficulte == null) {
         res.status(422).send("Missing Arguments.");
     }
     else {
         var db = req.db;
-        var projectCollection = db.get('projectCollection')
+        var projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
 
@@ -77,12 +77,12 @@ router.put('/projects/:name', function (req, res) {
             var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulte}}};
             var projectQuery = {name: projectName};
             projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
-                if (err) {
-                    res.status(500).send("There was a problem with the database while updating the project: adding the userStory to the project's userStory list.");
-                }
-                else {
-                    res.status(200).send({success: true});
-                }
+                    if (err) {
+                        res.status(500).send("There was a problem with the database while updating the project: adding the userStory to the project's userStory list.");
+                    }
+                    else {
+                        res.status(200).send({success: true});
+                    }
             });
         });
     }
@@ -110,14 +110,20 @@ router.patch('/:id/projects/:name/users/:login', function (req, res) {
 
         verifyAuth(req, res, function () {
             //update the userStory in the projectCollection's array
-            var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulte, "priority": priority}}};
+            var updateProject = {$set: {userStories: {"description": description, "difficulty": difficulte}}};
+            
             var projectQuery = {name: projectName};
             projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
-                if (err) {
-                    res.status(500).send("There was a problem with the database while updating the project: updating the userStory in the project's userStory list.");
+                if (doc.length != 0) {
+                    if (err) {
+                        res.status(500).send("There was a problem with the database while updating the project: updating the userStory in the project's userStory list.");
+                    }
+                    else {
+                        res.status(200).send({success: true});
+                    }
                 }
-                else {
-                    res.status(200).send({success: true});
+                else{
+                    res.status(409).send("UserStory not found.");
                 }
             });
         });
@@ -139,14 +145,19 @@ router.delete('/:description/projects/:name', function (req, res) {
 
         verifyAuth(req, res, function () {
         //Update projectCollection by removing the userstory of it's list
-        var updateProject = {$pull: {userStories: {"description": description}};
+        var updateProject = {$pull: {userStories: {"description": description}}};
         var projectQuery = {name: projectName};
         projectCollection.update(projectQuery, updateProject, {multi: true}, function (err, doc) {
-            if (err) {
-                res.status(500).send("There was a problem with the database while updating the project: removing the userStory in the project's userStory list.");
+            if (doc.length != 0) {
+                if (err) {
+                    res.status(500).send("There was a problem with the database while updating the project: removing the userStory in the project's userStory list.");
+                }
+                else {
+                    res.status(200).send({success: true});
+                }
             }
-            else {
-                res.status(200).send({success: true});
+            else{
+                res.status(409).send("UserStory not found.");
             }
         });
     });
@@ -169,24 +180,34 @@ router.patch('/:description/projects/:name/user/:role', function (req, res) {
         res.status(422).send("Missing Arguments.");
     }
     else {
-        var db = req.db;
-        var projectCollection = db.get('projectCollection');
+        if(userRole == 'PO'){
+            var db = req.db;
+            var projectCollection = db.get('projectCollection');
 
-        verifyAuth(req, res, function () {
+            verifyAuth(req, res, function () {
 
+                //update the userStory in the projectCollection's array
+                var updateProject = {$set: {userStories: {"priority": priority}}};
+                var projectQuery = {name: projectName, userStories: {"description": description}};
+                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
+                    if (docsUser.length != 0) {
+                        if (err) {
+                            res.status(500).send("There was a problem with the database while updating the userStory's priority.");
+                        }
+                        else {
+                            res.status(200).send({success: true});
+                        }
+                    }
+                    else{
+                        res.status(409).send("UserStory not found.");
+                    }
+                });
 
-            //update the userStory in the projectCollection's array
-            var updateProject = {$set: {userStories: {"priority": priority}}};
-            var projectQuery = {name: projectName, userStories: {"description": description}};
-            projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
-                if (err) {
-                    res.status(500).send("There was a problem with the database while updating the userStory's priority.");
-                }
-                else {
-                    res.status(200).send({success: true});
-                }
             });
-        });
+        }  
+        else{
+            res.status(403).send("User not allowed.");
+        }
     }
 });
 
