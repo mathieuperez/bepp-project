@@ -76,7 +76,7 @@ router.put('/projects/:name', function (req, res) {
             //add the userStory in the projectCollection
             var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulte}}};
             var projectQuery = {name: projectName};
-            projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
+            projectCollection.update(projectQuery, updateProject, function (err, doc) {
                     if (err) {
                         res.status(500).send("There was a problem with the database while updating the project: adding the userStory to the project's userStory list.");
                     }
@@ -98,7 +98,7 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
     var priority = req.body.priority;
-    var projectName = req.params.projects;
+    var projectName = req.params.name;
     var userStoryOldDescription = req.params.oldDescription;
 
     if (description == null || difficulte == null) {
@@ -113,14 +113,19 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
 
             var updateProject = {$set: {userStories: {"description": description, "difficulty": difficulte}}};
             
-            var projectQuery = {name: projectName, userStories: {"description": userStoryOldDescription}};
+            var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryOldDescription}}};
             //REQUETE QUI FONCTIONNE DANS MONGO
             //db.projectCollection.update({name: "Bepp", "userStories.description": "ma_user_story_preferee", "userStories.difficulty": "3"}, {$set: {"userStories.$.description": "mon_us", "userStories.$.difficulty": 4}})
 
             /*var updateProject = {$set: {"userStories.$.description": description, "userStories.$.difficulty": difficulte}}};
             var projectQuery = {name: projectName, "userStories.description": userStoryOldDescription};*/
-            projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
-                if (doc.length != 0) {
+            console.log(projectQuery);
+            console.log(updateProject);
+
+            projectCollection.update(projectQuery, updateProject, function (err, doc) {
+                console.log("Request (Patch): " + projectName + " " + description + " " + userStoryOldDescription);
+                console.log(doc);
+                if (doc.nModified != 0) {
                     if (err) {
                         res.status(500).send("There was a problem with the database while updating the project: updating the userStory in the project's userStory list.");
                     }
@@ -151,10 +156,14 @@ router.delete('/:description/projects/:name', function (req, res) {
 
     verifyAuth(req, res, function () {
         //Update projectCollection by removing the userstory of it's list
-        var updateProject = {$pull: {userStories: {"description": description}}};
+        var updateProject = {$pull: {userStories: {"description": userStoryDescription}}};
         var projectQuery = {name: projectName};
-        projectCollection.update(projectQuery, updateProject, {multi: true}, function (err, doc) {
-            if (doc.length != 0) {
+        console.log(projectQuery);
+        console.log(updateProject);
+        projectCollection.update(projectQuery, updateProject, {}, function (err, doc) {
+            console.log("Delete");
+            console.log(doc);
+            if (doc.nModified != 0) {
                 if (err) {
                     res.status(500).send("There was a problem with the database while updating the project: removing the userStory in the project's userStory list.");
                 }
@@ -194,9 +203,11 @@ router.patch('/:description/projects/:name/user/:role', function (req, res) {
 
                 //update the userStory in the projectCollection's array
                 var updateProject = {$set: {userStories: {"priority": priority}}};
-                var projectQuery = {name: projectName, userStories: {"description": description}};
-                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
-                    if (docsUser.length != 0) {
+                var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryDescription}}};
+                projectCollection.update(projectQuery, updateProject, function (err, doc) {
+                    console.log("Request : " + userStoryDescription);
+                    console.log(doc);
+                    if (doc.nModified != 0) {
                         if (err) {
                             res.status(500).send("There was a problem with the database while updating the userStory's priority.");
                         }
