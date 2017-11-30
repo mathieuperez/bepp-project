@@ -559,7 +559,7 @@ describe("PATCH Modifier une user story", function() {
 
 
 
-/*
+
 describe("DELETE Supprimer une user story", function() {
         var localurl = url + "userStories/my_prefered_user_story/projects/Bepp/";
         var authurl = url + "users/token";
@@ -610,7 +610,7 @@ describe("DELETE Supprimer une user story", function() {
             });
         });
 
-        localurl = url + "userStories/my_prefered_user_story_4/projects/Bepp/";
+        localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/";
         it("Good request : returns status 200", function(done) {
             request.post({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
@@ -629,7 +629,7 @@ describe("DELETE Supprimer une user story", function() {
             });
         });
     });
-*/
+
 
 
 
