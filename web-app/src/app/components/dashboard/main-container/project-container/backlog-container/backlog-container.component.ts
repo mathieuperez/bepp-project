@@ -72,6 +72,9 @@ export class BacklogContainerComponent implements OnInit {
     private getProject (name: string) {
         this.projectManagerService.get(name).subscribe ((project) => {
             this.currentProject = project;
+            if (!this.currentProject.userStories) {
+                this.currentProject.userStories = [];
+            }
             this.checkUserIsPO();
             this.createFormGroup();
             this.increaseNbReceivedServices();

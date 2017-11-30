@@ -6,20 +6,21 @@
 <div *ngIf="!backlogLoading">
     <div class="panel panel-default">
         <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>UserStory</th>
-                <th>Difficulté</th>
-                <th>Priorité</th>
-                <th>Fait</th>
-                <th></th>
-            </tr>
-            <tr>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>UserStory</th>
+                    <th>Difficulté</th>
+                    <th>Priorité</th>
+                    <th>Fait</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let us of currentProject.userStories">
+                <td></td>
                 <td>
-                    1
-                </td>
-                <td>
-                    <div [hidden]='showModifyUS'>En tant que *** Je souhaite *** afin de ***</div>
+                    <div [hidden]='showModifyUS'>{{ us.description }}</div>
 
                     <div [hidden]='!showModifyUS'>
                         <div class="input-group">
@@ -29,7 +30,7 @@
 
                 </td>
                 <td>
-                    <div [hidden]='showModifyUS'>3</div>
+                    <div [hidden]='showModifyUS'>{{ us.difficulty }}</div>
                     <div [hidden]='!showModifyUS'>
                         <div class="input-group">
                             <input type="number" min="0" class="form-control" placeholder="Difficulté" size="4"/>
@@ -37,7 +38,7 @@
                     </div>
                 </td>
                 <td>
-                    <div [hidden]='showModifyUS'>3</div>
+                    <div [hidden]='showModifyUS'> {{ us.priority }}</div>
                     <div [hidden]='!showModifyUS'>
                         <div class="input-group">
                             <input type="number" min="0" class="form-control" placeholder="Priorité" size="4"/>
@@ -50,21 +51,29 @@
                 <td align="right">
                     <div [hidden]="showModifyUS">
                         <button type="button" class="btn btn-default"  (click)="toggleModifyUS()">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span> Modifier</span>
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <span> Modifier</span>
                         </button>
 
                         <button type="button" class="btn btn-default" (click)="deleteUS()">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span> Supprimer</span>
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            <span> Supprimer</span>
                         </button>
                     </div>
 
                     <div [hidden]="!showModifyUS">
                         <button type="button" class="btn btn-default" (click)="modifyUS()">
-                            <span class="glyphicon glyphicon-check" aria-hidden="true" ></span><span> Valider</span>
+                            <span class="glyphicon glyphicon-check" aria-hidden="true" ></span>
+                            <span> Valider</span>
                         </button>
                     </div>
                 </td>
             </tr>
+                <tr *ngIf="currentProject.userStories.length === 0"
+                    class="empty-project text-center">
+                    <td colspan="6">Aucune US pour ce projet</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
