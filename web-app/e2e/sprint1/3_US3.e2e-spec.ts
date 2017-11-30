@@ -2,7 +2,7 @@ import {browser, by, element} from "protractor";
 
 describe('Verifiying a project existance', function() {
 
-    it("The last created project exists in the projects left bar", function() {
+    it("The test should be successful if last created project exists in the left bar", function() {
 
         //Go to login page
         browser.get('http://localhost:8080/');
@@ -14,15 +14,17 @@ describe('Verifiying a project existance', function() {
         //Click on login
         element(by.name('login')).click();
 
-        //Choose the last created project
-        element(by.name('TestProject')).click();
+        browser.sleep(1000);
 
-        browser.sleep(3000);
+        //Choose the last created project
+        element(by.name('ProjetTest')).click();
+
+        browser.sleep(1000);
 
         //Expect to get the created project overview page
-        expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard/projects/TestProject/overview");
+        expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard/projects/ProjetTest/overview");
 
-        browser.sleep(500);
+        browser.sleep(3000);
 
         //Click to logout
         element(by.name('logout')).click();

@@ -1,4 +1,4 @@
-import {browser, by, element} from "protractor";
+
 
 describe('Creating a project sprints', function() {
 

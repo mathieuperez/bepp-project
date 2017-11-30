@@ -1,7 +1,7 @@
 // Test for US4
 
 describe('Adding a memeber to a project', function() {
-    it('This test should success if the user added successfuly a member to a project list members', function() {
+    it('The user added successfuly a member to a project list members', function() {
 
         browser.get('http://localhost:8080/');
 

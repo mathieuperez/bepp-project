@@ -16,7 +16,7 @@ describe('Showing project members list', function() {
         }, 5000);
 
         //Select the created test project
-        element(by.name('TestProject')).click();
+        element(by.name('ProjetTest')).click();
 
         browser.wait(function() {
             return element(by.name('vueensemble')).isPresent();

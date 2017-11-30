@@ -1,4 +1,3 @@
-import {browser, by, element} from "protractor";
 
 describe('Modifiying and deleting a userstory', function() {
     it('The userstory is successfully modified and deleted', function() {
@@ -38,7 +37,7 @@ describe('Modifiying and deleting a userstory', function() {
         element(by.name('modifydifficulty')).sendKeys('5');
 
         var priorityinput = element(by.id('modifypriority'));
-        //   expect(priorityinput.isEnabled()).toBe([true]);
+     //   expect(priorityinput.isEnabled()).toBe([true]);
 
         //Click on Validate modifications button
         element(by.name('validatemodifs')).click();
@@ -54,3 +53,5 @@ describe('Modifiying and deleting a userstory', function() {
 
     });
 });
+
+

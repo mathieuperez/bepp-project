@@ -58,7 +58,7 @@
                         </div>
                     </td>
                     <td align="center">
-                        <input class="done_checkbox" type="checkbox">
+                        <input name="selectus" class="done_checkbox" type="checkbox">
                     </td>
                 </tr>
                 <tr>
@@ -102,13 +102,13 @@
 
 
         <div class="panel-body" [hidden]="showSelectUS">
-            <button class="btn-add btn btn-primary pull-right" name="newus" (click)="toggleSelectUS()">
+            <button class="btn-add btn btn-primary pull-right" name="newustosprint" (click)="toggleSelectUS()">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 <span >Selectionner UserStory</span>
             </button>
         </div>
         <div class="panel-body" [hidden]="!showSelectUS">
-            <button class="btn-add btn btn-success pull-right" name="addus" (click)="submitSelectUSForm()">
+            <button class="btn-add btn btn-success pull-right" name="addustosprint" (click)="submitSelectUSForm()">
                 <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                 <span > Ajouter</span>
             </button>

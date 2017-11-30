@@ -14,10 +14,12 @@ describe('Verifiying a project existance', function() {
         //Click on login
         element(by.name('login')).click();
 
+        browser.sleep(1000);
+
         //Choose the last created project
         element(by.name('ProjetTest')).click();
 
-        browser.sleep(3000);
+        browser.sleep(1000);
 
         //Expect to get the created project overview page
         expect(browser.getCurrentUrl()).toEqual("http://localhost:8080/#/dashboard/projects/ProjetTest/overview");

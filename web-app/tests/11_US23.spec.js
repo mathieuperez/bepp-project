@@ -1,8 +1,6 @@
-import {browser, by, element} from "protractor";
+describe('Adding a US to Sprints mini backlog by selecting it from the global Backlog', function() {
 
-describe('Modifiying a US priority as a PO', function() {
-
-    it("The PO modified successfully the priority of the US", function() {
+    it("The selected US is successfully added to the Mini Backlog of the sprint", function() {
 
         browser.get('http://localhost:8080/');
 
@@ -12,16 +10,19 @@ describe('Modifiying a US priority as a PO', function() {
 
         element(by.name('login')).click();
 
+        // S'assigner en tant que PO dans le projet qu'on a
+
         element(by.name('ProjectTest2')).click();
 
-        //Go to overview menu
+        //Go to sprints menu
         element(by.name('vueensemble')).click();
         browser.sleep(3000);
 
+        //Click on assigne a member
         element(by.name('newmember')).click();
         browser.sleep(5000);
 
-        //Add the user email and select a PO
+        //Add the user email and select a task and submit
         element(by.id('addedUserLogin')).sendKeys('amine@email.com');
 
         browser.sleep(1000);
@@ -46,16 +47,12 @@ describe('Modifiying a US priority as a PO', function() {
         element(by.name('modifyus')).click();
         browser.sleep(500);
 
-        // Modify the priority
-        element(by.name('modifypriority')).sendKeys('5');
+        var priorityinput = element(by.name('modifypriority'));
+        priorityinput.sendKeys('5');
 
         //Click on Validate modifications button
         element(by.name('validatemodifs')).click();
         browser.sleep(1000);
 
-        //Click to logout
-        element(by.name('logout')).click();
-
     });
 });
-

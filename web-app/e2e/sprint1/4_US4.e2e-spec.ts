@@ -13,8 +13,8 @@ describe('Adding a memeber to a project', function() {
         }, 5000);
 
         //Fill the sign up form and submit it
-        element(by.name('name')).sendKeys('Avfmine');
-        element(by.name('surname')).sendKeys('Anmn');
+        element(by.name('name')).sendKeys('Mohamed');
+        element(by.name('surname')).sendKeys('Med');
         element(by.name('email')).sendKeys('med@email.com');
         element(by.name('password1')).sendKeys('123');
         element(by.name('password2')).sendKeys('123');
@@ -31,11 +31,11 @@ describe('Adding a memeber to a project', function() {
         element(by.name('login')).click();
 
         browser.wait(function() {
-            return element(by.name('TestProject')).isPresent();
+            return element(by.name('ProjetTest')).isPresent();
         }, 5000);
 
         //Choose the ProjectTest project
-        element(by.name('TestProject')).click();
+        element(by.name('ProjetTest')).click();
 
         browser.wait(function() {
             return element(by.name('vueensemble')).isPresent();
@@ -43,14 +43,16 @@ describe('Adding a memeber to a project', function() {
 
         //Choose the project overview
         element(by.name('vueensemble')).click();
-        browser.sleep(500);
+        browser.sleep(5000);
 
         //Click on Add member button
         element(by.name('newmember')).click();
-        browser.sleep(500);
+        browser.sleep(5000);
 
         //Add the user email and select a task and submit
         element(by.id('addedUserLogin')).sendKeys('amine@email.com');
+
+        browser.sleep(1000);
 
         element.all(by.id('addedUserRole')).each(function (eachElement, index)
         {
@@ -64,27 +66,9 @@ describe('Adding a memeber to a project', function() {
 
         browser.sleep(500);
 
-        //Add a userstory
-        browser.wait(function () {
-            return element(by.name('backlog')).isPresent();
-        }, 5000);
-
-        //Choose the project backlog
-        element(by.name('backlog')).click();
-        browser.sleep(500);
-
-        //Click on Add US button
-        element(by.name('newus')).click();
-        browser.sleep(500);
-
-        element(by.id('us')).sendKeys('En tant que ** Je souhaite ***');
-        element(by.id('priority')).sendKeys('2');
-        element(by.id('difficulty')).sendKeys('1');
-
-        element(by.name('addus')).click();
-
         //Click to logout
         element(by.name('logout')).click();
+
     });
 });
 

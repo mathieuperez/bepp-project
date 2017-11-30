@@ -1,5 +1,3 @@
-import {browser, by, element} from "protractor";
-
 describe('Adding a US to Sprints mini backlog by selecting it from the global Backlog', function() {
 
     it("The selected US is successfully added to the Mini Backlog of the sprint", function() {

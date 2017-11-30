@@ -1,4 +1,3 @@
-import {browser, by, element} from "protractor";
 
 describe('Adding a Userstory to the backlog', function() {
     it('The userstory added successfully', function() {
@@ -45,5 +44,3 @@ describe('Adding a Userstory to the backlog', function() {
 
     });
 });
-
-

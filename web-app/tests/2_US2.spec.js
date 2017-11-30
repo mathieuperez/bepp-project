@@ -1,4 +1,4 @@
-import {browser, by, element} from "protractor";
+// Test for US2
 
 describe('Creating a project', function() {
 
