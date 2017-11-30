@@ -94,12 +94,12 @@ router.put('/projects/:name', function (req, res) {
 //Suppose :
 // PATCH : {"id":"usid", "name":"project1"}
 // PATCH : url?id=usid&name=project1
-router.patch('/:id/projects/:name/users/:login', function (req, res) {
+router.patch('/:oldDescription/projects/:name/', function (req, res) {
     var description = req.body.description;
     var difficulte = req.body.difficulte;
     var priority = req.body.priority;
     var projectName = req.params.projects;
-    var userStoryId = req.params.id;
+    var userStoryOldDescription = req.params.oldDescription;
 
     if (description == null || difficulte == null) {
         res.status(422).send("Missing Arguments.");
@@ -110,9 +110,15 @@ router.patch('/:id/projects/:name/users/:login', function (req, res) {
 
         verifyAuth(req, res, function () {
             //update the userStory in the projectCollection's array
+
             var updateProject = {$set: {userStories: {"description": description, "difficulty": difficulte}}};
             
-            var projectQuery = {name: projectName};
+            var projectQuery = {name: projectName, userStories: {"description": userStoryOldDescription}};
+            //REQUETE QUI FONCTIONNE DANS MONGO
+            //db.projectCollection.update({name: "Bepp", "userStories.description": "ma_user_story_preferee", "userStories.difficulty": "3"}, {$set: {"userStories.$.description": "mon_us", "userStories.$.difficulty": 4}})
+
+            /*var updateProject = {$set: {"userStories.$.description": description, "userStories.$.difficulty": difficulte}}};
+            var projectQuery = {name: projectName, "userStories.description": userStoryOldDescription};*/
             projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
                 if (doc.length != 0) {
                     if (err) {
@@ -140,10 +146,10 @@ router.delete('/:description/projects/:name', function (req, res) {
     var projectName = req.params.name;
     var userStoryDescription = req.params.description;
 
-        var db = req.db;
-        var projectCollection = db.get('projectCollection');
+    var db = req.db;
+    var projectCollection = db.get('projectCollection');
 
-        verifyAuth(req, res, function () {
+    verifyAuth(req, res, function () {
         //Update projectCollection by removing the userstory of it's list
         var updateProject = {$pull: {userStories: {"description": description}}};
         var projectQuery = {name: projectName};
@@ -180,7 +186,7 @@ router.patch('/:description/projects/:name/user/:role', function (req, res) {
         res.status(422).send("Missing Arguments.");
     }
     else {
-        if(userRole == 'PO'){
+        if(userRole == "PO"){
             var db = req.db;
             var projectCollection = db.get('projectCollection');
 
