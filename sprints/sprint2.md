@@ -38,11 +38,11 @@
 | T21_DOC | La documentation des services "SWAGGER"|  | 2 | 1 | :x:
 | T22_TEST | Redaction des tests : E2E(Protractor)| Amine | 2 | 1 | :white_check_mark:
 | T23_TEST | Effectuer les tests : E2E(Protractor)| Amine | 2 | 1 | :x:
-| T24_PM | Faire le lien entre l'interface de la tâche T3_P et les services de l'api|  | 2 | 1 | :x:
-| T25_PM | Faire le lien entre l'interface de la tâche T4_P et les services de l'api|  | 2 | 1 | :x:
-| T26_PM | Faire le lien entre l'interface de la tâche T5_P et les services de l'api|  | 2 | 1 | :x:
-| T27_PM | Faire le lien entre l'interface de la tâche T6_P et les services de l'api|  | 2 | 1 | :x:
-| T28_PM | Faire le lien entre l'interface de la tâche T7_P et les services de l'api|  | 2 | 1 | :x:
+| T24_PM | Faire le lien entre l'interface de la tâche T8_P et les services de l'api| Adrien | 2 | 1 | :x:
+| T25_PM | Faire le lien entre l'interface de la tâche T9_P et les services de l'api| Adrien | 2 | 1 | :x:
+| T26_PM | Faire le lien entre l'interface de la tâche T10_P et les services de l'api| Adrien | 2 | 1 | :x:
+| T27_PM | Faire le lien entre l'interface de la tâche T11_P et les services de l'api| Adrien | 2 | 1 | :x:
+| T28_PM | Faire le lien entre l'interface de la tâche T12_P et les services de l'api| Adrien | 2 | 1 | :x:
 
 ### Les tests E2E
 
