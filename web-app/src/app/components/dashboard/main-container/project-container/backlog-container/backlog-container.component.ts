@@ -289,7 +289,7 @@ export class BacklogContainerComponent implements OnInit {
             });
         }
     }
-    public submitDeleteUS (description: string) {
+    public deleteUS (description: string) {
         if (!this.deleteUsLoading) {
             this.deleteUsLoading = true;
 
@@ -319,8 +319,6 @@ export class BacklogContainerComponent implements OnInit {
             });
         }
     }
-
-    public deleteUS() {}
 
     public cancelModifyUS (description: string) {
         this.toggleModifyUS(description);
