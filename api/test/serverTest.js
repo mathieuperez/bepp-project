@@ -602,7 +602,7 @@ describe("DELETE Supprimer une user story", function() {
                 var bodyJson = JSON.parse(body);
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl
+                    url:     url + "userStories/my_prefered_US/projects/Bepp/"
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(409);
                     done();
@@ -620,7 +620,7 @@ describe("DELETE Supprimer une user story", function() {
                 var bodyJson = JSON.parse(body);
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl
+                    url:     url + "userStories/my_prefered_user_story4/projects/Bepp/"
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(200);
                     done();
