@@ -558,7 +558,98 @@ describe("PATCH Modifier une user story", function() {
 
 
 
+    describe("PATCH Modifier desrcription et difficulte d'une user story", function() {
+        var localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/PO";
+        var authurl = url + "users/token";
 
+        it("Bad request (missing Argument) : returns status 422", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (missing Token) : returns status 401", function(done) {
+            request.patch({
+                url:     localurl,
+                form:    { name: "Bepp"}
+            }, function(error, response, body) {
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { priority: "1"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        var localurl2 = url + "userStories/my_prefered_US/projects/Bepp/user/PO";
+        it("Bad request (UserStory not found) : returns status 409", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     url + "userStories/my_prefered_US/projects/Bepp/user/PO",
+                    form:    { priority: "1"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(409);
+                    done();
+                });
+
+            });
+        });
+
+        localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/PO";
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     url + "userStories/my_prefered_user_story4/projects/Bepp/user/PO",
+                    form:    { priority: "1"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+    });
 
 describe("DELETE Supprimer une user story", function() {
         var localurl = url + "userStories/my_prefered_user_story/projects/Bepp/";
@@ -602,7 +693,7 @@ describe("DELETE Supprimer une user story", function() {
                 var bodyJson = JSON.parse(body);
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl
+                    url:     url + "userStories/my_prefered_US/projects/Bepp/"
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(409);
                     done();
@@ -620,7 +711,7 @@ describe("DELETE Supprimer une user story", function() {
                 var bodyJson = JSON.parse(body);
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl
+                    url:     url + "userStories/my_prefered_user_story4/projects/Bepp/"
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(200);
                     done();
@@ -629,123 +720,5 @@ describe("DELETE Supprimer une user story", function() {
             });
         });
     });
-
-
-
-
-
-/*
-describe("PATCH Modifier desrcription et difficulte d'une user story", function() {
-        var localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/PO";
-        var authurl = url + "users/token";
-
-        it("Bad request (missing Argument) : returns status 422", function(done) {
-            request.post({
-                headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     authurl,
-                form:    { login: "dprestat", password: "dp33"}
-            }, function(error, response, body) {
-                var bodyJson = JSON.parse(body);
-                request.patch({
-                    headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl
-                }, function(error, response, body) {
-                    expect(response.statusCode).to.equal(422);
-                    done();
-                });
-
-            });
-        });
-
-        it("Bad request (missing Token) : returns status 401", function(done) {
-                request.patch({
-                    url:     localurl,
-                    form:    { name: "Bepp"}
-                }, function(error, response, body) {
-                    expect(response.statusCode).to.equal(422);
-                    done();
-                });
-        });
-
-        it("Bad request (bad Token) : returns status 401", function(done) {
-            request.post({
-                headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     authurl,
-                form:    { login: "abounad", password: "ab33"}
-            }, function(error, response, body) {
-                var bodyJson = JSON.parse(body);
-                request.patch({
-                    headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                    form:    { priority: "1"}
-                }, function(error, response, body) {
-                    expect(response.statusCode).to.equal(401);
-                    done();
-                });
-
-            });
-        });
-
-        var localurl2 = url + "userStories/my_prefered_US/projects/Bepp/user/Developer";
-        it("Bad request (UserStory not found) : returns status 409", function(done) {
-            request.post({
-                headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     authurl,
-                form:    { login: "dprestat", password: "dp33"}
-            }, function(error, response, body) {
-                var bodyJson = JSON.parse(body);
-                request.patch({
-                    headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                    form:    { priority: "1"}
-                }, function(error, response, body) {
-                    expect(response.statusCode).to.equal(409);
-                    done();
-                });
-
-            });
-        });
-
-        it("Bad request () : returns status 409", function(done) {
-            request.post({
-                headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     authurl,
-                form:    { login: "dprestat", password: "dp33"}
-            }, function(error, response, body) {
-                var bodyJson = JSON.parse(body);
-                request.patch({
-                    headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                    form:    { priority: "1"}
-                }, function(error, response, body) {
-                    expect(response.statusCode).to.equal(409);
-                    done();
-                });
-
-            });
-        });
-
-        localurl = url + "userStories/my_prefered_user_story/projects/Bepp/user/PO";
-        it("Good request : returns status 200", function(done) {
-            request.post({
-                headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     authurl,
-                form:    { login: "dprestat", password: "dp33"}
-            }, function(error, response, body) {
-                var bodyJson = JSON.parse(body);
-                request.patch({
-                    headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                    form:    { priority: "1"}
-                }, function(error, response, body) {
-                    expect(response.statusCode).to.equal(200);
-                    done();
-                });
-
-            });
-        });
-
-    });
-*/
 
 });

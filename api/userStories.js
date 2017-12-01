@@ -202,10 +202,10 @@ router.patch('/:description/projects/:name/user/:role', function (req, res) {
             verifyAuth(req, res, function () {
 
                 //update the userStory in the projectCollection's array
-                var updateProject = {$set: {"userStories.$": {"priority": priority}}};
+                var updateProject = {$set: {"userStories.$.field" : {"priority": priority}}};
                 var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryDescription}}};
                 projectCollection.update(projectQuery, updateProject, function (err, doc) {
-                    console.log("Request : " + userStoryDescription);
+                    console.log("Request (PatchPrio): " + userStoryDescription);
                     console.log(doc);
                     if (doc.nModified != 0) {
                         if (err) {
