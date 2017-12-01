@@ -27,8 +27,7 @@
 | T10_P | Créer l'interface Front-end d'un sprint contenant : <br><ul><li>Une liste des US associées au sprint</li></ul>| Amine | 2 | 1 | :white_check_mark:
 | T11_P | Créer l'interface Front-end de modification/suppression d'une US du backlog d'un projet| Amine | 2 | 1 | :white_check_mark:
 | T12_P | Créer l'interface Front-end de saisie et modification de la priorité d'une US du projet| Amine | 2 | 1 | :white_check_mark:
-| T13_MB | Définir les requêtes (MongoDB) dont on aura besoin pour chaque service:<br><ul><li>Compléter le service REST qui insère une US dans la BD(création d'une US -US5)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur DEV(modification d'une US -US6)</li><li>Compléter le service REST qui supprime une US dans la BD(suppression d'une US -US6)</li><li>Compléter le service REST qui insère un sprint dans la BD(création d'un sprint -US7)</li><li>Compléter le service REST qui recupere la liste des US d'un projet(lister les US d'un projet -US18)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur PO(modification d'une US -US23)</li></ul>| Mathieu | 4 | 1 | :x:
-| T14_PM | Définir les liaisons entre les placeholders et les services<br><ul><li></li><li></li></ul>|  | 2 | 1 | :x:
+| T13_MB | Définir les requêtes (MongoDB) dont on aura besoin pour chaque service:<br><ul><li>Compléter le service REST qui insère une US dans la BD(création d'une US -US5)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur DEV(modification d'une US -US6)</li><li>Compléter le service REST qui supprime une US dans la BD(suppression d'une US -US6)</li><li>Compléter le service REST qui insère un sprint dans la BD(création d'un sprint -US7)</li><li>Compléter le service REST qui recupere la liste des US d'un projet(lister les US d'un projet -US18)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur PO(modification d'une US -US23)</li></ul>| Mathieu | 4 | 1 | :white_check_mark:
 | T15_M | Service REST PUT  : Créer une US | Mathieu | 3 | 1 | :white_check_mark:
 | T16_M | Service REST PATCH  : Modifier une US | Mathieu | 3 | 1 | :white_check_mark:
 | T17_M | Service REST DELETE  : Supprimer une US | Mathieu | 3 | 1 | :white_check_mark:
@@ -55,4 +54,5 @@ sur le [lien suivant](sprint2/dependance.md).
 ### L'organisation des tâches : Timeline et Kanban
 
 sur le [lien suivant](sprint2/organisation.md).
+
 
