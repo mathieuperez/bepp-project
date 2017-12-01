@@ -4,12 +4,12 @@
 
 | ID | User Story | Difficulté | Priorité | Fait |
 | --- | --- | --- | --- | --- |
-| 5 | En tant que **développeur**, je souhaite ajouter une User Story (Description, Difficulté (Suite de Fibonacci)) au BackLog d'un projet.| 1 | 2 | :x:
-| 6 | En tant que **développeur**, je souhaite pouvoir modifier / supprimer une US du Backlog d'un projet.| 1 | 2 | :x:
+| 5 | En tant que **développeur**, je souhaite ajouter une User Story (Description, Difficulté (Suite de Fibonacci)) au BackLog d'un projet.| 1 | 2 | :white_check_mark:
+| 6 | En tant que **développeur**, je souhaite pouvoir modifier / supprimer une US du Backlog d'un projet.| 1 | 2 | :white_check_mark:
 | 7 | En tant que **développeur**, je souhaite pouvoir ajouter un sprint (Date début, durée) à un projet.| 1 | 3 | :x:
 | 8 | En tant que **développeur**, je souhaite associer une ou plusieurs US à un sprint.| 1 | 3 | :x:
-| 18 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des US contenues dans le Backlog d'un projet.| 2 | 4 | :x:
-| 23 | En tant que **Product Owner**, je souhaite pouvoir saisir et modifier les priorités des US.| 1 | 2 | :x:
+| 18 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des US contenues dans le Backlog d'un projet.| 2 | 4 | :white_check_mark:
+| 23 | En tant que **Product Owner**, je souhaite pouvoir saisir et modifier les priorités des US.| 1 | 2 | :white_check_mark:
 
 ### Tâches
 
@@ -21,7 +21,7 @@
 | T4_TEST | Mise en place de "Travis" | Dimitri | 2 | ∅ | :white_check_mark:
 | T5_TEST | Mise en place de "Travis" pour exécuter les tests Mocha| Dimitri | 2 | ∅ | :white_check_mark:
 | T6_TEST | Mise en place de "Travis" pour exécuter les tests E2E| Dimitri | 2 | ∅ | :x:
-| T7_DELIVERY | Configuer Travis pour déployer des releases | Dimitri | 3 | ∅ | :x:
+| T7_DELIVERY | Configuer Travis pour déployer des releases | Dimitri | 3 | ∅ | :white_check_mark:
 | T8_P | Créer l'interface Front-end du Backlog contenant : <br><ul><li>Une liste des US associées au Projet</li><li>Un button pour permettre a l'utilisateur de créer une US(Description, Difficulté(suite de fibonacci), Priorité)</li><li>Un button pour permettre a l'utilisateur de modifier une US</li><li>Un button pour permettre a l'utilisateur de supprimer une US</li></ul>| Amine | 2 | 1 | :white_check_mark:
 | T9_P | Créer l'interface Front-end pour les sprint <br><ul><li>Un dropdown listant l'ensemble des sprints</li><li>Des inputs dans le panel du creation du projet pour les sprints (Nombre, Durée)</li></ul> | Amine | 1 | 3 | :white_check_mark:
 | T10_P | Créer l'interface Front-end d'un sprint contenant : <br><ul><li>Une liste des US associées au sprint</li></ul>| Amine | 2 | 1 | :white_check_mark:
@@ -38,11 +38,11 @@
 | T21_DOC | La documentation des services "SWAGGER"| Mathieu | 3 | 1 | :white_check_mark:
 | T22_TEST | Redaction des tests : E2E(Protractor)| Amine | 2 | 1 | :white_check_mark:
 | T23_TEST | Effectuer les tests : E2E(Protractor)| Amine | 2 | 1 | :x:
-| T24_PM | Faire le lien entre l'interface de la tâche T8_P et les services de l'api| Adrien | 4 | 1 | :x:
+| T24_PM | Faire le lien entre l'interface de la tâche T8_P et les services de l'api| Adrien | 4 | 1 | :white_check_mark:
 | T25_PM | Faire le lien entre l'interface de la tâche T9_P et les services de l'api| Adrien | 2 | 1 | :x:
 | T26_PM | Faire le lien entre l'interface de la tâche T10_P et les services de l'api| Adrien | 2 | 1 | :x:
-| T27_PM | Faire le lien entre l'interface de la tâche T11_P et les services de l'api| Adrien | 3 | 1 | :x:
-| T28_PM | Faire le lien entre l'interface de la tâche T12_P et les services de l'api| Adrien | 2 | 1 | :x:
+| T27_PM | Faire le lien entre l'interface de la tâche T11_P et les services de l'api| Adrien | 3 | 1 | :white_check_mark:
+| T28_PM | Faire le lien entre l'interface de la tâche T12_P et les services de l'api| Adrien | 2 | 1 | :white_check_mark:
 
 ### Les tests E2E
 
