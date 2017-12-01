@@ -1,13 +1,14 @@
-<div *ngIf="loading" class="page-loading text-center">
+<div *ngIf="overviewLoading" class="page-loading text-center">
     <i class="ld ld-spin ld-ring"></i>
 </div>
-<div *ngIf="!loading">
+<div *ngIf="!overviewLoading">
     <br>
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body" *ngIf="currentProject">
             <h1 align="center">{{ currentProject.name }}</h1>
             <p align="center">{{ currentProject.description }}</p>
-            <p align="center">Date de debut : xx/xx/xxxx --- Date de fin : xx/xx/xxxx</p>
+            <p align="center">Date de debut : xx/xx/xxxx</p>
+            <p align="center">Nombre de sprints : 3</p>
         </div>
     </div>
 
@@ -21,11 +22,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of currentProject.users">
-                    <td><span class="email" [id]="user.login">{{ user.login }}</span>&nbsp;(<span class="username">{{ user.name }} {{ user.surname }}</span>)</td>
-                    <td>{{ user.role }}</td>
-                </tr>
-                <tr *ngIf="currentProject.users && currentProject.users.length === 0"
+                <ng-container *ngIf="currentProject">
+                    <tr *ngFor="let user of currentProject.users">
+                        <td><span class="email" [id]="user.login">{{ user.login }}</span>&nbsp;(<span class="username">{{ user.name }} {{ user.surname }}</span>)</td>
+                        <td>{{ user.role }}</td>
+                    </tr>
+                </ng-container>
+                <tr *ngIf="!currentProject || (currentProject.users && currentProject.users.length === 0)"
                     class="empty-list">
                     <td colspan="2" class="text-center">
                         Aucun utilisateur n'a été ajouté au projet.
@@ -94,13 +97,18 @@
         </div>
         <div class="col-md-3">
             <div class="panel-body" [hidden]="showAddMember">
-                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">Nouveau membre</button>
+                <button class="btn-add btn btn-primary pull-right" name="newmember" (click)="toggleAddMember()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <span> Assigner un membre</span>
+                </button>
             </div>
 
             <div class="panel-body" [hidden]="!showAddMember">
-                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">Ajouter</button>
+                <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">
+                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                    <span > Ajouter</span>
+                </button>
             </div>
-
         </div>
 
     </div>
