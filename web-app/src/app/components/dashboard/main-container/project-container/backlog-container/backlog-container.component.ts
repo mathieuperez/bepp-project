@@ -150,9 +150,6 @@ export class BacklogContainerComponent implements OnInit {
                 index++;
             }
 
-            console.log (this.currentUser)
-            console.log (userArray);
-
             this.userIsPO = !!this.currentUser &&
                             !!userArray[index] &&
                             (this.currentUser.login === userArray[index].login) &&
@@ -249,6 +246,7 @@ export class BacklogContainerComponent implements OnInit {
                 const currentParams = this.activatedRoute.snapshot.parent.params;
                 this.getProject(currentParams['name']);
                 this.toggleAddUS();
+                this.addUSForm.reset();
             }, (error) => {
                 this.addUsLoading = false;
                 this.checkAuthService.check(error);
