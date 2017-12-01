@@ -99,20 +99,28 @@ export class BacklogContainerComponent implements OnInit {
 
     private createFormGroup () {
         if (this.currentUser && this.currentProject) {
+            const descriptionValidators = this.userIsPO ?
+                []:
+                [Validators.required];
+
+            const difficultyValidators = this.userIsPO ?
+                [] :
+                [Validators.required];
+
             const priorityValidators = this.userIsPO ?
                 [Validators.required] :
                 [];
 
             this.addUSForm = new FormGroup ({
-                us: new FormControl('', [Validators.required]),
+                us: new FormControl('', descriptionValidators),
                 priority: new FormControl('', priorityValidators),
-                difficulty: new FormControl('', [Validators.required])
+                difficulty: new FormControl('', difficultyValidators)
             });
 
             this.modifyUsForm = new FormGroup ({
-                us: new FormControl('', [Validators.required]),
+                us: new FormControl('', descriptionValidators),
                 priority: new FormControl('', priorityValidators),
-                difficulty: new FormControl('', [Validators.required])
+                difficulty: new FormControl('', difficultyValidators)
             });
         }
     }
@@ -135,16 +143,20 @@ export class BacklogContainerComponent implements OnInit {
 
     private checkUserIsPO (): void {
         if (!!this.currentUser && !!this.currentProject) {
-            const userArray = this.currentProject;
+            const userArray = this.currentProject.users;
             let index = 0;
             while (index < userArray.length &&
-                   this.currentUser.login === userArray[index].login) {
+                   this.currentUser.login !== userArray[index].login) {
                 index++;
             }
 
+            console.log (this.currentUser)
+            console.log (userArray);
+
             this.userIsPO = !!this.currentUser &&
                             !!userArray[index] &&
-                            (this.currentUser.login === userArray[index].login);
+                            (this.currentUser.login === userArray[index].login) &&
+                            userArray[index].role === 'Product Owner';
         }
     }
 
@@ -260,16 +272,26 @@ export class BacklogContainerComponent implements OnInit {
                     token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
                 });
 
-            if (!body.priority) {
-                delete body.priority;
-            }
-
-            body.difficulte = body.difficulty;
-            body.description = body.us;
-
             const projectName = encodeURIComponent(this.currentProject.name);
             const oldDescription = encodeURIComponent(this.shownModifyDescription);
-            this.httpClient.patch(`/api/userStories/${oldDescription}/projects/${projectName}`,
+
+            let service = `/api/userStories/${oldDescription}/projects/${projectName}`;
+            if (this.userIsPO) {
+                service += `/user/${encodeURIComponent('Product Owner')}`;
+            }
+            else {
+                if (!body.priority) {
+                    delete body.priority;
+                }
+
+                body.difficulte = body.difficulty;
+                body.description = body.us;
+            }
+
+            delete body.difficulty;
+            delete body.us;
+
+            this.httpClient.patch(service,
                 body, {
                     responseType: 'json'
                 }

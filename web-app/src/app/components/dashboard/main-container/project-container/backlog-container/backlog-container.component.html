@@ -33,7 +33,10 @@
                                     <span> Modifier</span>
                                 </button>
 
-                                <button type="button" class="btn btn-default" (click)="deleteUS(us.description)">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        (click)="deleteUS(us.description)"
+                                        *ngIf="!userIsPO">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                     <span> Supprimer</span>
                                 </button>
@@ -47,7 +50,8 @@
                         <form novalidate
                               [formGroup]="modifyUsForm">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-4"
+                                     *ngIf="!userIsPO">
                                     <div class="input-group">
                                         <input type="text"
                                                class="form-control"
@@ -56,7 +60,8 @@
                                                [formControlName]="'us'"/>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2"
+                                     *ngIf="!userIsPO">
                                     <div class="input-group">
                                         <input type="number"
                                                min="0"
@@ -97,7 +102,7 @@
         </table>
     </div>
 
-    <div *ngIf="currentUser"
+    <div *ngIf="currentUser && !userIsPO"
          class="row">
         <div class="col-md-10">
             <div [hidden]="!showAddUS" class="panel panel-default">

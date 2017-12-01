@@ -195,14 +195,14 @@ router.patch('/:description/projects/:name/user/:role', function (req, res) {
         res.status(422).send("Missing Arguments.");
     }
     else {
-        if(userRole == "PO"){
+        if(userRole == "Product Owner"){
             var db = req.db;
             var projectCollection = db.get('projectCollection');
 
             verifyAuth(req, res, function () {
 
                 //update the userStory in the projectCollection's array
-                var updateProject = {$set: {userStories: {"priority": priority}}};
+                var updateProject = {$set: {"userStories.$": {"priority": priority}}};
                 var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryDescription}}};
                 projectCollection.update(projectQuery, updateProject, function (err, doc) {
                     console.log("Request : " + userStoryDescription);
